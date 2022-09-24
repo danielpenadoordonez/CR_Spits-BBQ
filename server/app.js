@@ -4,4 +4,4 @@ function prueba(){
 
 setTimeout(() => {
     console.log("Hola mundo")
-}, 500);
+
