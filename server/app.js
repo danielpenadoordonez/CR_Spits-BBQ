@@ -1,5 +1,5 @@
 function prueba(){
-    console.log("Prueba");
+    console.log("Prueba!!!");
 }
 
 setTimeout(() => {
