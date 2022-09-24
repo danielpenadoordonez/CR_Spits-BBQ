@@ -1,1 +1,5 @@
-console.log("Prueba");
+
+
+setTimeout(() => {
+    console.log("Prueba"); 
+}, 500);
