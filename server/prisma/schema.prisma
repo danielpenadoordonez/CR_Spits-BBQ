@@ -57,8 +57,8 @@ model Mesa {
   id             BigInt  @id @default(autoincrement()) //* Identity
   codigo         String  @unique
   capacidad      Int
-  disponibilidad Boolean //* Reservada o libre
-  estado         Boolean //* Buena o mala?
+  disponibilidad Boolean //* Reservada o libre, entre otras
+  estado         Boolean //* Habilitado o deshabilitado
 
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
   idSucursal BigInt
@@ -85,6 +85,7 @@ model Producto {
   descripcion        String
   ingredientes       String? //* Opcional
   precio             Decimal
+  imagen             String // agrego esta columna por que es muy importante mostrar que se vende
   estado             Int //* creo que puede tener varios estados... sino cambiar a bool
   Categoria_Producto Categoria_Producto @relation(fields: [idCategoria], references: [id])
   idCategoria        Int
