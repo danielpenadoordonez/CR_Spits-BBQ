@@ -10,8 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//* En teoría ya está mapeado, solo falta cambiar unas cosas
-//* Maes si pueden instalen la extensión better comments, simplemente añade varios colores
+//* Maes si pueden instalen la extensión: "better comments", simplemente añade varios colores para diferenciar
+//! Recuerden hacer el migrate en sus compus, antes obvio iniciar el XAMPP con mysql y apache
+//! npx prisma migrate dev --name <name>
 
 model Perfil {
   id          Int       @id
@@ -37,6 +38,8 @@ model Usuario {
 
   @@unique([correo, username, telefono])
 }
+
+//* Puede ser cambiada, si se emplea el uso de una llave fóranea opcional en usuario con sucursal
 
 model Mesero {
   id         String   @id //* Cédula
