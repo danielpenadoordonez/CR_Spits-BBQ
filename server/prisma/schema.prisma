@@ -11,8 +11,8 @@ datasource db {
 }
 
 //* Maes si pueden instalen la extensión: "better comments", simplemente añade varios colores para diferenciar
-//! Recuerden hacer el migrate en sus compus, antes obvio iniciar el XAMPP con mysql y apache
-//! npx prisma migrate dev --name <name>
+//! antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
+//! 4. npx prisma migrate dev --name <name>
 
 model Perfil {
   id          Int       @id
@@ -136,24 +136,33 @@ model Sucursal_Producto {
   @@id([idProducto, idSucursal])
 }
 
-model TipoTarjeta {
+model TipoPago {
   id          Int                  @id
-  descripcion String               @unique
-  estado      Boolean //* Habilitada / Deshabilitada
+  descripcion String
   facturas    Factura_Encabezado[]
+}
+
+enum TipoTarjeta {
+  VISA
+  MASTERCARD
+  AMERICAN_EXPRESS
+  JCB
+  DISCOVER
+  NULL //* Sin tipo
 }
 
 model Factura_Encabezado {
   id             BigInt            @id @default(autoincrement())
-  numero_tarjeta String
+  numero_tarjeta String? //* Opcional 
+  tarjeta        TipoTarjeta? @default(NULL) //* Opcional [PUEDE SER EFECTIVO]
   fecha          DateTime          @default(now())
   estado         Boolean //* Cancelada / pendiente
   detalles       Factura_Detalle[]
 
-  TipoTarjeta   TipoTarjeta @relation(fields: [idTipoTarjeta], references: [id])
-  idTipoTarjeta Int
-  Usuario       Usuario     @relation(fields: [idUsuario], references: [id])
-  idUsuario     String
+  Usuario    Usuario  @relation(fields: [idUsuario], references: [id])
+  idUsuario  String
+  TipoPago   TipoPago @relation(fields: [idTipoPago], references: [id])
+  idTipoPago Int
 }
 
 model Factura_Detalle {
@@ -188,6 +197,7 @@ model Pedido_Producto {
   idPedido   BigInt
   Producto   Producto @relation(fields: [idProducto], references: [id])
   idProducto BigInt
+  cantidad  Int      @default(1)
   notas      String
 
   @@id([idPedido, idProducto])
