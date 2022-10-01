@@ -24,11 +24,11 @@ CREATE TABLE `Usuario` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Mesero` (
-    `id` VARCHAR(191) NOT NULL,
+CREATE TABLE `MeseroOnSucursal` (
     `idSucursal` BIGINT NOT NULL,
+    `idMesero` VARCHAR(191) NOT NULL,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`idSucursal`, `idMesero`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -107,23 +107,22 @@ CREATE TABLE `Sucursal_Producto` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `TipoTarjeta` (
+CREATE TABLE `TipoPago` (
     `id` INTEGER NOT NULL,
     `descripcion` VARCHAR(191) NOT NULL,
-    `estado` BOOLEAN NOT NULL,
 
-    UNIQUE INDEX `TipoTarjeta_descripcion_key`(`descripcion`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Factura_Encabezado` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `numero_tarjeta` VARCHAR(191) NOT NULL,
+    `numero_tarjeta` VARCHAR(191) NULL,
+    `tarjeta` ENUM('VISA', 'MASTERCARD', 'AMERICAN_EXPRESS', 'JCB', 'DISCOVER', 'NULL') NULL DEFAULT 'NULL',
     `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `estado` BOOLEAN NOT NULL,
-    `idTipoTarjeta` INTEGER NOT NULL,
     `idUsuario` VARCHAR(191) NOT NULL,
+    `idTipoPago` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -155,6 +154,7 @@ CREATE TABLE `Pedido` (
 CREATE TABLE `Pedido_Producto` (
     `idPedido` BIGINT NOT NULL,
     `idProducto` BIGINT NOT NULL,
+    `cantidad` INTEGER NOT NULL DEFAULT 1,
     `notas` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`idPedido`, `idProducto`)
@@ -164,7 +164,10 @@ CREATE TABLE `Pedido_Producto` (
 ALTER TABLE `Usuario` ADD CONSTRAINT `Usuario_idPerfil_fkey` FOREIGN KEY (`idPerfil`) REFERENCES `Perfil`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Mesero` ADD CONSTRAINT `Mesero_idSucursal_fkey` FOREIGN KEY (`idSucursal`) REFERENCES `Sucursal`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `MeseroOnSucursal` ADD CONSTRAINT `MeseroOnSucursal_idSucursal_fkey` FOREIGN KEY (`idSucursal`) REFERENCES `Sucursal`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MeseroOnSucursal` ADD CONSTRAINT `MeseroOnSucursal_idMesero_fkey` FOREIGN KEY (`idMesero`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Mesa` ADD CONSTRAINT `Mesa_idSucursal_fkey` FOREIGN KEY (`idSucursal`) REFERENCES `Sucursal`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -191,10 +194,10 @@ ALTER TABLE `Sucursal_Producto` ADD CONSTRAINT `Sucursal_Producto_idProducto_fke
 ALTER TABLE `Sucursal_Producto` ADD CONSTRAINT `Sucursal_Producto_idSucursal_fkey` FOREIGN KEY (`idSucursal`) REFERENCES `Sucursal`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Factura_Encabezado` ADD CONSTRAINT `Factura_Encabezado_idTipoTarjeta_fkey` FOREIGN KEY (`idTipoTarjeta`) REFERENCES `TipoTarjeta`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Factura_Encabezado` ADD CONSTRAINT `Factura_Encabezado_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Factura_Encabezado` ADD CONSTRAINT `Factura_Encabezado_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Factura_Encabezado` ADD CONSTRAINT `Factura_Encabezado_idTipoPago_fkey` FOREIGN KEY (`idTipoPago`) REFERENCES `TipoPago`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Factura_Detalle` ADD CONSTRAINT `Factura_Detalle_idFactura_Encabezado_fkey` FOREIGN KEY (`idFactura_Encabezado`) REFERENCES `Factura_Encabezado`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
