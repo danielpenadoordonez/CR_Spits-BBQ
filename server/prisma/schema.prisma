@@ -197,7 +197,7 @@ model Pedido_Producto {
   idPedido   BigInt
   Producto   Producto @relation(fields: [idProducto], references: [id])
   idProducto BigInt
-  cantidad  Int      @default(1)
+  cantidad   Int      @default(1)
   notas      String
 
   @@id([idPedido, idProducto])

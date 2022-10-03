@@ -1,0 +1,43 @@
+
+canvas#sparks {
+    transform: rotate(180deg);
+    width: 100%;
+    height: 10vh;
+    position: fixed;
+    bottom: 0;
+}
+
+.ember-light {
+    position: fixed;
+    height: 1vh;
+    width: 100%;
+    background: #850000;
+    bottom: 0;
+    left: 0;
+    opacity: .5;
+    filter: blur(10px);
+}
+
+.ember-light::after {
+    content: '';
+    position: fixed;
+    height: 1vh;
+    width: 100%;
+    background: #FF4200;
+    bottom: 0;
+    left: 0;
+    opacity: .5;
+    animation: ember-shine 3s linear alternate infinite;
+}
+
+@keyframes ember-shine {
+    to {
+        filter: blur(5px);
+        height: 1vh;
+    }
+
+    from {
+        filter: blur(10px);
+        height: 2.5vh;
+    }
+}
