@@ -4,6 +4,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StaticAnimationComponent } from './static-animation/static-animation.component';
+import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -15,7 +17,9 @@ import { StaticAnimationComponent } from './static-animation/static-animation.co
     StaticAnimationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
+    BrowserAnimationsModule
   ],
   exports: [
     HeaderComponent,
