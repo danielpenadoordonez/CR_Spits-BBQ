@@ -12,6 +12,7 @@ datasource db {
 
 //? antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
 //? 4. npx prisma migrate dev --name <name>
+//* Prisma versión: 4.3.1 - 5/10
 
 model Perfil {
   id          Int       @id
@@ -74,21 +75,20 @@ model Sucursal {
 }
 
 model Mesa {
-  id             BigInt             @id @default(autoincrement()) //* Identity
-  codigo         String             @unique
-  capacidad      Int
-  disponibilidad Int                @default(1) //* Reservada o libre, entre otras 
-  estado         Boolean //* Habilitado o deshabilitado
-  reservaciones  Reservacion_Mesa[]
+  id            BigInt             @id @default(autoincrement()) //* Identity
+  codigo        String             @unique
+  capacidad     Int
+  estado        Boolean //* Habilitado o deshabilitado
+  reservaciones Reservacion_Mesa[]
 
-  Sucursal     Sucursal   @relation(fields: [idSucursal], references: [id])
-  idSucursal   BigInt
-  EstadoMesa   EstadoMesa @relation(fields: [idEstadoMesa], references: [id])
-  idEstadoMesa Int
+  Sucursal         Sucursal           @relation(fields: [idSucursal], references: [id])
+  idSucursal       BigInt
+  EstadoMesa       DisponibilidadMesa @relation(fields: [idDisponibilidad], references: [id])
+  idDisponibilidad Int                @default(1)
 }
 
-model EstadoMesa {
-  id          Int    @id //* 1- Disponible, 2 - Reservada, 3 - ocupada (por gente en el local)
+model DisponibilidadMesa {
+  id          Int    @id //* 1- Disponible, 2 - Reservada, 3 - ocupada (por gente en el local)...
   descripcion String
   mesas       Mesa[]
 }
