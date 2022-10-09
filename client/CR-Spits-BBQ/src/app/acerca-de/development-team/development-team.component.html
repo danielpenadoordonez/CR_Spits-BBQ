@@ -1,0 +1,30 @@
+<section class="section">
+    <div class="development-team">
+        <div class="card-container flexbox" *ngIf="devTeam">
+            <div class="profile-card invert-rotate-card" *ngFor="let partner of devTeam">
+                <div class="profile-card-content">
+                    <div class="profile-front">
+                        <img src={{partner.photo}}  alt="partner.name" class="front-image">
+                        <div class="view-more-btn">
+                            <i title="Ver más" class="fa-solid fa-plus show-more"></i>
+                        </div>
+                        <div class="profile-contact flexbox">
+                            <a  *ngFor="let social of partner.socialmedia" class="social-link"
+                             href="{{social.url}}"
+                              title="{{social.icon.name}}"
+                              target="_blank">
+                              <i class="{{social.icon.icon}}"></i>
+                            </a>
+                        </div>
+                        <h4 class="profile-name">{{partner.name}}</h4>
+                    </div>
+                    <div class="profile-behind">
+                        <p class="profile-description" [innerHtml]="partner.about">
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

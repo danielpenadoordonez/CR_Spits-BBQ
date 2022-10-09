@@ -9,7 +9,7 @@ import { LoadScriptsService } from 'src/app/share/load-scripts.service';
 export class StaticAnimationComponent implements OnInit {
 
   // Arreglo con las rutas de los scripts que se cargarán en este componente
-  scripts = ['../../assets/js/sparks.js'];
+  scripts = ['sparks.js'];
 
   constructor(private scriptService: LoadScriptsService) { 
     this.scripts.forEach(element => {
