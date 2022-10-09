@@ -29,5 +29,6 @@ export class LoadScriptsService {
       script.defer = true;
       body.appendChild(script);
     });
+    
   }
 }

@@ -10,14 +10,14 @@ export class StaticAnimationComponent implements OnInit {
 
   // Arreglo con las rutas de los scripts que se cargarán en este componente
   scripts = ['sparks.js'];
-
-  constructor(private scriptService: LoadScriptsService) { 
+  constructor(private scriptService: LoadScriptsService) {
     this.scripts.forEach(element => {
-      this.scriptService.loadScript(element, element); 
-  });
+      this.scriptService.loadScript(element, element);
+    });
   }
 
   ngOnInit(): void {
+
   }
 
 }
