@@ -153,13 +153,23 @@ input {
     border-radius: 5rem;
 }
 
+.user-logged{
+    text-align: center !important;
+    height: auto !important;
+    line-height: 25px !important;
+    transition: none;
+    transform: none !important;
+    padding: 1rem !important;
+}
 
 /* Sobreescribir estilos a angular material */
 
 /* MAT-MENU */
 .mat-menu-panel {
-    background-color: rgba(0,0,0, .5);
+    background-color: rgba(0,0,0, 1);
     animation: emberlight 3s linear infinite alternate;
+    margin-top: 1rem;
+    border-radius: 1rem !important;
 }
 
 @keyframes emberlight{
@@ -183,4 +193,24 @@ input {
 
 .mat-menu-item:hover{
     transform: scale(1.1);
+}
+
+
+/* Swiper Bundle */
+.swiper-pagination span{
+    width: 5px !important;
+    height: 5px !important;
+    background-color: #FF4200 !important;
+    opacity: .75 !important;
+}
+
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+    margin: 1rem .5rem 0 .5rem !important
+}
+
+span.swiper-pagination-bullet-active{
+    width: 1.5rem !important;
+    height: .4rem !important;
+    border-radius: .5rem !important;
+    transition: .2s linear !important;
 }

@@ -42,6 +42,11 @@
                             <mat-icon class="mat-menu-user-icon">person_add</mat-icon>
                             <span class="mat-menu-description"> Registrarse </span>
                         </a>
+                        <p mat-menu-item *ngIf="isAuthenticated" class="user-logged">
+                            Daniel Penado Ordonez
+                            <br>
+                            <span class="user-logged-email">danielpenado@gmail.com</span>
+                        </p>
                         <a mat-menu-item *ngIf="isAuthenticated">
                             <mat-icon class="mat-menu-user-icon">person_remove</mat-icon>
                             <span class="mat-menu-description"> Cerrar Sesión </span>
