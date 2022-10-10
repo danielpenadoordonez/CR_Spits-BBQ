@@ -241,8 +241,12 @@
 }
 
 .user-logged-email{
+    display: block;
+    width: 100%;
     text-align: center;
     font-size: .75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px dashed #fff;
 }
 
 .login{
