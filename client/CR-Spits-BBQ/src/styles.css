@@ -4,7 +4,7 @@
 
 
 /* ================== VARIABLES CSS =================== */
-:root{
+:root {
     --header_height: 4.5rem;
 
     /* ================= Colores ================== */
@@ -14,8 +14,8 @@
     --title-color: hsl(var(--hue), 4%, 100%);
     --text-color: hsl(var(--hue), 4%, 100%);
     --text-color-light: hsl(var(--hue), 5%, 55%);
-    --body-color: linear-gradient(90deg, rgba(238,207,109,1) 0%, rgba(213,172,78,1) 40%, rgba(139,98,32,1) 100%);
-    --container-color: linear-gradient(180deg, rgba(218,170,109,1) 0%, rgba(201,152,78,1) 40%, rgba(139,60,32,1) 100%);
+    --body-color: linear-gradient(90deg, rgba(238, 207, 109, 1) 0%, rgba(213, 172, 78, 1) 40%, rgba(139, 98, 32, 1) 100%);
+    --container-color: linear-gradient(180deg, rgba(218, 170, 109, 1) 0%, rgba(201, 152, 78, 1) 40%, rgba(139, 60, 32, 1) 100%);
     --container-color-2: rgb(187, 136, 49);
     --container-color-3: rgba(187, 136, 49, .6);
 
@@ -36,7 +36,7 @@
     --font-black: 900;
 
     /* ============ Margenes Bottom ============== */
-    --mb-0-25:.25rem;
+    --mb-0-25: .25rem;
     --mb-0-5: .5rem;
     --mb-0-75: .75rem;
     --mb-1: 1rem;
@@ -51,8 +51,8 @@
 }
 
 /* tipografia responsive */
-@media screen and (min-width: 992px){
-    :root{
+@media screen and (min-width: 992px) {
+    :root {
         --biggest-font-size: 4rem;
         --h1-font-size: 2.25rem;
         --h2-font-size: 1.5rem;
@@ -63,16 +63,16 @@
     }
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 
-html, body 
-{ 
-    background: url(assets/images/background.jpg); 
+html,
+body {
+    background: url(assets/images/background.jpg);
     background-size: 100% 100%;
     background-attachment: fixed;
     /* scroll-behavior: smooth; */
@@ -82,49 +82,52 @@ html, body
     font-size: var(--normal-font-size);
 }
 
-.grid{
+.grid {
     display: grid;
 }
 
 
-.flexbox{
+.flexbox {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.section{
+.section {
     padding: 7rem 1rem 2rem;
 }
 
-h1,h2,h3,h4{
+h1,
+h2,
+h3,
+h4 {
     color: var(--title-color);
     font-weight: var(--font-semi-bold);
 }
 
-ul{
+ul {
     list-style: none;
     padding: 0;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-img{
+img {
     max-width: 100%;
     height: auto;
 }
 
 button,
-input{
+input {
     border: none;
     outline: none;
 }
 
-.button{
+.button {
     display: inline-block;
-    background-color:var(--first-color);
+    background-color: var(--first-color);
     padding: 1rem 1.75rem;
     font-weight: var(--font-medium);
     border-radius: .5rem;
@@ -132,22 +135,82 @@ input{
     cursor: pointer;
 }
 
-.button:hover{
-    background-color: var(--first-color-alt);    
+.button:hover {
+    background-color: var(--first-color-alt);
 }
 
 
 /* scroll styles */
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: .7rem;
-    background: white;;
+    background: white;
+    ;
 }
 
-::-webkit-scrollbar-thumb{
-    background:  #8B0000;
+::-webkit-scrollbar-thumb {
+    background: #8B0000;
     border-radius: 5rem;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.user-logged{
+    text-align: center !important;
+    height: auto !important;
+    line-height: 25px !important;
+    transition: none;
+    transform: none !important;
+    padding: 1rem !important;
+}
+
+/* Sobreescribir estilos a angular material */
+
+/* MAT-MENU */
+.mat-menu-panel {
+    background-color: rgba(0,0,0, 1);
+    animation: emberlight 3s linear infinite alternate;
+    margin-top: 1rem;
+    border-radius: 1rem !important;
+}
+
+@keyframes emberlight{
+    0%{
+        box-shadow: inset 0 0 10px #FE0202;
+    }
+    100%{
+        box-shadow: inset 0 0 10px #FE0202,
+                inset 0 0 10px #FE0202,
+                inset 0 0 10px #FE0202;
+    }
+}
+
+.mat-menu-content{
+    overflow: hidden;
+}
+
+.mat-menu-item{
+    transition: .5s;
+}
+
+.mat-menu-item:hover{
+    transform: scale(1.1);
+}
+
+
+/* Swiper Bundle */
+.swiper-pagination span{
+    width: 5px !important;
+    height: 5px !important;
+    background-color: #FF4200 !important;
+    opacity: .75 !important;
+}
+
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+    margin: 1rem .5rem 0 .5rem !important
+}
+
+span.swiper-pagination-bullet-active{
+    width: 1.5rem !important;
+    height: .4rem !important;
+    border-radius: .5rem !important;
+    transition: .2s linear !important;
+}
