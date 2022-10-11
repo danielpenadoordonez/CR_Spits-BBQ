@@ -33,4 +33,11 @@
     position: relative;
     z-index: 10;
     font-size: 1.2rem;
+    -webkit-text-stroke: 1px #000;
+}
+
+@media screen and (min-width: 992px) {
+    .about-description{
+        width: 50%;
+    }
 }
