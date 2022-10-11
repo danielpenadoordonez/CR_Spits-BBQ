@@ -129,7 +129,6 @@
 
 .nav-social-media {
     position: fixed;
-    background-color: black;
     height: 100vh;
     width: 5%;
     right: -50%;
@@ -139,7 +138,7 @@
     justify-content: center;
     align-items: center;
     animation: show-social-panel 1.5s ease-in-out forwards;
-    animation-delay: 1s;
+
     z-index: 10000;
 }
 
@@ -159,6 +158,21 @@
 @keyframes show-social-panel {
     100% {
         right: 0;
+    }
+}
+
+.line{
+    opacity: 0;
+    animation: show-line 1s ease-in-out forwards;
+    animation-delay: 1.5s;
+    height: 0;
+    margin: 1rem;
+}
+
+@keyframes show-line{
+    100% {
+        height: 125px;
+        opacity: 1;
     }
 }
 
