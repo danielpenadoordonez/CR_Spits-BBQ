@@ -75,7 +75,7 @@ body {
     background: url(assets/images/background.jpg);
     background-size: 100% 100%;
     background-attachment: fixed;
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
     overflow-x: hidden;
     margin: var(--header_height) 0 0 0;
     font-family: var(--body-font);
