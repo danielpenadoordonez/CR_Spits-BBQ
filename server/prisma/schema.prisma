@@ -12,7 +12,7 @@ datasource db {
 
 //? antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
 //? 4. npx prisma migrate dev --name <name>
-//* Prisma versión: 4.3.1 - 5/10
+//* Prisma versión: 4.4.0 - 11/10 - Angular CLI 14.2.5
 
 model Perfil {
   id          Int       @id
@@ -39,8 +39,6 @@ model Usuario {
 
   @@unique([correo, username, telefono])
 }
-
-//* Puede ser cambiada, si se emplea el uso de una llave fóranea opcional en usuario con sucursal
 
 // Esta tabla no tiene que llamarse algo asi como MeseroSucursal???
 // Es que la tabla usuario tiene todos los datos que puede tener un mesero

@@ -38,4 +38,4 @@ export const users = [
         direccion: "Grecia, Alajuela",
         idPerfil: 3
     }    
-]
+];
