@@ -1,8 +1,27 @@
 .development-team{
-    height: 100vh;
+    height: 100%;
     width: 95%;
     margin-top: 7rem;
     /* justify-content: space-between; */
+}
+
+.development-team-title{
+    text-align: center;
+     margin: 2rem 0;
+}
+
+.development-team-title, .profile-name{
+    text-shadow: 0 0 10px #FF4200, 0 0 10px #FF4200; 
+}
+
+hr{
+    width: 85%;
+    margin: 0 auto;
+    border: none;
+    height: 5px;
+    background: black;
+    box-shadow: 0 0 10px #FF4200;
+    border-radius: 2rem;
 }
 
 .card-container{
@@ -85,7 +104,6 @@
     width: 100%;
     border-bottom-left-radius: 1.5rem;
     border-bottom-right-radius: 1.5rem; 
-    text-shadow: 0 0 10px #FF4200, 0 0 10px #FF4200; 
 }
 
 .profile-contact{
