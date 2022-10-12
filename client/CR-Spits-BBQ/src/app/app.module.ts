@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -26,7 +25,6 @@ import { AcercaDeModule } from './acerca-de/acerca-de.module';
     HomeModule,
     UserModule,
     MesasModule,
-
     // al final el gestor de las rutas principal
     AppRoutingModule,
      AcercaDeModule
