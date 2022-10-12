@@ -4,7 +4,7 @@ import { AcercaDeIndexComponent } from './acerca-de-index/acerca-de-index.compon
 import { DevelopmentTeamComponent } from './development-team/development-team.component';
 
 const routes: Routes = [
-  { path: 'About', component: AcercaDeIndexComponent }
+  { path: 'about', component: AcercaDeIndexComponent },
 ];
 
 @NgModule({
