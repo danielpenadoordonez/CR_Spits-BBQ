@@ -10,5 +10,7 @@ router.get("/all", usuarioController.getAllUsers);
 router.get("/:id", usuarioController.getUserById);
 router.get("/:username", usuarioController.getUserByUserName);
 router.get("/:email", usuarioController.getUserByEmail);
+router.get("/perfiles", usuarioController.getPerfiles);
+router.get("/perfiles/all", usuarioController.getPerfiles);
 
 module.exports = router;
