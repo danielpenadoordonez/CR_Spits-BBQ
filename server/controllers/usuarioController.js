@@ -1,5 +1,4 @@
 const { PrismaClient} =  require("@prisma/client");
-//const { request } = require("http");
 
 const prismaClient = new PrismaClient();
 
@@ -19,8 +18,6 @@ module.exports.getAllUsers = async (request, response, next) => {
 
 //Obtener usuario por ID
 module.exports.getUserById = async (request, response, next) => {
-    //! TENGA MÁS CUIDADO CON EL TIPO DE CASTEO QUE PONE
-    //! ESTABA COMO INT Y ES UN STRING
     let id = String(request.params.id);
     const user = await prismaClient.usuario.findUnique({
         where:{id: id},
@@ -56,4 +53,12 @@ module.exports.getUserByEmail = async (request, response, next) => {
         }
     });
     response.json(user);
+};
+
+//Obtener tipos de Perfil
+module.exports.getPerfiles = async (request, response, next) => {
+    const perfiles = await prismaClient.perfil.findMany({
+        orderBy:{id: 'asc'}
+    });
+    response.json(perfiles);
 };
