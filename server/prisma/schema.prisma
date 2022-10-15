@@ -202,8 +202,9 @@ model Pedido {
   precio    Decimal
   productos Pedido_Producto[]
 
-  Usuario   Usuario @relation(fields: [idUsuario], references: [id])
-  idUsuario String
+  Usuario   Usuario @relation(fields: [idCliente], references: [id])
+  idCliente String
+  idMesero  String? //* Ya que es la misma tabla y no se puede doble fóranea, se añade un campo para distinguir del id mesero y el id cliente
 }
 
 model Pedido_Producto {
