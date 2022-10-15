@@ -10,8 +10,15 @@ const prisma = new PrismaClient();
 
 //Archivos de Rutas
 const userRouter = require("./routes/usuarioRoutes");
+const perfilRouter = require("./routes/perfilRoutes");
 const sucursalRouter = require("./routes/sucursalRoutes");
 const mesaRouter = require("./routes/mesaRoutes");
+const dispRouter = require("./routes/disponibilidadRoutes");
+const reservacionRouter = require("./routes/reservacionRoutes");
+const categoriaProductoRouter = require("./routes/categoriaProductoRoutes");
+const productRouter = require("./routes/productoRouter");
+const tipoPagoRouter = require("./routes/tipoPagoRoutes");
+const pedidoRouter = require("./routes/pedidoRoutes");
 
 //Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -31,10 +38,17 @@ app.use(
     })
 );
 
-//Definicion de Rutas
+//Definicion de Rutas de los APIs
 app.use("/users/", userRouter);
+app.use("/perfiles/", perfilRouter);
 app.use("/sucursales/", sucursalRouter);
 app.use("/mesas/", mesaRouter);
+app.use("/disponibilidades/", dispRouter);
+app.use("/reservaciones/", reservacionRouter);
+app.use("/categ-prods/", categoriaProductoRouter);
+app.use("/productos/", productRouter);
+app.use("/tipos-de-pago/", tipoPagoRouter);
+app.use("/pedidos/", pedidoRouter);
 
 //Servidor
 app.listen(port, () => {

@@ -54,11 +54,3 @@ module.exports.getUserByEmail = async (request, response, next) => {
     });
     response.json(user);
 };
-
-//Obtener tipos de Perfil
-module.exports.getPerfiles = async (request, response, next) => {
-    const perfiles = await prismaClient.perfil.findMany({
-        orderBy:{id: 'asc'}
-    });
-    response.json(perfiles);
-};
