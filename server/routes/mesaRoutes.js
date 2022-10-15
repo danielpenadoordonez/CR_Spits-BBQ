@@ -8,9 +8,9 @@ const mesaController = require("../controllers/mesaController");
 router.get("/", mesaController.getAllMesas);
 router.get("/all", mesaController.getAllMesas);
 router.get("/:codigo", mesaController.getMesaByCode);
-router.get("/sucursal/:idSucursal", mesaController.getMesaBySucursal);
-router.get("/disponibilidad/:idDisponibilidad", mesaController.getMesaByDisponibilidad);
-router.get("/disponibilidad/", mesaController.getDisponibilidadesMesas);
-router.get("/disponibilidad/all", mesaController.getDisponibilidadesMesas);
+router.get("/sucursal/:idSucursal", mesaController.getMesasBySucursal);
+router.get("/disponibilidad/:idDisponibilidad", mesaController.getMesasByDisponibilidad);
+//Hay que incluir una ruta para seleccionar una mesa por sucursal y disponibilidad a la vez
+//Tengo que ver como se hace para establecer una ruta asi
 
 module.exports = router;
