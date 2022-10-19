@@ -33,7 +33,7 @@ model Usuario {
   reservaciones    Reservacion[]
   facturas         Factura_Encabezado[]
   pedidos          Pedido[]             @relation("Pedidos") //* Por parte del cliente
-  encargos         Pedido?              @relation("Encargos") //* Por parte del mesero
+  encargos         Pedido[]             @relation("Encargos") //* Por parte del mesero
   Perfil           Perfil               @relation(fields: [idPerfil], references: [id])
   idPerfil         Int
   MeseroOnSucursal MeseroOnSucursal[]
@@ -207,7 +207,7 @@ model Pedido {
   idCliente String
 
   Mesero   Usuario? @relation(name: "Encargos", fields: [idMesero], references: [id])
-  idMesero String?  @unique //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
+  idMesero String? //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
 }
 
 model Pedido_Producto {
