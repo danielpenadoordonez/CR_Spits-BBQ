@@ -12,7 +12,7 @@ datasource db {
 
 //? antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
 //? 4. npx prisma migrate dev --name <name>
-//* Prisma versión: 4.4.0 - 11/10 - Angular CLI 14.2.5
+//* Prisma versión: 4.5.0 - 11/10 - Angular CLI 14.2.5
 
 model Perfil {
   id          Int       @id
@@ -33,22 +33,13 @@ model Usuario {
   reservaciones    Reservacion[]
   facturas         Factura_Encabezado[]
   pedidos          Pedido[]             @relation("Pedidos") //* Por parte del cliente
-  encargos         Pedido?              @relation("Encargos") //* Por parte del mesero
+  encargos         Pedido[]             @relation("Encargos") //* Por parte del mesero
   Perfil           Perfil               @relation(fields: [idPerfil], references: [id])
   idPerfil         Int
   MeseroOnSucursal MeseroOnSucursal[]
 
   @@unique([correo, username, telefono])
 }
-
-// Esta tabla no tiene que llamarse algo asi como MeseroSucursal???
-// Es que la tabla usuario tiene todos los datos que puede tener un mesero
-// y si hacemos otra tabla llamada Mesero ocuparia de igual manera ID, Nombre,
-//apellido 1, apellido 2, etc???
-// No se si en el modelo ER es correcto o aceptable tener dos tablas separadas que tengan los
-// atributos y ya en las clases emplear herencia o no se. 
-// Lo que digo es que se incluya mesero en usuario y hacer una tabla intermedia que conecte la tabla usuario y
-// y sucursal. Atte: Isaac
 
 model MeseroOnSucursal {
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
@@ -121,11 +112,11 @@ model Categoria_Producto {
 model Producto {
   id                 BigInt              @id
   nombre             String
-  descripcion        String
+  descripcion        String //* Incluye los acompañamientos
   ingredientes       String? //* Opcional
   precio             Decimal
   imagen             String //* agrego esta columna por que es muy importante mostrar que se vende
-  estado             Int //* creo que puede tener varios estados... sino cambiar a bool
+  estado             Boolean //* Habilitado / Deshabilitado
   Categoria_Producto Categoria_Producto  @relation(fields: [idCategoria], references: [id])
   idCategoria        Int
   detalles           Factura_Detalle[]
@@ -207,7 +198,7 @@ model Pedido {
   idCliente String
 
   Mesero   Usuario? @relation(name: "Encargos", fields: [idMesero], references: [id])
-  idMesero String?  @unique //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
+  idMesero String? //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
 }
 
 model Pedido_Producto {

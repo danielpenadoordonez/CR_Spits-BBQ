@@ -4,10 +4,11 @@
 
 export const tables = [
     {
-        codigo : '',
-        capacidad : 5,
+        codigo : 'CRSB-01-1',
+        capacidad : 4,
         estado : true,
         idSucursal : 1,
         idDisponibilidad : 1
     },
+    
 ];
