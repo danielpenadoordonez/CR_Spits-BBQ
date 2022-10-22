@@ -3,26 +3,26 @@
 export const estadospedidos = [
     {
         id : 1,
-        descripcion : 'registrada'
+        descripcion : 'Registrada'
     },
     {
         id : 2,
-        descripcion : 'en proceso'
+        descripcion : 'En proceso'
     },
     {
         id : 3,
-        descripcion : 'pendiente'
+        descripcion : 'Pendiente'
     },
     {
         id : 4,
-        descripcion : 'entragada'
+        descripcion : 'Entregada'
     },
     {
         id : 5,
-        descripcion : 'por pagar'
+        descripcion : 'Por pagar'
     },
     {
         id : 6,
-        descripcion : 'cancelada'
+        descripcion : 'Cancelada'
     }
 ];

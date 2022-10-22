@@ -25,7 +25,7 @@ export const productos = [
     {
         id: 3,
         nombre: 'Café negro',
-        descripcion: 'Café 1820 a gusto, incluye el sobres de azúcar',
+        descripcion: 'Café 1820 a gusto, incluye sobres de azúcar',
         ingredientes: '',
         precio: 750,
         imagen: '../../../assets/images/products/bebidas/cafenegro.png',
@@ -35,10 +35,20 @@ export const productos = [
     {
         id: 4,
         nombre: 'Batido natural',
-        descripcion: 'batodos de guanabana, fresa, mango y sandía',
+        descripcion: 'batidos de guanabana, fresa, mango y sandía',
         ingredientes: 'zumo de fruta',
         precio: 1500,
         imagen: '../../../assets/images/products/bebidas/batido.png',
+        estado: true,
+        idCategoria: 1
+    },
+    {
+        id: 5,
+        nombre: 'Imperial',
+        descripcion: 'Cerveza',
+        ingredientes: '',
+        precio: 1000,
+        imagen: '../../../assets/images/products/bebidas/imperial.png',
         estado: true,
         idCategoria: 1
     },
@@ -85,11 +95,11 @@ export const productos = [
     },
     {
         id: 9,
-        nombre: 'Papas fritas',
-        descripcion: 'papas a la francesa incluye sobres de mayonesa, ketchup y mostaza',
-        ingredientes: 'papas',
-        precio: 1000,
-        imagen: '../../../assets/images/products/entradas/papasfritas.png',
+        nombre: 'Dedos de Pollo',
+        descripcion: 'empanizados con salsa BBQ y papas fritas',
+        ingredientes: 'pollo, salsa BBQ, papas',
+        precio: 1200,
+        imagen: '../../../assets/images/products/entradas/dedospollo.png',
         estado: true,
         idCategoria: 2
     },
@@ -104,7 +114,56 @@ export const productos = [
         estado: true,
         idCategoria: 3
     },
-    //! Faltan, en desarrollo
+    {
+        id: 11,
+        nombre: 'New York Steak',
+        descripcion: 'corte de carne New York al gusto, con papas horneadas con tocineta y queso',
+        ingredientes: 'carne de res, papas, tocineta, queso',
+        precio: 8500,
+        imagen: '../../../assets/images/products/carnes/ny_steak.png',
+        estado: true,
+        idCategoria: 3
+    },
+    {
+        id: 12,
+        nombre: 'Baby Back Ribs',
+        descripcion: '6 costillas en un adobo hecho a base de salsa BBQ con papas a la francesa',
+        ingredientes: 'costillas de cerdo, papas',
+        precio: 9500,
+        imagen: '../../../assets/images/products/carnes/babybackribs.png',
+        estado: true,
+        idCategoria: 3
+    },
+    {
+        id: 13,
+        nombre: 'Hamburguesa CRSpits',
+        descripcion: 'Hamburguesa con doble torta de carne Angus, con tocineta, doble queso, hongos salteados, salsa BBQ',
+        ingredientes: 'carne Angus, tocineta, hongos, queso, salsa BBQ',
+        precio: 5500,
+        imagen: '../../../assets/images/products/carnes/hamburguesa.png',
+        estado: true,
+        idCategoria: 3
+    },
+    {
+        id: 14,
+        nombre: 'Pollo Tejano',
+        descripcion: 'Pollo cocinado el horno con salsa de mostaza y BBQ, con queso derretido con hongos y tocineta encima acompañado de papas horneadas con tocineta y queso',
+        ingredientes: 'pollo, salsa de mostaza, BBQ, tocineta, hongos, queso, papas',
+        precio: 6500,
+        imagen: '../../../assets/images/products/carnes/pollotejano.png',
+        estado: true,
+        idCategoria: 3
+    },
+    {
+        id: 15,
+        nombre: 'Asado Mixto',
+        descripcion: 'Chuleta de Cerdo en Salsa BBQ, 3 chorizos con tortilla, pollo a la plancha, pico de gallo, guacamole, tortillas tostadas, frijoles molidos',
+        ingredientes: 'carne de cerdo, chorizo, pollo, tomate, aguacate, tortilla, cebolla',
+        precio: 12500,
+        imagen: '../../../assets/images/products/carnes/asadomixto.png',
+        estado: true,
+        idCategoria: 3
+    },
     //? Categoría 4 - Pescados
     {
         id: 16,
@@ -116,7 +175,26 @@ export const productos = [
         estado: true,
         idCategoria: 4
     },
-    //! Faltan, en desarrollo
+    {
+        id: 17,
+        nombre: 'Pescado Frito',
+        descripcion: 'Pargo entero frito con patacones y ensalada',
+        ingredientes: 'Pargo, platano verde, repollo, zanahoria, limon',
+        precio: 8000,
+        imagen: '../../../assets/images/products/pescados/pescado_entero.png',
+        estado: true,
+        idCategoria: 4
+    },
+    {
+        id: 18,
+        nombre: 'Pescado Empanizado',
+        descripcion: 'Corvina empanizada, con pure de papas y vegetales',
+        ingredientes: 'Corvina, papas, brocoli, zanahoria, mantequilla, ajo',
+        precio: 7000,
+        imagen: '../../../assets/images/products/pescados/pescado_empanizado.png',
+        estado: true,
+        idCategoria: 4
+    },
     //? Categoría 5 - Mariscos
     {
         id: 19,
@@ -128,5 +206,14 @@ export const productos = [
         estado: true,
         idCategoria: 5
     },
-    //! Faltan, en desarrollo
+    {
+        id: 20,
+        nombre: 'Triple de Camarones',
+        descripcion: 'Camarones al ajillo, empanizados y en salsa BBQ con pure de papas y vegetales',
+        ingredientes: 'camarones, ajo, papas, brocoli, zanahoria, salsa BBQ',
+        precio: 7500,
+        imagen: '../../../assets/images/products/mariscos/triple_camarones.png',
+        estado: true,
+        idCategoria: 5
+    },
 ];

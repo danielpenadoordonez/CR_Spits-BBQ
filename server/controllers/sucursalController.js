@@ -22,9 +22,10 @@ module.exports.getSucursalById = async (request, response, next) => {
     const sucursal = await prismaClient.sucursal.findUnique({
         where:{id: id},
         include:{
-            mesas:true,
-            reservaciones:true,
-            productos:true
+            mesas:true, //Se trae todas las mesas de esa sucursal
+            reservaciones:true, //Se trae todas las reservaciones de esa sucursal
+            productos:true, //Se trae todos los productos de esa sucursal
+            MeseroOnSucursal: true //Se trae todos los meseros de esa sucursal
         }
     });
     response.json(sucursal);
@@ -36,9 +37,10 @@ module.exports.getSucursalByCode = async (request, response, next) => {
     const sucursal = await prismaClient.sucursal.findFirst({
         where:{codigo: code},
         include:{
-            mesas:true,
-            reservaciones:true,
-            productos:true
+            mesas:true, //Se trae todas las mesas de esa sucursal
+            reservaciones:true, //Se trae todas las reservaciones de esa sucursal
+            productos:true, //Se trae todos los productos de esa sucursal
+            MeseroOnSucursal: true //Se trae todos los meseros de esa sucursal
         }
     });
     response.json(sucursal);

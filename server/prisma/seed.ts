@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { profiles } from "./seeds/profiles";
 import { categoria_producto } from "./seeds/categoriaProducto";
 import { estadospedidos } from "./seeds/estadopedido";
-import { disponibilidadmesas } from "./seeds/disponibilidadMesas";
+import { disponibilidadmesas } from "./seeds/disponibilidadmesas";
 import { sucursales } from "./seeds/sucursales";
 import { users } from "./seeds/users";
 import { meserosOnSucursal } from "./seeds/meseroOnSucursal";
