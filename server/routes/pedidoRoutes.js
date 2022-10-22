@@ -6,6 +6,6 @@ const pedidoController = require("../controllers/pedidoController");
 router.get("/", pedidoController.getAllPedidos);
 router.get("/all", pedidoController.getAllPedidos);
 router.get("/:id", pedidoController.getPedidoById);
-router.get("/:idUsuario", pedidoController.getPedidosByUsuario);
+router.get("/usuario/:idUsuario", pedidoController.getPedidosByUsuario);
 
 module.exports = router

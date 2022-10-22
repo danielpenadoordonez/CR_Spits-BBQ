@@ -20,7 +20,7 @@ export const users = [
         apellido2: "Lizano",
         correo: "isaacbarquero22@gmail.com",
         username: "isaacbarliz",
-        clave: "fron-end-css",
+        clave: "front-end-css",
         telefono: "64645793",
         direccion: "Alajuela",
         idPerfil: 1 //! Admin
