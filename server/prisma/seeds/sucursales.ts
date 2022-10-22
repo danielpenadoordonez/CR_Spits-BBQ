@@ -12,15 +12,22 @@ export const sucursales = [
         id : 2,
         codigo : '02',
         nombre : 'Sucursal de Heredia',
-        ubicacion : 'Paseo de las flores',
+        ubicacion : 'Estamos ubicados 500 metros después del centro comercial Paseo de las flores',
         capacidad : 40
     },
     {
         id : 3,
         codigo : '03',
         nombre : 'Sucursal de San José',
-        ubicacion : 'Escazú',
+        ubicacion : 'Estamos ubicados en Escazú, por la venida 34 al frente de Postres y más',
         capacidad : 70
+    },
+    {
+        id : 4,
+        codigo : '04',
+        nombre : 'Sucursal de Cartago',
+        ubicacion : 'Estamos ubicados en el centro comercial Paseo Metrópoli, por el establecimiento de Kolbi',
+        capacidad : 30
     }
 ];
 
