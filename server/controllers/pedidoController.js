@@ -3,8 +3,8 @@ const { PrismaClient } = require("@prisma/client");
 const prismaClient = new PrismaClient();
 
 /*
-            *GET APIs
-*/
+   *GET APIs
+ */
 
 //Todos los pedidos
 module.exports.getAllPedidos = async (request, response, next) => {
@@ -13,15 +13,11 @@ module.exports.getAllPedidos = async (request, response, next) => {
       id: "desc",
     },
     include: {
-      productos: true,
+      detalles: true,
     },
   });
 
-  let respuesta = JSON.stringify(pedidos, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(pedidos);
 };
 
 //* Pedido por id
@@ -33,7 +29,7 @@ module.exports.getPedidoById = async (request, response, next) => {
       id: "desc",
     },
     include: {
-      productos: true,
+      detalles: true,
     },
   });
 
@@ -41,7 +37,7 @@ module.exports.getPedidoById = async (request, response, next) => {
     typeof value === "bigint" ? value.toString() : value
   );
 
-  response.json(JSON.parse(respuesta));
+  response.json(pedido);
 };
 
 //* Pedidos por usuario
@@ -53,13 +49,9 @@ module.exports.getPedidosByUsuario = async (request, response, next) => {
       id: "desc",
     },
     include: {
-      productos: true,
+      detalles: true,
     },
   });
 
-  let respuesta = JSON.stringify(pedidos, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(pedidos);
 };

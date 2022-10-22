@@ -14,11 +14,7 @@ module.exports.getAllMesas = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(mesas, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(mesas);
 };
 
 //* Obtener mesa por Codigo
@@ -31,11 +27,7 @@ module.exports.getMesaByCode = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(mesa, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(mesa);
 };
 
 //* Obtener mesas por Disponibilidad
@@ -48,11 +40,7 @@ module.exports.getMesasByDisponibilidad = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(mesas, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(mesas);
 };
 
 //* Obtener mesa por Sucursal
@@ -65,11 +53,7 @@ module.exports.getMesasBySucursal = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(mesas, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(mesas);
 };
 
 //* Obtener mesa por Sucursal y Disponibilidad
@@ -83,9 +67,5 @@ module.exports.getMesasBySucursalandDisp = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(mesas, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
-  response.json(JSON.parse(respuesta));
+  response.json(mesas);
 };
