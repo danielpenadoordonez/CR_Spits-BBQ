@@ -1,10 +1,13 @@
 const { PrismaClient } = require("@prisma/client");
+const { parse } = require("path");
+const { stringify } = require("querystring");
+const { json } = require("stream/consumers");
 
 const prismaClient = new PrismaClient();
 
 /*
-           * GET APIs
-*/
+ * GET APIs
+ */
 
 //Todos los productos
 module.exports.getAllProducts = async (request, response, next) => {
@@ -43,27 +46,32 @@ module.exports.getProductsByCategory = async (request, response, next) => {
   response.json(products);
 };
 
-//Obtener productos por Sucursal (Muchos a Muchos)
+//* Obtener productos por Sucursal (Muchos a Muchos)
 module.exports.getProductsBySucursal = async (request, response, next) => {
-  let sucursal = request.params.idSucursal;
+  let sucursal = parseInt(request.params.idSucursal);
   //Se trae todos los productos en esa sucursal
-  const products = await prismaClient.sucursal_Producto.findMany({
-    where: {idSucursal : sucursal}
-  })
-  //Por cada producto se trae toda su informacion de la tabla producto
-  console.log(products);
+  let products = await prismaClient.sucursal_Producto.findMany({
+    where: { idSucursal: sucursal },
+  });
 
-  function getProductInfo(product){
-    let prodID = product.idProducto;
-    const product = prismaClient.producto.findFirst({
+  //* Por cada producto se trae toda su informacion de la tabla producto
+
+  async function getProductInfo(product) {
+    let prodID = parseInt(product.idProducto);
+    let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
       include: {
         sucursales_producto: true,
       },
     });
-    return product;
+    return producto;
   }
 
-  products = products.map(getProductInfo);
-  response.json(products);
-}
+  let answer = products.map(getProductInfo);
+
+  setTimeout(() => {
+    console.log(answer);
+    console.log('respuesta');
+    response.json(answer);
+  }, 100);
+};

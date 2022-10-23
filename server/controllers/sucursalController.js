@@ -18,7 +18,7 @@ module.exports.getAllSucursales = async (request, response, next) => {
 
 //Obtener sucursal por ID
 module.exports.getSucursalById = async (request, response, next) => {
-    let id = String(request.params.id);
+    let id = parseInt(request.params.id);
     const sucursal = await prismaClient.sucursal.findUnique({
         where:{id: id},
         include:{
