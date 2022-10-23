@@ -11,6 +11,9 @@ import { MesasModule } from './mesas/mesas.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AcercaDeModule } from './acerca-de/acerca-de.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { PedidosModule } from './pedidos/pedidos.module';
+import { ProductosModule } from './productos/productos.module';
+
 
 @NgModule({
   declarations: [
@@ -20,15 +23,17 @@ import { DashboardModule } from './dashboard/dashboard.module';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    // importar los módulos creados propios en orden de sin rutas a los que estan con rutas
+    //* importar los módulos creados propios en orden de sin rutas a los que estan con rutas
     CoreModule,
     ShareModule,
     HomeModule,
     UserModule,
     MesasModule,
+    PedidosModule,
+    ProductosModule,
     AcercaDeModule,
     DashboardModule,
-    // al final el gestor de las rutas principal
+    //* al final el gestor de las rutas principal
     AppRoutingModule,
   ],
   providers: [],
