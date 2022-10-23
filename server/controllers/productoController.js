@@ -56,7 +56,7 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
 
   //* Por cada producto se trae toda su informacion de la tabla producto
 
-  async function getProductInfo(product) {
+    async function getProductInfo(product) {
     let prodID = parseInt(product.idProducto);
     let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
@@ -67,11 +67,11 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     return producto;
   }
 
-  let answer = products.map(getProductInfo);
+  products = await Promise.all(products.map(getProductInfo));
 
   setTimeout(() => {
-    console.log(answer);
+    console.log(products);
     console.log('respuesta');
-    response.json(answer);
+    response.json(products);
   }, 100);
 };
