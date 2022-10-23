@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MesasModule } from './mesas/mesas.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AcercaDeModule } from './acerca-de/acerca-de.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,10 @@ import { AcercaDeModule } from './acerca-de/acerca-de.module';
     HomeModule,
     UserModule,
     MesasModule,
+    AcercaDeModule,
+    DashboardModule,
     // al final el gestor de las rutas principal
     AppRoutingModule,
-     AcercaDeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

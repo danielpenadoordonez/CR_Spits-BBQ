@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GestionMesasComponent } from './gestion-mesas/gestion-mesas.component';
 
 const routes: Routes = [
-  { path: 'mesas', component: GestionMesasComponent }
+  { path: 'mesas', component: GestionMesasComponent},
 ];
 
 @NgModule({
