@@ -12,7 +12,7 @@ datasource db {
 
 //? antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
 //? 4. npx prisma migrate dev --name <name>
-//* Prisma versión: 4.4.0 - 11/10 - Angular CLI 14.2.5
+//* Prisma versión: 4.5.0 - 11/10 - Angular CLI 14.2.5
 
 model Perfil {
   id          Int       @id
@@ -33,7 +33,7 @@ model Usuario {
   reservaciones    Reservacion[]
   facturas         Factura_Encabezado[]
   pedidos          Pedido[]             @relation("Pedidos") //* Por parte del cliente
-  encargos         Pedido?              @relation("Encargos") //* Por parte del mesero
+  encargos         Pedido[]             @relation("Encargos") //* Por parte del mesero
   Perfil           Perfil               @relation(fields: [idPerfil], references: [id])
   idPerfil         Int
   MeseroOnSucursal MeseroOnSucursal[]
@@ -41,18 +41,9 @@ model Usuario {
   @@unique([correo, username, telefono])
 }
 
-// Esta tabla no tiene que llamarse algo asi como MeseroSucursal???
-// Es que la tabla usuario tiene todos los datos que puede tener un mesero
-// y si hacemos otra tabla llamada Mesero ocuparia de igual manera ID, Nombre,
-//apellido 1, apellido 2, etc???
-// No se si en el modelo ER es correcto o aceptable tener dos tablas separadas que tengan los
-// atributos y ya en las clases emplear herencia o no se. 
-// Lo que digo es que se incluya mesero en usuario y hacer una tabla intermedia que conecte la tabla usuario y
-// y sucursal. Atte: Isaac
-
 model MeseroOnSucursal {
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
-  idSucursal BigInt
+  idSucursal Int
   Usuario    Usuario  @relation(fields: [idMesero], references: [id])
   idMesero   String
 
@@ -60,28 +51,30 @@ model MeseroOnSucursal {
 }
 
 model Sucursal {
-  id               BigInt              @id //* Nombre de la sursal
+  id               Int                 @id //* Nombre de la sursal
   codigo           String //? Pienso que debería tener código
   nombre           String //? Igualmente un nombre
   ubicacion        String
-  capacidad        BigInt
+  capacidad        Int
   mesas            Mesa[]
   reservaciones    Reservacion[]
   productos        Sucursal_Producto[]
   MeseroOnSucursal MeseroOnSucursal[]
+  pedidos          Pedido[]
 
   @@unique([codigo, nombre])
 }
 
 model Mesa {
-  id            BigInt             @id @default(autoincrement()) //* Identity
+  id            Int                @id @default(autoincrement()) //* Identity
   codigo        String             @unique
   capacidad     Int
   estado        Boolean //* Habilitado o deshabilitado
   reservaciones Reservacion_Mesa[]
+  pedidos       Pedido[]
 
   Sucursal         Sucursal           @relation(fields: [idSucursal], references: [id])
-  idSucursal       BigInt
+  idSucursal       Int
   EstadoMesa       DisponibilidadMesa @relation(fields: [idDisponibilidad], references: [id])
   idDisponibilidad Int                @default(1)
 }
@@ -93,20 +86,20 @@ model DisponibilidadMesa {
 }
 
 model Reservacion {
-  id         BigInt             @id @default(autoincrement())
+  id         Int                @id @default(autoincrement())
   fecha_hora DateTime           @default(now())
   mesas      Reservacion_Mesa[]
   Sucursal   Sucursal           @relation(fields: [idSucursal], references: [id])
-  idSucursal BigInt
+  idSucursal Int
   Usuario    Usuario            @relation(fields: [idUsuario], references: [id])
   idUsuario  String
 }
 
 model Reservacion_Mesa {
   Mesa          Mesa        @relation(fields: [idMesa], references: [id])
-  idMesa        BigInt
+  idMesa        Int
   Reservacion   Reservacion @relation(fields: [idReservacion], references: [id])
-  idReservacion BigInt
+  idReservacion Int
   cantidad      Int
 
   @@id([idMesa, idReservacion])
@@ -119,25 +112,25 @@ model Categoria_Producto {
 }
 
 model Producto {
-  id                 BigInt              @id
-  nombre             String
-  descripcion        String
-  ingredientes       String? //* Opcional
-  precio             Decimal
-  imagen             String //* agrego esta columna por que es muy importante mostrar que se vende
-  estado             Int //* creo que puede tener varios estados... sino cambiar a bool
-  Categoria_Producto Categoria_Producto  @relation(fields: [idCategoria], references: [id])
-  idCategoria        Int
-  detalles           Factura_Detalle[]
-  pedidos            Pedido_Producto[]
-  sucursales         Sucursal_Producto[]
+  id                  Int                 @id
+  nombre              String
+  descripcion         String //* Incluye los acompañamientos
+  ingredientes        String? //* Opcional
+  precio              Decimal
+  imagen              String //* agrego esta columna por que es muy importante mostrar que se vende
+  estado              Boolean //* Habilitado / Deshabilitado
+  Categoria_Producto  Categoria_Producto  @relation(fields: [idCategoria], references: [id])
+  idCategoria         Int
+  detalles            Factura_Detalle[]
+  pedidos             Pedido_Producto[]
+  sucursales_producto Sucursal_Producto[]
 }
 
 model Sucursal_Producto {
   Producto   Producto @relation(fields: [idProducto], references: [id])
-  idProducto BigInt
+  idProducto Int
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
-  idSucursal BigInt
+  idSucursal Int
 
   @@id([idProducto, idSucursal])
 }
@@ -158,7 +151,7 @@ enum TipoTarjeta {
 }
 
 model Factura_Encabezado {
-  id             BigInt                      @id @default(autoincrement())
+  id             Int                         @id @default(autoincrement())
   numero_tarjeta String? //* Opcional 
   tarjeta        TipoTarjeta?                @default(NULL) //* Opcional [PUEDE SER EFECTIVO]
   fecha          DateTime                    @default(now())
@@ -171,23 +164,23 @@ model Factura_Encabezado {
 }
 
 model Factura_Detalle {
-  id            BigInt  @default(autoincrement())
+  id            Int     @default(autoincrement())
   cantidad      Int
   precio        Decimal
   impuesto      Decimal
   total_detalle Decimal
 
   Factura_Encabezado   Factura_Encabezado @relation(fields: [idFactura_Encabezado], references: [id])
-  idFactura_Encabezado BigInt
+  idFactura_Encabezado Int
   Producto             Producto           @relation(fields: [idProducto], references: [id])
-  idProducto           BigInt
+  idProducto           Int
 
   @@id([id, idFactura_Encabezado])
 }
 
 model FacturaEncabezadoTipoPago {
   Factura_Encabezado   Factura_Encabezado @relation(fields: [idFactura_Encabezado], references: [id])
-  idFactura_Encabezado BigInt
+  idFactura_Encabezado Int
   TipoPago             TipoPago           @relation(fields: [idTipoPago], references: [id])
   idTipoPago           Int
   monto                Decimal //* Corresponde al monto que se paga con el tipo de pago
@@ -197,24 +190,39 @@ model FacturaEncabezadoTipoPago {
 
 //* Pedido = comanda, le cambiamos el nombre
 
+model EstadoPedido {
+  id          Int      @id //* Estado
+  descripcion String //* Estados: 1- registrada, 2- en proceso, 3- pendiente, 4- entregada, 5- por pagar, 6- cancelada 
+  pedidos     Pedido[]
+}
+
 model Pedido {
-  id        BigInt            @id @default(autoincrement())
-  nombre    String?
-  precio    Decimal
-  productos Pedido_Producto[]
+  id           Int               @id @default(autoincrement())
+  nombre       String?
+  precio       Decimal
+  fecha        DateTime          @default(now())
+  detalles    Pedido_Producto[]
+  estadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
+  idEstado     Int
 
   Cliente   Usuario @relation(name: "Pedidos", fields: [idCliente], references: [id])
   idCliente String
 
   Mesero   Usuario? @relation(name: "Encargos", fields: [idMesero], references: [id])
-  idMesero String?  @unique //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
+  idMesero String? //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
+
+  Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
+  idSucursal Int //* Sucursal que se haga cargo
+
+  Mesa   Mesa? @relation(fields: [idMesa], references: [id])
+  idMesa Int? //* Es totalmente opcional, ya que puede ser que sea online...
 }
 
 model Pedido_Producto {
   Pedido     Pedido   @relation(fields: [idPedido], references: [id])
-  idPedido   BigInt
+  idPedido   Int
   Producto   Producto @relation(fields: [idProducto], references: [id])
-  idProducto BigInt
+  idProducto Int
   cantidad   Int      @default(1)
   notas      String
 

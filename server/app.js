@@ -19,18 +19,21 @@ const categoriaProductoRouter = require("./routes/categoriaProductoRoutes");
 const productRouter = require("./routes/productoRouter");
 const tipoPagoRouter = require("./routes/tipoPagoRoutes");
 const pedidoRouter = require("./routes/pedidoRoutes");
+const estadoPedidoRouter = require("./routes/estadoPedidoRoutes");
 
-//Acceder a la configuracion del archivo .env
+//* Acceder a la configuracion del archivo .env
 dotEnv.config();
 
-//Puerto que escucha por defecto 3000 o definido en .env
+//* Puerto que escucha por defecto 3000 o definido en .env
 const port = process.env.port || 3000;
 
-//Middleware CORS para aceptar llamadas en el servidor
+//* Middleware CORS para aceptar llamadas en el servidor
 app.use(cors());
-//Middleware para loggear llamadas al servidor
+
+// *Middleware para loggear llamadas al servidor
 app.use(logger("dev"));
-//Middleware para gestionar Requests y Response JSON
+
+// *Middleware para gestionar Requests y Response JSON
 app.use(express.json());
 app.use(
     express.urlencoded({
@@ -38,7 +41,7 @@ app.use(
     })
 );
 
-//Definicion de Rutas de los APIs
+//* Definicion de Rutas de los APIs
 app.use("/users/", userRouter);
 app.use("/perfiles/", perfilRouter);
 app.use("/sucursales/", sucursalRouter);
@@ -49,8 +52,9 @@ app.use("/categ-prods/", categoriaProductoRouter);
 app.use("/productos/", productRouter);
 app.use("/tipos-de-pago/", tipoPagoRouter);
 app.use("/pedidos/", pedidoRouter);
+app.use("/estado-pedidos/", estadoPedidoRouter);
 
-//Servidor
+//* Servidor
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);
     console.log("Presione CTRL-C para detenerlo\n");

@@ -3,7 +3,7 @@ const { PrismaClient} =  require("@prisma/client");
 const prismaClient = new PrismaClient();
 
 /*
-            GET APIs
+            *GET APIs
 */
 
 //Obtener las categorias que puede tener un producto
