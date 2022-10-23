@@ -43,7 +43,7 @@ export const sucursalProducto = [
     },
     {
         idProducto: 6,
-        idSucursal: 2
+        idSucursal: 1
     },
     {
         idProducto: 6,
