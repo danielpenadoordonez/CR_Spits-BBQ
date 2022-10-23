@@ -25,6 +25,13 @@
     align-items: center;
 }
 
+
+/* ocultar el nav */
+.hide-nav{
+    display: none;
+}
+
+
 .nav_logo {
     position: relative;
 }

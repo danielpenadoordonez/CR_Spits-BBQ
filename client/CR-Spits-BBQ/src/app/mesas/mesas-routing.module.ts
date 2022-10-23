@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'mesas', component: GestionMesasComponent },
   { path: 'mesas/:id', component: MesaDetailComponent },
   //* falta ruta para create y update
+
 ];
 
 @NgModule({
