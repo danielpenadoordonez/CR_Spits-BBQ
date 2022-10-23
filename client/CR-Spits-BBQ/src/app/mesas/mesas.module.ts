@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { MesasRoutingModule } from './mesas-routing.module';
 import { GestionMesasComponent } from './gestion-mesas/gestion-mesas.component';
+import { MesaDetailComponent } from './mesa-detail/mesa-detail.component';
 
 
 @NgModule({
   declarations: [
-    GestionMesasComponent
+    GestionMesasComponent,
+    MesaDetailComponent
   ],
   imports: [
     CommonModule,
