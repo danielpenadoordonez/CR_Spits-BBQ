@@ -1,6 +1,19 @@
 <button mat-icon-button class="close-button" [mat-dialog-close]="true">
-    <mat-icon class="close-icon" color="primary">close</mat-icon>
-  </button>
-  <div *ngIf="datos">
-    <!-- * Aquí van-->
-  </div>
+  <mat-icon class="close-icon" color="primary">close</mat-icon>
+</button>
+<div *ngIf="datos">
+  <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
+  <h2 mat-dialog-title>Pedido N° {{ datos.idPedido }}</h2>
+
+  <mat-dialog-content>
+    <div *ngFor="let detalle of datos">
+      <ol>
+        <li>Producto: {{ detalle.idProducto }}</li>
+        <li>Notas: {{ detalle.notas }}</li>
+        <li>Cantidad: x{{ detalle.cantidad }}</li>
+      </ol>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions> </mat-dialog-actions>
+</div>
