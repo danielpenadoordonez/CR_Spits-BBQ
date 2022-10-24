@@ -9,6 +9,7 @@ import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
   templateUrl: './gestion-mesas.component.html',
   styleUrls: ['./gestion-mesas.component.css'],
 })
+
 export class GestionMesasComponent implements AfterViewInit {
   datos: any; //* Data
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción

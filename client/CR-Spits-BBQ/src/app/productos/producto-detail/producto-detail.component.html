@@ -1,1 +1,22 @@
-<p>producto-detail works!</p>
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="primary">close</mat-icon>
+</button>
+<div *ngIf="datos">
+  <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
+  <h2 mat-dialog-title>Producto {{ datos.nombre }}</h2>
+
+  <mat-dialog-content>
+    <p>Descripción: {{ datos.descripcion }}</p>
+    <p>Ingredientes: {{ datos.ingredientes }}</p>
+    <div [ngSwitch]="datos.idCategoria">
+      <p *ngSwitchCase="'1'">Categoría: Bebidas</p>
+      <p *ngSwitchCase="'2'">Categoría: Entradas</p>
+      <p *ngSwitchCase="'3'">Categoría: Carnes</p>
+      <p *ngSwitchCase="'4'">Categoría: Pescados</p>
+      <p *ngSwitchCase="'5'">Categoría: Mariscos</p>
+      <p *ngSwitchDefault><del>Error de categoría</del></p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions> </mat-dialog-actions>
+</div>

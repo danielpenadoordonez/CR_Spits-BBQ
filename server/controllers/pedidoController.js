@@ -22,7 +22,7 @@ module.exports.getAllPedidos = async (request, response, next) => {
 
 //* Pedido por id
 module.exports.getPedidoById = async (request, response, next) => {
-  let id = Number(request.params.id);
+  let id = parseInt(request.params.id);
   const pedido = await prismaClient.pedido.findFirst({
     where: { id: id },
     orderBy: {
