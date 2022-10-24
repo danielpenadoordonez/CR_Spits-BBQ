@@ -2,5 +2,25 @@
   <mat-icon class="close-icon" color="primary">close</mat-icon>
 </button>
 <div *ngIf="datos">
-  <!-- * Aquí va-->
+  <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
+  <h2 mat-dialog-title>Mesa {{ datos.codigo }}</h2>
+
+  <mat-dialog-content>
+    <p>Descripción: {{ datos.descripcion }}</p>
+    <div [ngSwitch]="datos.idSucursal">
+      <p *ngSwitchCase="'1'">Sucursal de Alajuela centro</p>
+      <p *ngSwitchCase="'2'">Sucursal de Heredia</p>
+      <p *ngSwitchCase="'3'">Sucursal de San José</p>
+      <p *ngSwitchCase="'4'">Sucursal de Cartago</p>
+      <p *ngSwitchDefault><del>Error de sucursal</del></p>
+    </div>
+    <div [ngSwitch]="datos.idDisponibilidad">
+      <p *ngSwitchCase="'1'">Estado: Disponible</p>
+      <p *ngSwitchCase="'2'">Estado: Reservada</p>
+      <p *ngSwitchCase="'3'">Estado: Ocupada</p>
+      <p *ngSwitchDefault><del>Error de estado</del></p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions> </mat-dialog-actions>
 </div>

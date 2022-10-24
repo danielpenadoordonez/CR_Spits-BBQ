@@ -22,7 +22,7 @@ module.exports.getAllPedidos = async (request, response, next) => {
 
 //* Pedido por id
 module.exports.getPedidoById = async (request, response, next) => {
-  let id = Number(request.params.id);
+  let id = parseInt(request.params.id);
   const pedido = await prismaClient.pedido.findFirst({
     where: { id: id },
     orderBy: {
@@ -33,10 +33,6 @@ module.exports.getPedidoById = async (request, response, next) => {
     },
   });
 
-  let respuesta = JSON.stringify(pedido, (key, value) =>
-    typeof value === "bigint" ? value.toString() : value
-  );
-
   response.json(pedido);
 };
 
@@ -44,7 +40,7 @@ module.exports.getPedidoById = async (request, response, next) => {
 module.exports.getPedidosByUsuario = async (request, response, next) => {
   let user = String(request.params.idUsuario);
   const pedidos = await prismaClient.pedido.findMany({
-    where: { idUsuario: user },
+    where: { idCliente: user },
     orderBy: {
       id: "desc",
     },

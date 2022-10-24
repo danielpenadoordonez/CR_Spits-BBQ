@@ -8,7 +8,8 @@ const usuarioController = require("../controllers/usuarioController");
 router.get("/", usuarioController.getAllUsers);
 router.get("/all", usuarioController.getAllUsers);
 router.get("/:id", usuarioController.getUserById);
-router.get("/:username", usuarioController.getUserByUserName);
-router.get("/:email", usuarioController.getUserByEmail);
+router.get("/perfil/:idPerfil", usuarioController.getUsersByProfile);
+router.get("/username/:username", usuarioController.getUserByUserName);
+router.get("/email/:email", usuarioController.getUserByEmail);
 
 module.exports = router;
