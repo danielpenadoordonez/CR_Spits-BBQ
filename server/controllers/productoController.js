@@ -66,6 +66,7 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     return producto;
   }
 
+  
   products = await Promise.all(products.map(getProductInfo));
 
   setTimeout(() => {
