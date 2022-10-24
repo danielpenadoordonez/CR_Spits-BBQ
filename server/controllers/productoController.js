@@ -20,7 +20,7 @@ module.exports.getAllProducts = async (request, response, next) => {
   response.json(products);
 };
 
-// Obtener producto por id
+//* Obtener producto por id
 module.exports.getProductById = async (request, response, next) => {
   let productId = parseInt(request.params.id);
   const product = await prismaClient.producto.findFirst({
@@ -33,9 +33,9 @@ module.exports.getProductById = async (request, response, next) => {
   response.json(product);
 };
 
-// Obtener productos por categoria
+//* Obtener productos por categoria
 module.exports.getProductsByCategory = async (request, response, next) => {
-  let categoria = request.params.idCategoria;
+  let categoria = parseInt(request.params.idCategoria);
   const products = await prismaClient.producto.findMany({
     where: { idCategoria: categoria },
     include: {
@@ -46,7 +46,7 @@ module.exports.getProductsByCategory = async (request, response, next) => {
   response.json(products);
 };
 
-//* Obtener productos por Sucursal (Muchos a Muchos)
+//* Obtener productos por idSucursal (Muchos a Muchos)
 module.exports.getProductsBySucursal = async (request, response, next) => {
   let sucursal = parseInt(request.params.idSucursal);
   //Se trae todos los productos en esa sucursal
@@ -55,8 +55,7 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
   });
 
   //* Por cada producto se trae toda su informacion de la tabla producto
-
-    async function getProductInfo(product) {
+  async function getProductInfo(product) {
     let prodID = parseInt(product.idProducto);
     let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
@@ -70,8 +69,6 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
   products = await Promise.all(products.map(getProductInfo));
 
   setTimeout(() => {
-    console.log(products);
-    console.log('respuesta');
     response.json(products);
   }, 100);
 };

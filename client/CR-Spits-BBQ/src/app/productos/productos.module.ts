@@ -4,16 +4,19 @@ import { CommonModule } from '@angular/common';
 import { ProductosRoutingModule } from './productos-routing.module';
 import { ProductoDetailComponent } from './producto-detail/producto-detail.component';
 import { GestionProductoComponent } from './gestion-producto/gestion-producto.component';
-
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     ProductoDetailComponent,
-    GestionProductoComponent
+    GestionProductoComponent,
   ],
   imports: [
     CommonModule,
-    ProductosRoutingModule
+    ProductosRoutingModule,
+    MatDialogModule,
+    MatIconModule
   ]
 })
 
