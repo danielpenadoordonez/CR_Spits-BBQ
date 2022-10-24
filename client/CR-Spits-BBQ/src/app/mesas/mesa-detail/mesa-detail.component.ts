@@ -29,6 +29,7 @@ export class MesaDetailComponent implements OnInit {
     }
   }
 
+  //! ¿Qué no hay mesa by id? - lo añado yo entonces
   obtenerMesaByID(id: any) {
     this.gService
       .get('mesas/', id)
