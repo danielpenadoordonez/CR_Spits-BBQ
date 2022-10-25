@@ -6,6 +6,10 @@ import { ProductoDetailComponent } from './producto-detail/producto-detail.compo
 import { GestionProductoComponent } from './gestion-producto/gestion-producto.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort'; 
+import {MatDividerModule} from '@angular/material/divider'; 
 
 @NgModule({
   declarations: [
@@ -16,7 +20,14 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     ProductosRoutingModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDividerModule,
+  ],
+  exports: [
+    GestionProductoComponent,
   ]
 })
 

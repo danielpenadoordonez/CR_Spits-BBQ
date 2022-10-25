@@ -13,7 +13,11 @@ const prismaClient = new PrismaClient();
 module.exports.getAllProducts = async (request, response, next) => {
   const products = await prismaClient.producto.findMany({
     include: {
-      sucursales_producto: true,
+      sucursales_producto: {
+        include: {
+          Sucursal: true,
+        }
+      },
     },
   });
 
@@ -26,7 +30,11 @@ module.exports.getProductById = async (request, response, next) => {
   const product = await prismaClient.producto.findFirst({
     where: { id: productId },
     include: {
-      sucursales_producto: true,
+      sucursales_producto: {
+        include: {
+          Sucursal: true,
+        }
+      },
     },
   });
 

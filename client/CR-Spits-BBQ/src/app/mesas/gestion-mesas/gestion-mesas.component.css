@@ -1,7 +1,4 @@
-.mat-table{
-    margin: 0 auto;
-    
-}
+
 
 .sucursal-selected {
     text-align: center;
@@ -71,11 +68,6 @@
     margin-top: 1.5rem !important;
     font-size: 1.2rem !important;
 }
-
-tr.mat-row {
-    height: fit-content;
-}
-
 
 .bg-available {
     background-color: #C8C0B5;
@@ -165,6 +157,8 @@ tr.mat-row {
     left: 1rem;
     bottom: .5rem;
     cursor: pointer;
+    width: auto !important;
+    height: auto !important;
 }
 
 .table-content .table-icon:hover {

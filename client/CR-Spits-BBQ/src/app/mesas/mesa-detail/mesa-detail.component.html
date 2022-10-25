@@ -1,27 +1,33 @@
-<button mat-icon-button class="close-button" [mat-dialog-close]="true">
-  <mat-icon class="close-icon" color="primary">close</mat-icon>
-</button>
-<div *ngIf="datos">
-  <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
-  
-
-  <mat-dialog-content>
-    <h2 mat-dialog-title>Mesa {{ datos.codigo }}</h2>
-    <p>Descripción: {{ datos.descripcion }}</p>
-    <div [ngSwitch]="datos.idSucursal">
-      <p *ngSwitchCase="'1'">Sucursal de Alajuela centro</p>
-      <p *ngSwitchCase="'2'">Sucursal de Heredia</p>
-      <p *ngSwitchCase="'3'">Sucursal de San José</p>
-      <p *ngSwitchCase="'4'">Sucursal de Cartago</p>
-      <p *ngSwitchDefault><del>Error de sucursal</del></p>
-    </div>
-    <div [ngSwitch]="datos.idDisponibilidad">
-      <p *ngSwitchCase="'1'">Estado: Disponible</p>
-      <p *ngSwitchCase="'2'">Estado: Reservada</p>
-      <p *ngSwitchCase="'3'">Estado: Ocupada</p>
-      <p *ngSwitchDefault><del>Error de estado</del></p>
-    </div>
-  </mat-dialog-content>
-
-  <mat-dialog-actions> </mat-dialog-actions>
+<div id="mesas-detail">
+  <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="primary">close</mat-icon>
+  </button>
+  <div *ngIf="datos">
+    <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
+    <mat-dialog-content class="dialogo-mesas">
+      <h2 mat-dialog-title class="dialogo-mesa-title">Mesa {{ datos.codigo }}</h2>
+      <div class="dialogo-mesa-img">
+        <img class="table-icon" [src]="datos.EstadoMesa.descripcion == 'Disponible'? 
+                                              'https://img.icons8.com/ios-filled/150/C8C0B5/table-top-view.png'
+                                              : datos.EstadoMesa.descripcion == 'Reservada'? 
+                                              'https://img.icons8.com/ios-filled/150/024F8B/table-top-view.png'
+                                              : 'https://img.icons8.com/ios-filled/150/C70000/table-top-view.png'" />
+        <div class="dialogo-mesa-qty">
+          <i class="fa-solid fa-user diners"></i>
+          <p class="diners-quantity">X{{datos.capacidad}}</p>
+        </div>
+      </div>
+      <div class="dialogo-mesas-sucursales" *ngIf="datos.Sucursal">
+          <p class="dialog-mesa-sucursal">
+            <span>{{datos.Sucursal.nombre}}</span>
+          </p>
+      </div>
+      <div class="dialogo-mesa-disponibilidad">
+        <p class="mesa-disponibilidad"
+          [ngClass]="datos.EstadoMesa.descripcion == 'Disponible'? 'bg-available' : datos.EstadoMesa.descripcion == 'Reservada'? 'bg-reserved': 'bg-unavailable'">
+          {{datos.EstadoMesa.descripcion}}
+        </p>
+      </div>
+    </mat-dialog-content>
+  </div>
 </div>

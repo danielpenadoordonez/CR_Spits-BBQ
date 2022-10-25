@@ -1,2 +1,63 @@
-/* cómo se comenta con css? */
+.dialogo-mesas{
+    text-align: center;
+    padding: 0 4rem;
+    position: relative;
+    padding-bottom: 4rem;
+}
 
+.table-icon{
+    transform: rotateY(-15deg) rotateX(50deg) rotateZ(0);
+}
+
+.dialogo-mesa-img{
+    position: relative;
+}
+
+.dialogo-mesa-qty{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    top: 4rem;
+    font-weight: bold;
+}
+.diners-quantity{
+    margin:  0 .4rem;
+    font-size: 1.1rem;
+}
+
+
+.dialog-mesa-sucursal{
+    color: #fff;
+    font-weight: bold;
+    padding: 1rem 0;
+}
+
+.bg-available, .bg-unavailable, .bg-reserved{
+    color: #fff;
+    font-weight: bold;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 1rem 0;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.bg-available{
+    color: #000;
+    background-color: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
+.bg-unavailable{
+    background-color: #FE0202;
+    box-shadow: 0 0 10px #FE0202;
+}
+
+.bg-reserved{
+    background-color: #007CCB;
+    box-shadow: 0 0 10px #007CCB;
+}

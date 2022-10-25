@@ -40,6 +40,7 @@ export class ProductoDetailComponent implements OnInit {
       });
 
   }
+
   close() {
     this.dialogRef.close();
   }

@@ -15,12 +15,12 @@ export const navbarData = [
         label: 'Mesas' 
     },
     {
-        routerLink: '/productos',
+        routerLink: 'productos',
         icon: 'kebab_dining',
         label: 'Productos' 
     },
     {
-        routerLink: '/comandas',
+        routerLink: 'comandas',
         icon: 'list_alt',
         label: 'Comandas' 
     },

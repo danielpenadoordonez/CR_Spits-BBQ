@@ -10,7 +10,7 @@
     <div class="sidenav-dashboard-list">
         <ul class="sidenav-nav">
             <li class="sidenav-nav-item" *ngFor="let item of navData">
-                <a href="#" class="sidenav-nav-link" [routerLink]="[item.routerLink]" routerLinkActive="router-link-active">
+                <a href="#" [title]="item.label" class="sidenav-nav-link" [routerLink]="[item.routerLink]" routerLinkActive="router-link-active">
                     <mat-icon class="sidenav-link-icon">{{item.icon}}</mat-icon>
                     <span class="sidenav-link-text" *ngIf="collapsed">{{item.label}}</span>
                 </a>

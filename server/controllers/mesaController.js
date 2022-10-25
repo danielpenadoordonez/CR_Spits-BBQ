@@ -28,6 +28,8 @@ module.exports.getMesaById = async (request, response, next) => {
     where: { id: id },
     include: {
       reservaciones: true,
+      Sucursal: true,
+      EstadoMesa: true,
     },
   });
 

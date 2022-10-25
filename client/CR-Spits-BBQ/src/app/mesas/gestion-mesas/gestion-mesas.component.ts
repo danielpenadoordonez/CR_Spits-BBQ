@@ -27,8 +27,8 @@ export class GestionMesasComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.listaMesas();
-    document.querySelectorAll('tbody')[0].classList.add('grid-table-body');
-    document.querySelectorAll('thead')[0].classList.add('grid-table-head');
+    document.querySelectorAll('#mesas-table tbody')[0].classList.add('grid-table-body');
+    document.querySelectorAll('#mesas-table thead')[0].classList.add('grid-table-head');
   }
 
   listaMesas() {

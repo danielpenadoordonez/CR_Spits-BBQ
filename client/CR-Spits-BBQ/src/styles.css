@@ -139,7 +139,11 @@ input {
     background-color: var(--first-color-alt);
 }
 
+/* no padding */
 
+.no-padding-bottom{
+    padding-bottom: 0 !important;
+}
 /* scroll styles */
 
 ::-webkit-scrollbar {
@@ -237,6 +241,13 @@ span.swiper-pagination-bullet-active{
     font-size: 1.2rem !important;
 }
 
+tr.mat-row{
+    height: auto !important;
+}
+
+.mat-table{
+    margin: 0 auto !important;   
+}
 
 @media screen and (min-width: 576px) {
     .grid-table-body{
@@ -249,4 +260,51 @@ span.swiper-pagination-bullet-active{
     .grid-table-body {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+
+
+/* Mat dialog */
+.mat-dialog-container{
+    background: #000;
+    box-shadow: inset 0 0 10px #8B0000,
+    inset 0 0 15px #8B0000;
+    overflow: hidden !important;
+}
+
+.mat-dialog-content{
+    overflow-y: scroll !important;
+}
+
+.mat-dialog-content::-webkit-scrollbar{
+    display: none;
+}
+
+.cdk-global-scrollblock{
+    overflow: hidden;
+}
+
+/* dialog overlay */
+.cdk-overlay-dark-backdrop{
+    background: rgba(0, 0, 0, .75);
+}
+
+/* dialogo close button styles */
+.close-icon{
+    position: absolute;
+    right: -0.5rem;
+    top: -.6rem;
+    font-weight: bold;
+    font-size: 2rem;
+    width: 42px !important;
+    height: 42px !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+
+.close-button{
+    position: relative;
+    height: 25px;
+    width: 100%;
+    background: #000;
 }
