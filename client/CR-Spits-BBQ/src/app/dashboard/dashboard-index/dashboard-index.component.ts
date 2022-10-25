@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SecurityService } from 'src/app/share/security.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 
@@ -25,10 +26,15 @@ export class DashboardIndexComponent implements OnInit {
   ngOnInit(): void {
     this.isAuthenticated = this.securityService.isAuthenticated;
     this.hideNavbar();
+    this.hideEmberSparks();
   }
 
   hideNavbar() {
     document.getElementsByClassName('header')[0].classList.toggle('hide-nav');
+  }
+
+  hideEmberSparks(){
+    document.getElementById('sparks').style.zIndex = '-1';
   }
 
   ngOnDestroy(){

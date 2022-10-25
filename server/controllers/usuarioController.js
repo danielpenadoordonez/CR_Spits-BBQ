@@ -24,6 +24,7 @@ module.exports.getUserById = async (request, response, next) => {
     include: {
       reservaciones: true,
       pedidos: true,
+      Perfil: true,
     },
   });
   response.json(user);

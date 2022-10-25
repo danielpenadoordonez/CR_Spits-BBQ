@@ -1,5 +1,10 @@
-.sucursal-selected{
-    text-align: center; 
+.mat-table{
+    margin: 0 auto;
+    
+}
+
+.sucursal-selected {
+    text-align: center;
     background-color: #FE0202;
     color: white;
     padding: .8rem;
@@ -7,7 +12,7 @@
     position: relative;
 }
 
-.sucursal-selected::after{
+.sucursal-selected::after {
     content: '';
     position: absolute;
     top: 3.1rem;
@@ -19,56 +24,73 @@
 
 }
 
-.tips-information{
+.tips-information {
     margin: 0 0 2rem;
     width: 100%;
     background-color: #000;
     padding: .5rem 0;
 }
 
-.tips-information .tip-content{
+.tips-information .tip-content {
     margin: 0 1rem;
     flex-direction: column;
     font-weight: bolder;
-    letter-spacing: 2px;   
+    letter-spacing: 2px;
 }
 
-.tips-information .tip-content:nth-child(1){
+.tips-information .tip-content:nth-child(1) {
     color: #C8C0B5;
 }
-.tips-information .tip-content:nth-child(2){
+
+.tips-information .tip-content:nth-child(2) {
     color: #024F8B;
 }
-.tips-information .tip-content:nth-child(3){
+
+.tips-information .tip-content:nth-child(3) {
     color: #C70000;
 }
 
 
-.table-container{
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+.table-container {
     gap: 1.5rem;
-    width: 100%;
+    width: 265px;
     color: black;
     font-weight: bold;
     letter-spacing: .15rem;
 }
 
+.mesas-paginator {
+    background: #000;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 1rem;
+}
 
-.bg-available{ 
+.mat-paginator-container{
+    justify-content: center !important;
+    margin-top: 1.5rem !important;
+    font-size: 1.2rem !important;
+}
+
+tr.mat-row {
+    height: fit-content;
+}
+
+
+.bg-available {
     background-color: #C8C0B5;
 }
 
-.bg-unavailable{ 
+.bg-unavailable {
     background-color: #C70000;
 }
 
-.bg-reserved{ 
+.bg-reserved {
     background-color: #024F8B;
 }
 
 
-.table-content{
+.table-content {
     text-align: center;
     position: relative;
     background: url(../../../assets/images/background.jpg);
@@ -90,7 +112,7 @@
     opacity: .35;
 } */
 
-.table-diners-information{
+.table-diners-information {
     position: absolute;
     left: 50%;
     top: 55%;
@@ -100,29 +122,28 @@
 
 }
 
-.diners-quantity{
+.diners-quantity {
     display: inline-block;
-    padding: 0 .2rem ;
+    padding: 0 .2rem;
     font-weight: bolder;
 }
 
 
 
-.table-icon{
+.table-icon {
     object-fit: contain;
-    transform: rotateY(-15deg) rotateX(50deg)
-    rotateZ(0);
+    transform: rotateY(-15deg) rotateX(50deg) rotateZ(0);
     margin: 0 auto;
     position: relative;
     z-index: 20;
     animation: rotate-table 30s linear infinite;
     animation-play-state: paused;
-    
+
 }
 
-.tag{
+.tag {
     color: #000;
-    text-transform: uppercase ;
+    text-transform: uppercase;
     font-size: var(--smaller-font-size);
     position: absolute;
     bottom: 1.65rem;
@@ -132,11 +153,11 @@
     z-index: 100;
 }
 
-.table-configuration-container{
+.table-configuration-container {
     position: relative;
 }
 
-.table-configuration-container .settings{
+.table-configuration-container .settings {
     color: white;
     font-size: 1.2rem;
     padding: .5rem;
@@ -146,33 +167,25 @@
     cursor: pointer;
 }
 
-.table-content .table-icon:hover{
-   animation-play-state: running;
+.table-content .table-icon:hover {
+    animation-play-state: running;
 }
-@keyframes rotate-table{
-    100%{
-        transform: rotateY(-15deg) rotateX(40deg)
-    rotateZ(360deg);
+
+@keyframes rotate-table {
+    100% {
+        transform: rotateY(-15deg) rotateX(40deg) rotateZ(360deg);
     }
 }
 
 
 @media screen and (min-width: 576px) {
-    .table-container{
-        grid-template-columns: repeat(2, 1fr);
-    }
+
 }
 
 @media screen and (min-width: 767px) {
-    .table-container{
-        grid-template-columns: repeat(3, 1fr);
-    }
+
 }
 
-
 @media screen and (min-width: 992px) {
-    .table-container{
-        grid-template-columns: repeat(3, 1fr);
-        column-gap: 5rem;
-    }
+   
 }

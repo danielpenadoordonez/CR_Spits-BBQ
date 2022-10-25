@@ -7,12 +7,35 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
-    <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let item of navData">
-            <a href="" class="sidenav-nav-link" [routerLink]="[item.routerLink]" routerLinkActive="router-link-active" >
-                <mat-icon class="sidenav-link-icon">{{item.icon}}</mat-icon>
-                <span class="sidenav-link-text" *ngIf="collapsed">{{item.label}}</span>
-            </a>
-        </li>
-    </ul>
+    <div class="sidenav-dashboard-list">
+        <ul class="sidenav-nav">
+            <li class="sidenav-nav-item" *ngFor="let item of navData">
+                <a href="#" class="sidenav-nav-link" [routerLink]="[item.routerLink]" routerLinkActive="router-link-active">
+                    <mat-icon class="sidenav-link-icon">{{item.icon}}</mat-icon>
+                    <span class="sidenav-link-text" *ngIf="collapsed">{{item.label}}</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidenav-user-container">
+            <div class="sidenav-user" *ngIf="user">
+                <ul class="sidenav-nav">
+                    <li class="sidenav-nav-item">
+                        <div class="user-information">
+                            <mat-icon class="sidenav-link-icon">account_circle</mat-icon>
+                            <div class="sidenav-user-name sidenav-link-text" *ngIf="collapsed">
+                                {{user.nombre}} {{user.apellido1}} <br>
+                                <span class="user-profile">{{user.Perfil.descripcion}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="sidenav-nav-item">
+                        <a href="#" class="sidenav-nav-link logout" (click)="Logout()">
+                            <mat-icon class="sidenav-link-icon">logout</mat-icon>
+                            <span class="sidenav-link-text" *ngIf="collapsed">Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

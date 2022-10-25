@@ -5,6 +5,11 @@ export const navbarData = [
         label: 'Inicio' 
     },
     {
+        routerLink: 'main',
+        icon: 'dashboard',
+        label: 'Dashboard' 
+    },
+    {
         routerLink: 'mesas',
         icon: 'table_restaurant',
         label: 'Mesas' 
@@ -12,7 +17,7 @@ export const navbarData = [
     {
         routerLink: '/productos',
         icon: 'kebab_dining',
-        label: 'Prooductos' 
+        label: 'Productos' 
     },
     {
         routerLink: '/comandas',

@@ -214,3 +214,39 @@ span.swiper-pagination-bullet-active{
     border-radius: .5rem !important;
     transition: .2s linear !important;
 }
+
+
+/* grid table */
+.grid-table-head{
+    display: none;
+}
+.grid-table-body {
+    display: grid !important; 
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem !important; 
+    background-color: black !important;;
+}
+
+.grid-table-body td {
+    padding: 0 !important;
+}
+
+.grid-table-container .mat-paginator-container{
+    justify-content: center !important;
+    margin-top: 1.5rem !important;
+    font-size: 1.2rem !important;
+}
+
+
+@media screen and (min-width: 576px) {
+    .grid-table-body{
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .grid-table-body {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
