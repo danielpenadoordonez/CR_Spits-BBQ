@@ -17,6 +17,11 @@
                         <p>{{row.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
                         <p>Cliente: {{row.Cliente.nombre}} {{row.Cliente.apellido1}} {{row.Cliente.apellido2}}</p>
                         <p>Mesero: {{row.Mesero.nombre}} {{row.Mesero.apellido1}} {{row.Mesero.apellido2}}</p>
+                        <p class="flexbox">
+                            Mesa: {{row.Mesa.codigo}} 
+                            <mat-icon class="person-icon">person</mat-icon>
+                            X{{row.Mesa.capacidad}}
+                            </p>
                     </div>
                     <button class="comanda-button flexbox" (click)="detallePedido(row.id)">Ver detalle</button>
                     <div class="comanda-total flexbox">
