@@ -6,7 +6,11 @@
     height: 500px;
     box-shadow: inset 0 0 15px #000;
     border-radius: .5rem;
-    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.dialogo-content::-webkit-scrollbar{
+    display: none;
 }
 
 .dialogo-pedido-header{
