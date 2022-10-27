@@ -10,6 +10,7 @@ export const pedidos = [
         idCliente: '65440685802',
         idMesero: '463650893',
         idEstado: 1,
+        idMesa: 1,
         idSucursal: 1 
     },
     {

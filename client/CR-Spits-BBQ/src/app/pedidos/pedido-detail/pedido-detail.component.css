@@ -27,6 +27,10 @@
     font-size: 2.5rem;
 }
 
+.person-icon{
+    margin-left: .5rem;
+}
+
 .dialogo-pedido-total-header-mesero{
     color: #E6E6E6;
     font-size: .65rem;
@@ -50,6 +54,11 @@
     font-weight: bold;
     text-align: end;
     padding: 1rem 0 0 8rem;
+    justify-content: end;
+}
+
+.dialogo-pedido-detalles-data p{
+    padding: .5rem 0;
 }
 
 .dialogo-pedido-detalles-data-state{
@@ -67,6 +76,10 @@
     font-size: 1.5rem;
 }
 
+.dialogo-pedido-detalles-data-mesa-capacity{
+    justify-content: end;
+}
+
 .detalle-line{
     padding: 0 .75rem;
     text-align: start;
@@ -80,7 +93,7 @@
 
 .detalle-line .line{
     width: 2px;
-    height: 135px;
+    height: 250px;
     background-color: #8C8C8C;
     margin: .3rem 0;
 }
@@ -181,6 +194,6 @@
 
 @media screen and (min-width: 992px){
     .dialogo-content{
-        width: 350px;
+        width: 550px;
     }
 }
