@@ -14,6 +14,9 @@ module.exports.getAllPedidos = async (request, response, next) => {
     },
     include: {
       detalles: true,
+      estadoPedido: true,
+      Cliente: true,
+      Mesero: true,
     },
   });
 
@@ -29,7 +32,16 @@ module.exports.getPedidoById = async (request, response, next) => {
       id: "desc",
     },
     include: {
-      detalles: true,
+      detalles: {
+        include: {
+          Producto: true,
+        }
+      },
+      Cliente: true,
+      Mesero: true,
+      estadoPedido: true,
+      Mesa: true,
+      Sucursal: true,
     },
   });
 

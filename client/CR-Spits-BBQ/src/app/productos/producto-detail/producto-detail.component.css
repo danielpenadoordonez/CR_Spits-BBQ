@@ -1,0 +1,59 @@
+
+.dialogo-content{
+    width: fit-content;
+    text-align: center;
+    color: white;
+    overflow-y: scroll;
+    width: 200px;
+}
+
+.dialogo-prodcuto-title{
+    font-weight: bold;
+}
+
+.dialogo-content::-webkit-scrollbar{
+    display: none;
+}
+
+.product-img{
+    height: 200px;
+}
+
+.product-data p{
+    margin: .5rem 0;
+    padding: .5rem 0;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0 auto;
+}
+
+.product-data p span{
+    color: #9B0000;
+}
+
+.sucursales-title{
+    padding: .5rem 0;
+    background-color: rgba(155, 0, 0, .6);
+    box-shadow: inset 0 0 10px #000;
+}
+.dialogo-prodcuto-sucursales{
+    margin-top: 1rem;
+    background-color: #171717;
+    box-shadow: inset 0 0 10px #000;
+    border-radius: .5rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.dialogo-prodcuto-sucursales p{
+    padding: .5rem 0;
+    color: #9B0000;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+@media screen and (min-width: 767px) {
+    .dialogo-content{
+        width: 400px;
+    }
+}

@@ -10,8 +10,12 @@ const prismaClient = new PrismaClient();
 module.exports.getAllMesas = async (request, response, next) => {
   const mesas = await prismaClient.mesa.findMany({
     orderBy: {
-      codigo: "asc",
+      idSucursal: "asc"
     },
+    include: {
+      Sucursal: true,
+      EstadoMesa: true,
+    }
   });
 
   response.json(mesas);
@@ -24,6 +28,8 @@ module.exports.getMesaById = async (request, response, next) => {
     where: { id: id },
     include: {
       reservaciones: true,
+      Sucursal: true,
+      EstadoMesa: true,
     },
   });
 

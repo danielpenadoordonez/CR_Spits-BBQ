@@ -7,5 +7,4 @@ let homeSwiper = new Swiper(".home-swiper", {
         clickable: true
     },
 });
-console.log("llamada")
 

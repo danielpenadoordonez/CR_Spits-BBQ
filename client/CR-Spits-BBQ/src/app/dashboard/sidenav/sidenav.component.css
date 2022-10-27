@@ -1,9 +1,5 @@
-body{
-    background: green;
-}
-
 .sidenav{
-    background: #FE0202;
+    background: #9B0000;
     transition: all .5s ease;
     position: fixed;
     z-index: 10000;
@@ -58,6 +54,13 @@ body{
     width: 16rem;
 }
 
+.sidenav-dashboard-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 88%;
+}
+
 .sidenav-nav{
     list-style: none;
     padding: 1rem;
@@ -102,8 +105,40 @@ body{
     font-weight: 600;
     letter-spacing: 1px;
     font-size: 1.2rem;
+    white-space: nowrap;
 }
 
 .sidenav-nav-item:hover .sidenav-nav-link{
     background-color: #000;
+}
+
+.sidenav-user-container{
+    position: relative;
+    /* background-color: #9B0000; */
+    width: 100%;
+    transition: all .5s ease;
+    padding-top: 1rem;
+    border-top: .25rem solid #fff;
+}
+
+.user-information{
+    display: flex;
+    align-items:  center;
+    color: #fff;
+    font-weight: bold;
+    margin-left: .5rem;
+}
+
+.sidenav-user-name{
+    text-align: center;
+    white-space: wrap;
+    font-size: .8rem;
+}
+
+.user-profile{
+    font-size: .6rem;
+}
+
+.logout .sidenav-link-text{
+    font-size: .9rem;
 }

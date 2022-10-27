@@ -1,5 +1,8 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
@@ -13,12 +16,19 @@ import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
 export class GestionMesasComponent implements AfterViewInit {
   datos: any; //* Data
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción
-  displayedColumns = ['codigo', 'capacidad', 'estado']; //* Columnas que se verán de las mesas, solo para MatTable
+  displayedColumns = ['mesa']//* Columnas que se verán de las mesas, solo para MatTable
+
+  //data table
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource= new MatTableDataSource<any>();
 
   constructor(private gService: GenericService, private dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
     this.listaMesas();
+    document.querySelectorAll('#mesas-table tbody')[0].classList.add('grid-table-body');
+    document.querySelectorAll('#mesas-table thead')[0].classList.add('grid-table-head');
   }
 
   listaMesas() {
@@ -28,6 +38,9 @@ export class GestionMesasComponent implements AfterViewInit {
       .subscribe((data: any) => {
         console.log(data);
         this.datos = data;
+        this.dataSource= new MatTableDataSource(this.datos);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       });
   }
 

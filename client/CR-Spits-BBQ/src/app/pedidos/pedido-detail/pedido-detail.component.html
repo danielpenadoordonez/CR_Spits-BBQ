@@ -3,17 +3,77 @@
 </button>
 <div *ngIf="datos">
   <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
-  <h2 mat-dialog-title>Pedido N° {{ datos.idPedido }}</h2>
-
   <mat-dialog-content>
-    <div *ngFor="let detalle of datos">
-      <ol>
-        <li>Producto: {{ detalle.idProducto }}</li>
-        <li>Notas: {{ detalle.notas }}</li>
-        <li>Cantidad: x{{ detalle.cantidad }}</li>
-      </ol>
+    <div class="dialogo-content">
+      <div class="dialogo-pedido-header flexbox">
+        <div class="dialogo-pedido-state">
+          <p class="pedido-code">Código {{datos.id}}</p>
+          <p class="pedido-state">Pedido {{datos.estadoPedido.descripcion}}</p>
+          <mat-icon class="money-icon">payments</mat-icon>
+        </div>
+        <div class="dialogo-pedido-total-header">
+          <p class="dialogo-pedido-total-header-mesero">Mesero <br> {{datos.Mesero.nombre}} {{datos.Mesero.apellido1}} {{datos.Mesero.apellido2}}</p>
+          <p class="dialogo-pedido-total-header-total">{{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
+        </div>
+      </div>
+      <div class="cut-line">
+        <p class="dashed-line"></p>
+      </div>
+      <mat-tab-group animationDuration="1000ms">
+        <mat-tab label="Detalle" class="tab">
+          <div class="dialogo-pedido-content">
+            <div class="dialogo-pedido-detalles flexbox">
+              <div class="dialogo-pedido-detalles-data">
+                <p class="dialogo-pedido-detalles-data-state">{{datos.estadoPedido.descripcion}}</p>
+                <p class="dialogo-pedido-detalles-data-fecha">{{datos.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
+                <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}} {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
+                <br><br>
+                <p class="dialogo-pedido-detalles-data-total">Total: {{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
+              </div>
+              <div class="detalle-line flexbox">
+                <mat-icon class="material-symbols-outlined">schedule</mat-icon>
+                <p class="line"></p>
+                <span class="point"></span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Productos" *ngIf="datos.detalles.length != 0">
+          <div class="dialogo-pedido-productos">
+                <table class="pedido-productos-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Notas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of datos.detalles">
+                            <td>
+                                <img [src]="item.Producto.imagen" [alt]="item.Producto.nombre" class="dialogo-pedido-productos-img">
+                            </td>
+                            <td>
+                                {{item.Producto.nombre}}
+                            </td>
+                            <td>
+                                {{item.Producto.precio | currency: 'CRC':'symbol-narrow'}}
+                            </td>
+                            <td>
+                              {{item.cantidad}}
+                            </td>
+                            <td>
+                              {{item.notas}}
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </mat-dialog-content>
-
-  <mat-dialog-actions> </mat-dialog-actions>
 </div>
+

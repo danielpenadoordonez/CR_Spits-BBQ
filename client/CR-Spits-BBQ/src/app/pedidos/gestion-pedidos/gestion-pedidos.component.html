@@ -1,1 +1,36 @@
-<p>gestion-pedidos works!</p>
+<div class="mat-elevation-z8 grid-table-container" id="pedido-table" *ngIf="dataSource">
+    <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
+        aria-label="Elements">
+        <!-- Columna pedido -->
+        <ng-container matColumnDef="pedido">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none;">Pedido</th>
+            <td mat-cell *matCellDef="let row">
+                <div class="comanda-container">
+                    <h3 class="comanda-code flexbox">
+                        Comanda {{row.id}}
+                        <mat-icon class="comanda-icon">restaurant</mat-icon>
+                    </h3>
+                    <div class="cut-line">
+                        <p class="dashed-line"></p>
+                    </div>
+                    <div class="comanda-data">
+                        <p>{{row.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
+                        <p>Cliente: {{row.Cliente.nombre}} {{row.Cliente.apellido1}} {{row.Cliente.apellido2}}</p>
+                        <p>Mesero: {{row.Mesero.nombre}} {{row.Mesero.apellido1}} {{row.Mesero.apellido2}}</p>
+                    </div>
+                    <button class="comanda-button flexbox" (click)="detallePedido(row.id)">Ver detalle</button>
+                    <div class="comanda-total flexbox">
+                        <mat-icon class="money-icon">payments</mat-icon>
+                        <p>{{row.precio | currency: 'CRC':'symbol-narrow'}}</p>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="9"
+        [pageSizeOptions]="[3, 5, 10]" aria-label="Seleccione una pagina" class="pedidos-paginator">
+    </mat-paginator>
+</div>

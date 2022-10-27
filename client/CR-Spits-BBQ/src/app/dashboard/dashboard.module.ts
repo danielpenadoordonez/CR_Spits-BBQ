@@ -6,7 +6,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { DashboardIndexComponent } from './dashboard-index/dashboard-index.component';
 import { DashboardBodyComponent } from './dashboard-body/dashboard-body.component';
-import { PruebaComponent } from './prueba/prueba.component';
+import { BodyIndexComponent } from './body-index/body-index.component';
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import { PruebaComponent } from './prueba/prueba.component';
     SidenavComponent,
     DashboardIndexComponent,
     DashboardBodyComponent,
-    PruebaComponent,
+    BodyIndexComponent,
   ],
   imports: [
     CommonModule,
@@ -23,7 +23,8 @@ import { PruebaComponent } from './prueba/prueba.component';
     MatIconModule
   ],
   exports: [
-    DashboardIndexComponent
+    DashboardIndexComponent,
+    BodyIndexComponent,
   ]
 })
 export class DashboardModule { }

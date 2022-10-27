@@ -3,20 +3,25 @@
 </button>
 <div *ngIf="datos">
   <!-- * Es un ejemplo para ayudarlo xd - Atte: Mario -->
-  <h2 mat-dialog-title>Producto {{ datos.nombre }}</h2>
 
   <mat-dialog-content>
-    <p>Descripción: {{ datos.descripcion }}</p>
-    <p>Ingredientes: {{ datos.ingredientes }}</p>
-    <div [ngSwitch]="datos.idCategoria">
-      <p *ngSwitchCase="'1'">Categoría: Bebidas</p>
-      <p *ngSwitchCase="'2'">Categoría: Entradas</p>
-      <p *ngSwitchCase="'3'">Categoría: Carnes</p>
-      <p *ngSwitchCase="'4'">Categoría: Pescados</p>
-      <p *ngSwitchCase="'5'">Categoría: Mariscos</p>
-      <p *ngSwitchDefault><del>Error de categoría</del></p>
+    <div class="dialogo-content">
+      <h2 mat-dialog-title class="dialogo-prodcuto-title">Código {{ datos.id }}</h2>
+      <div class="dialogo-prodcuto-img">
+        <img class="product-img" [src]="datos.imagen" />
+      </div>
+      <div class="product-data">
+        <p>{{datos.nombre}}</p>
+        <p><span>Precio <br></span>₡{{datos.precio}}</p>
+        <p><span>Descripción <br> </span>{{datos.descripcion}}</p>
+        <p *ngIf="datos.ingredientes.length != 0"><span>Ingredientes <br></span> {{datos.ingredientes}}</p>
+      </div>
+      <div class="dialogo-prodcuto-sucursales" *ngIf="datos.sucursales_producto && datos.sucursales_producto.length != 0">
+        <h3 class="sucursales-title">Sucursales donde se ofrece</h3>
+        <div class="dialog-prodcuto-sucursal" *ngFor="let item of datos.sucursales_producto">
+          <p>{{item.Sucursal.nombre}}</p>
+        </div>
+      </div>
     </div>
   </mat-dialog-content>
-
-  <mat-dialog-actions> </mat-dialog-actions>
 </div>

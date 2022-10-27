@@ -26,6 +26,7 @@ export class MesaDetailComponent implements OnInit {
   ngOnInit(): void {
     if (this.datosDialog.id !== undefined) {  //* Sino es undefined
       this.obtenerMesaByID(this.datosDialog.id);
+      document.querySelector('.mat-dialog-container').classList.add('no-padding-bottom');
     }
   }
 

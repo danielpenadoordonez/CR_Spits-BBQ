@@ -29,11 +29,9 @@ export class PedidoDetailComponent implements OnInit {
     }
   }
 
-  //! Ya funciona!!
-  //? Tener en cuenta que se recibe un array de detalles, no uno solo...
   obtenerDetallesByOrderID(id: any) {
     this.gService
-      .get('detalles-pedido/', id) 
+      .get('pedidos/', id) 
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

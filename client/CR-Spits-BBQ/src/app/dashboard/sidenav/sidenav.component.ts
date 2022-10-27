@@ -1,4 +1,8 @@
 import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { GenericService } from 'src/app/share/generic.service';
+import { SecurityService } from 'src/app/share/security.service';
 import { navbarData } from './nav-data';
 
 interface SideNavToggle {
@@ -18,7 +22,13 @@ export class SidenavComponent implements OnInit {
   screenWidth = 0;
   navData = navbarData;
 
-  constructor() { }
+  //usuario conectado
+  user: any;
+  destroy$:Subject<boolean>= new Subject<boolean>();
+
+  constructor(private userService: SecurityService, 
+    private router: Router, 
+    private gService: GenericService) { }
 
   @HostListener('window:resize', ['$event'])
   onResize(){
@@ -31,6 +41,11 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+
+    // este método se tiene que cambiar más adelante
+    this.user = this.userService.getUserLogged('208320565').subscribe((data:any) => {
+      this.user = data;
+    });
   }
 
   toggleCollapsed(){
@@ -41,5 +56,9 @@ export class SidenavComponent implements OnInit {
   closeCollapsed(){
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth})
+  }
+
+  Logout(){
+    this.router.navigate(['/']);
   }
 }

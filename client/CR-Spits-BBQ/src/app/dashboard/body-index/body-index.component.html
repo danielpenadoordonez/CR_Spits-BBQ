@@ -1,0 +1,9 @@
+<div class="statistics-container" *ngIf="statisticData">
+    <div class="statistic-card" *ngFor="let item of statisticData">
+        <h3 class="statistic-card-title">{{item.description}}</h3>
+        <div class="statistic-card-content">
+            <mat-icon class="statistic-card-icon">{{item.icon}}</mat-icon>
+            <p class="statistic-card-qty">{{item.qty}}</p>
+        </div>
+    </div>
+</div>

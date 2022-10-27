@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-body',
@@ -10,9 +11,10 @@ export class DashboardBodyComponent implements OnInit {
   @Input() collapsed: boolean = false;
   @Input() screenWidth: number = 0;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
+    this.router.navigate(['dashboard/main'])
   }
 
   getBodyClass(): string {
