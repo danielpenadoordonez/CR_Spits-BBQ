@@ -35,6 +35,7 @@ module.exports.getProductById = async (request, response, next) => {
           Sucursal: true,
         }
       },
+      Categoria_Producto: true,
     },
   });
 
