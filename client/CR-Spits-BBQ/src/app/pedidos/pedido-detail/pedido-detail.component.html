@@ -26,7 +26,7 @@
               <div class="dialogo-pedido-detalles-data">
                 <p class="dialogo-pedido-detalles-data-state">{{datos.estadoPedido.descripcion}}</p>
                 <p class="dialogo-pedido-detalles-data-fecha">{{datos.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
-                <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p>
+                <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p> 
                 <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}} {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
                 <br><br>
                 <p class="dialogo-pedido-detalles-data-total">Total: {{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
