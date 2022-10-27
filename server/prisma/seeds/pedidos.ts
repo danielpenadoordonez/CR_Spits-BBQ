@@ -6,7 +6,7 @@
 export const pedidos = [
     {
         nombre: 'CRSB-01-01',
-        precio: 5000,
+        precio: 15000,
         idCliente: '65440685802',
         idMesero: '463650893',
         idEstado: 1,
@@ -14,7 +14,7 @@ export const pedidos = [
     },
     {
         nombre: 'CRSB-01-02',
-        precio: 6500,
+        precio: 20200,
         idCliente: '508459062',
         idMesero: '463650893',
         idEstado: 1,

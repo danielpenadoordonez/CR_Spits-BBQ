@@ -13,8 +13,8 @@ module.exports.getAllReservations = async (request, response, next) => {
             mesas: true
         },
         orderBy:{
-            fecha_hora: 'asc'  //Debe traer las reservaciones empezando por la fecha mas cercana
-                                //No se si asi es como se debe poner el order by
+            fecha_hora: 'asc'  //* Debe traer las reservaciones empezando por la fecha mas cercana
+                                //* No se si asi es como se debe poner el order by
         }
     });
     response.json(reservations);
@@ -29,8 +29,8 @@ module.exports.getReservationsBySucursal = async (request, response, next) => {
             mesas: true
         },
         orderBy:{
-            fecha_hora: 'asc'  //Debe traer las reservaciones empezando por la fecha mas cercana
-                                //No se si asi es como se debe poner el order by
+            fecha_hora: 'asc'  //* Debe traer las reservaciones empezando por la fecha mas cercana
+                                //* No se si asi es como se debe poner el order by
         }
     });
     response.json(reservations);
