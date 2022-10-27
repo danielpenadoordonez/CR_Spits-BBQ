@@ -13,6 +13,7 @@
       <div class="product-data">
         <p>{{datos.nombre}}</p>
         <p><span>Precio <br></span>₡{{datos.precio}}</p>
+        <p *ngIf="datos.Categoria_Producto"><span>Categoria <br></span>{{datos.Categoria_Producto.descripcion}}</p>
         <p><span>Descripción <br> </span>{{datos.descripcion}}</p>
         <p *ngIf="datos.ingredientes.length != 0"><span>Ingredientes <br></span> {{datos.ingredientes}}</p>
       </div>
