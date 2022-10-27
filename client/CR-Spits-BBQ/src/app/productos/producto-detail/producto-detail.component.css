@@ -27,6 +27,10 @@
     margin: 0 auto;
 }
 
+.product-data p span{
+    color: #9B0000;
+}
+
 .sucursales-title{
     padding: .5rem 0;
     background-color: rgba(155, 0, 0, .6);

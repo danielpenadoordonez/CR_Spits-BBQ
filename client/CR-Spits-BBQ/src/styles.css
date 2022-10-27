@@ -168,6 +168,13 @@ input {
 
 /* Sobreescribir estilos a angular material */
 
+
+/* MAT ICON */
+.mat-icon{
+    height: auto !important;
+    width: auto !important;
+}
+
 /* MAT-MENU */
 .mat-menu-panel {
     background-color: rgba(0,0,0, 1);
@@ -307,4 +314,23 @@ tr.mat-row{
     height: 25px;
     width: 100%;
     background: #000;
+}
+
+
+/* MAT TAB */
+.mat-tab-body-content{
+    overflow: hidden !important;
+}
+
+.mat-tab-labels{
+    justify-content: space-between !important;
+}
+
+.mat-tab-label-content{
+    font-weight: bold;
+}
+
+.mat-ink-bar{
+    background-color: #8B0000 !important;
+    height: 3px !important;
 }

@@ -19,6 +19,8 @@ import {MatDividerModule} from '@angular/material/divider';
   imports: [
     CommonModule,
     ProductosRoutingModule,
+
+    // angular material
     MatDialogModule,
     MatIconModule,
     MatTableModule,

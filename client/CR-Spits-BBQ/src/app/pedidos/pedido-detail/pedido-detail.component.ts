@@ -29,10 +29,9 @@ export class PedidoDetailComponent implements OnInit {
     }
   }
 
-  //! No hay detalles por id pedido (comanda) - No está hecho aún
   obtenerDetallesByOrderID(id: any) {
     this.gService
-      .get('detalles-pedido/', id) //! Indefinida - envía el id de la orden
+      .get('pedidos/', id) 
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

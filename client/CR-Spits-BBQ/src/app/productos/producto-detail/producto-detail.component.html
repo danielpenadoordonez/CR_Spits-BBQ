@@ -12,9 +12,9 @@
       </div>
       <div class="product-data">
         <p>{{datos.nombre}}</p>
-        <p><span style="color: #9B0000;">Precio <br></span>₡{{datos.precio}}</p>
-        <p><span style="color: #9B0000;">Descripción <br> </span>{{datos.descripcion}}</p>
-        <p *ngIf="datos.ingredientes.length != 0"><span style="color: #9B0000;">Ingredientes <br></span> {{datos.ingredientes}}</p>
+        <p><span>Precio <br></span>₡{{datos.precio}}</p>
+        <p><span>Descripción <br> </span>{{datos.descripcion}}</p>
+        <p *ngIf="datos.ingredientes.length != 0"><span>Ingredientes <br></span> {{datos.ingredientes}}</p>
       </div>
       <div class="dialogo-prodcuto-sucursales" *ngIf="datos.sucursales_producto && datos.sucursales_producto.length != 0">
         <h3 class="sucursales-title">Sucursales donde se ofrece</h3>

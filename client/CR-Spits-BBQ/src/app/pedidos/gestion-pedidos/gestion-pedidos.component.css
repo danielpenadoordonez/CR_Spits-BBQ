@@ -1,0 +1,122 @@
+/* Import symbol outlined from google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+
+.comanda-container{
+    background-color: #fff;
+    width: fit-content;
+    padding: 2rem 1rem;
+    border-radius: .5rem;
+    font-weight: bold;
+    position: relative;
+    width: 240px;
+    height: 320px;
+    box-shadow: inset 0 0 15px #000;
+}
+
+.comanda-code{
+    color: #8B0000;
+    font-weight: bolder;
+    font-size: 1.5rem;
+    padding-bottom: 1.5rem;
+    text-align: center;
+}
+
+.comanda-code .comanda-icon{
+    margin: 0 1rem;
+}
+
+.comanda-data{
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.comanda-data p{
+    padding-top: .5rem;
+}
+
+.cut-line{
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.dashed-line{
+    border-top: 3px dashed #000;
+    overflow: hidden;
+}
+
+.dashed-line::before{
+    content: '';
+    position: absolute;
+    background-color: #000;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    top: -.7rem;
+    left: -1.8rem;
+}
+
+.dashed-line::after{
+    content: '';
+    position: absolute;
+    background-color: #000;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    top: -.7rem;
+    right: -1.8rem;
+}
+
+.comanda-button{
+    background-color: #FF4200;
+    color: #fff;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    margin: 0 auto;
+    width: fit-content;
+    margin: 1rem auto 3rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: .8px;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+}
+
+.comanda-button:hover{
+    background-color: #8B0000;
+}
+
+.comanda-total{
+    background-color: #8B0000;
+    color: #fff;
+    font-size: 1.5rem;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+    padding: .5rem;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: -.1rem;
+}
+
+.comanda-total .money-icon{
+    padding: 0 .5rem;
+}
+
+.pedidos-paginator{
+    background: #000;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 1rem;
+}
+
+@media screen and (min-width: 767px){
+    .comanda-container{
+        width: 280px;
+    }
+}
+
+@media screen and (min-width: 992px){
+    .comanda-container{
+        width: 320px;
+    }
+}

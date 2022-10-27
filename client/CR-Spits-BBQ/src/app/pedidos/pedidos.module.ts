@@ -5,6 +5,11 @@ import { GestionPedidosComponent } from './gestion-pedidos/gestion-pedidos.compo
 import { PedidoDetailComponent } from './pedido-detail/pedido-detail.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort'; 
+import {MatDividerModule} from '@angular/material/divider'; 
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -14,8 +19,18 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     PedidosRoutingModule,
+
+ // Angular material 
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDividerModule,
+    MatTabsModule,
+  ],
+  exports: [
+    GestionPedidosComponent,
   ]
 })
 
