@@ -17,6 +17,7 @@ module.exports.getAllPedidos = async (request, response, next) => {
       estadoPedido: true,
       Cliente: true,
       Mesero: true,
+      Mesa: true
     },
   });
 

@@ -323,7 +323,9 @@ tr.mat-row{
 }
 
 .mat-tab-labels{
-    justify-content: space-between !important;
+    justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .mat-tab-label-content{

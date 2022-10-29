@@ -12,7 +12,8 @@
           <mat-icon class="money-icon">payments</mat-icon>
         </div>
         <div class="dialogo-pedido-total-header">
-          <p class="dialogo-pedido-total-header-mesero">Mesero <br> {{datos.Mesero.nombre}} {{datos.Mesero.apellido1}} {{datos.Mesero.apellido2}}</p>
+          <p class="dialogo-pedido-total-header-mesero">Mesero <br> {{datos.Mesero.nombre}} {{datos.Mesero.apellido1}}
+            {{datos.Mesero.apellido2}}</p>
           <p class="dialogo-pedido-total-header-total">{{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
         </div>
       </div>
@@ -26,10 +27,19 @@
               <div class="dialogo-pedido-detalles-data">
                 <p class="dialogo-pedido-detalles-data-state">{{datos.estadoPedido.descripcion}}</p>
                 <p class="dialogo-pedido-detalles-data-fecha">{{datos.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
-                <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p> 
-                <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}} {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
+                <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p>
+                <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}}
+                  {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
+                <p class="dialogo-pedido-detalles-data-mesa">Mesa
+                  {{datos.Mesa.codigo}} <br>
+                </p>
+                <div class="flexbox dialogo-pedido-detalles-data-mesa-capacity" >
+                  <mat-icon class="person-icon">person</mat-icon>
+                  X{{datos.Mesa.capacidad}}
+                </div>
                 <br><br>
-                <p class="dialogo-pedido-detalles-data-total">Total: {{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
+                <p class="dialogo-pedido-detalles-data-total">Total: {{datos.precio | currency: 'CRC':'symbol-narrow'}}
+                </p>
               </div>
               <div class="detalle-line flexbox">
                 <mat-icon class="material-symbols-outlined">schedule</mat-icon>
@@ -41,40 +51,39 @@
         </mat-tab>
         <mat-tab label="Productos" *ngIf="datos.detalles.length != 0">
           <div class="dialogo-pedido-productos">
-                <table class="pedido-productos-table">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Notas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of datos.detalles">
-                            <td>
-                                <img [src]="item.Producto.imagen" [alt]="item.Producto.nombre" class="dialogo-pedido-productos-img">
-                            </td>
-                            <td>
-                                {{item.Producto.nombre}}
-                            </td>
-                            <td>
-                                {{item.Producto.precio | currency: 'CRC':'symbol-narrow'}}
-                            </td>
-                            <td>
-                              {{item.cantidad}}
-                            </td>
-                            <td>
-                              {{item.notas}}
-                          </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="pedido-productos-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Descripción</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Notas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of datos.detalles">
+                  <td>
+                    <img [src]="item.Producto.imagen" [alt]="item.Producto.nombre" class="dialogo-pedido-productos-img">
+                  </td>
+                  <td>
+                    {{item.Producto.nombre}}
+                  </td>
+                  <td>
+                    {{item.Producto.precio | currency: 'CRC':'symbol-narrow'}}
+                  </td>
+                  <td>
+                    {{item.cantidad}}
+                  </td>
+                  <td>
+                    {{item.notas}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>
   </mat-dialog-content>
 </div>
-
