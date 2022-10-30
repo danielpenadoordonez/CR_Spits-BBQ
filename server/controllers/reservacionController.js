@@ -38,7 +38,7 @@ module.exports.getReservationsBySucursal = async (request, response, next) => {
 
 //Todas las reservaciones por usuario
 module.exports.getReservationsByUser = async (request, response, next) => {
-    let usuario = String(request.params.idUsuario);
+    let usuario = request.params.idUsuario;
     const reservations = await prismaClient.reservacion.findMany({
         where:{idUsuario: usuario},
         include:{
@@ -51,3 +51,31 @@ module.exports.getReservationsByUser = async (request, response, next) => {
     });
     response.json(reservations);
 };
+
+/*
+ *POST APIs
+ */
+module.exports.createReservation = async (request, response, next) => {
+    let reservation = request.body;
+    const newReservation = await prismaClient.reservacion.create({
+        data:{
+            fecha_hora: reservation.fecha_hora,
+            idSucursal: reservation.idSucursal,
+            idUsuario: reservation.idUsuario,
+            mesas: {
+                createMany: {
+                    mesas: reservation.mesas
+                }
+            }
+        }
+    });
+    response.json(newReservation);
+}
+
+/*
+ *  PUT APIs
+ */
+module.exports.updateReservation = async (request, response, next) => {
+    let reservation = request.body;
+    let reservationId = request.params
+}
