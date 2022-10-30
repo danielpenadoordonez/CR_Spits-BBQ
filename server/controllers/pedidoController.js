@@ -20,7 +20,6 @@ module.exports.getAllPedidos = async (request, response, next) => {
       Mesa: true
     },
   });
-
   response.json(pedidos);
 };
 
@@ -45,7 +44,6 @@ module.exports.getPedidoById = async (request, response, next) => {
       Sucursal: true,
     },
   });
-
   response.json(pedido);
 };
 
@@ -61,6 +59,5 @@ module.exports.getPedidosByUsuario = async (request, response, next) => {
       detalles: true,
     },
   });
-
   response.json(pedidos);
 };
