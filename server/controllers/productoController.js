@@ -82,6 +82,7 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
  */
 module.exports.createProduct = async (request, response, next) => {
   let product = request.body;
+  console.log(product);
   const newProduct = await prismaClient.producto.create({
     data: {
       id: product.id,
@@ -93,8 +94,9 @@ module.exports.createProduct = async (request, response, next) => {
       estado: product.estado,
       idCategoria: product.idCategoria,
       sucursales_producto: {
-        //Tiene que ser {id:valor}
-        connect: product.sucursales_producto
+        createMany: {
+          data: product.sucursales_producto
+        }
       },
     },
   });
@@ -107,20 +109,7 @@ module.exports.createProduct = async (request, response, next) => {
 module.exports.updateProduct = async (request, response, next) => {
   let product = request.body;
   let productId = parseInt(request.params.id);
-  
-  //Producto viejo
-  const oldProduct = await prismaClient.producto.findUnique({
-    where: {id: productId},
-    include: {
-      sucursales_producto: {
-        select: {
-          idProducto: true,
-          idSucursal: true
-        }
-      }
-    }
-  });
-  
+ 
   const updatedProduct = await prismaClient.producto.update({
     where: {id: productId},
     data: {
@@ -132,9 +121,9 @@ module.exports.updateProduct = async (request, response, next) => {
       estado: product.estado,
       idCategoria: product.idCategoria,
       sucursales_producto: {
-        //Tiene que ser {id:valor}
-        disconnect: oldProduct.sucursales_producto,
-        connect: product.sucursales_producto
+        updateMany: {
+          data: product.sucursales_producto
+        }
       }
     }
   });
