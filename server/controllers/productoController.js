@@ -122,6 +122,7 @@ module.exports.updateProduct = async (request, response, next) => {
       idCategoria: product.idCategoria,
       sucursales_producto: {
         updateMany: {
+          where: {idProducto: productId},
           data: product.sucursales_producto
         }
       }
