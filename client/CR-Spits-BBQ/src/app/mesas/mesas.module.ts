@@ -17,6 +17,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MesasAllComponent } from './mesas-all/mesas-all.component'; 
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -29,8 +30,9 @@ import { MesasAllComponent } from './mesas-all/mesas-all.component';
     CommonModule,
     MesasRoutingModule,
 
-     // Angular material 
+     //* Angular material 
     MatDialogModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,

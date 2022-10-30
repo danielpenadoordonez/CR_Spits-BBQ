@@ -26,6 +26,7 @@ module.exports.getAllMesas = async (request, response, next) => {
 //* Obtener mesa por el id
 module.exports.getMesaById = async (request, response, next) => {
   let id = parseInt(request.params.id);
+  console.log(id);
   const mesa = await prismaClient.mesa.findFirst({
     where: { id: id },
     include: {
@@ -122,13 +123,13 @@ module.exports.createTable = async (request, response, next) => {
 
 module.exports.updateTable = async (request, response, next) => {
   let table = request.body;
-  let tableCode = String(request.params.codigo);
-  //let tableCode = table.codigo;
+  let tableCode = String(table.codigo);
   const updatedTable = await prismaClient.mesa.update({
     where: { codigo: tableCode },
     data: {
       capacidad: table.capacidad,
       estado: table.estado,
+      idSucursal: table.idSucursal,
       idDisponibilidad: table.idDisponibilidad,
     },
   });

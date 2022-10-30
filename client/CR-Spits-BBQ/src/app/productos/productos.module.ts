@@ -18,6 +18,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductosAllComponent } from './productos-all/productos-all.component'; 
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { ProductosAllComponent } from './productos-all/productos-all.component';
     CommonModule,
     ProductosRoutingModule,
 
-    // angular material
+    //* angular material
     MatDialogModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,

@@ -51,7 +51,7 @@ export class ProductosAllComponent implements AfterViewInit {
   }
 
   //* Filtro by Marito
-  aplicarFiltro(event : Event){
+  aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -68,5 +68,16 @@ export class ProductosAllComponent implements AfterViewInit {
       relativeTo: this.route,
     });
   }
+
+  //* Obtiene la cantidad total de mesas
+  getCantidadTotalProductos() {
+    let countTables : number = 0;
+    if (this.datos !== undefined) {
+      countTables = this.datos.map(t => t.id).reduce((partialSum: any, a: any) => partialSum + 1, 0);
+    }
+    return countTables;
+  }
+
+  //* Nota: no sé si haga falta el delete, en todo caso sé como hacerlo para añadir el botón...
 
 }

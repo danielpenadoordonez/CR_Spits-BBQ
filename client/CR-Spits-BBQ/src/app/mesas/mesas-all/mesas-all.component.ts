@@ -72,4 +72,24 @@ export class MesasAllComponent implements AfterViewInit {
     });
   }
 
+  //* Obtiene la capacidad total de todas las mesas
+  getCantidadTotalCapacidad(){
+    let countTables : number = 0;
+    if (this.datos !== undefined) {
+      countTables = this.datos.map(t => t.capacidad).reduce((partialSum: any, a: number) => partialSum + a, 0);
+    }
+    return countTables;
+  }
+
+  //* Obtiene la cantidad total de mesas
+  getCantidadTotalMesas() {
+    let countTables : number = 0;
+    if (this.datos !== undefined) {
+      countTables = this.datos.map(t => t.codigo).reduce((partialSum: any, a: any) => partialSum + 1, 0);
+    }
+    return countTables;
+  }
+
+  //* Nota: no sé si haga falta el delete, en todo caso sé como hacerlo para añadir el botón...
+
 }

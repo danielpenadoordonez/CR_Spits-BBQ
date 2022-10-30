@@ -16,7 +16,7 @@ export class ProductosFormComponent {
     city: [null, Validators.required],
     state: [null, Validators.required],
     postalCode: [null, Validators.compose([
-      Validators.required, Validators.minLength(5), Validators.maxLength(5)])
+      Validators.required, Validators.minLength(5)])
     ],
     shipping: ['free', Validators.required]
   });

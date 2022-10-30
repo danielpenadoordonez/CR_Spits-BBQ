@@ -1,93 +1,180 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { GenericService } from 'src/app/share/generic.service';
 
 @Component({
   selector: 'app-mesas-form',
   templateUrl: './mesas-form.component.html',
   styleUrls: ['./mesas-form.component.css']
 })
+
 export class MesasFormComponent {
-  addressForm = this.fb.group({
-    company: null,
-    firstName: [null, Validators.required],
-    lastName: [null, Validators.required],
-    address: [null, Validators.required],
-    address2: null,
-    city: [null, Validators.required],
-    state: [null, Validators.required],
-    postalCode: [null, Validators.compose([
-      Validators.required, Validators.minLength(5), Validators.maxLength(5)])
-    ],
-    shipping: ['free', Validators.required]
-  });
+  titleForm: string = 'Crear'; //* Le indica al título si es crear o actualizar es dinámico
+  destroy$: Subject<boolean> = new Subject<boolean>(); //* Destruye la petición del API
+  sucursalesList: any; //* Sucursal a la que será asignada 
+  disponibilidadesList: any; //* Tipo de disponibilidad: ocupada, reservada, libre... etcétera
+  mesaInfo: any; //? información de la mesa a actualizar [previa]
+  respMesa: any; //* Respuesta que deja la mesa en la acción de crear o actualizar
+  submitted = false; //? Enviado? Sí o no?
+  mesasForm: FormGroup; //* El nombre del formulario - [SENSIBLE]
+  //! ES EL CÓDIGO NO EL ID
+  idMesa: string = ""; //* guardamos el parámetro o el código que lo que llega
+  isCreate: boolean = true; //* si es update o create
 
-  hasUnitNumber = false;
+  /* 
+  * FORMATO JSON
+  * "capacidad": 4,
+  * "estado": true,
+  * "idSucursal": 2,
+  * "idDisponibilidad": 2
+  */
 
-  states = [
-    {name: 'Alabama', abbreviation: 'AL'},
-    {name: 'Alaska', abbreviation: 'AK'},
-    {name: 'American Samoa', abbreviation: 'AS'},
-    {name: 'Arizona', abbreviation: 'AZ'},
-    {name: 'Arkansas', abbreviation: 'AR'},
-    {name: 'California', abbreviation: 'CA'},
-    {name: 'Colorado', abbreviation: 'CO'},
-    {name: 'Connecticut', abbreviation: 'CT'},
-    {name: 'Delaware', abbreviation: 'DE'},
-    {name: 'District Of Columbia', abbreviation: 'DC'},
-    {name: 'Federated States Of Micronesia', abbreviation: 'FM'},
-    {name: 'Florida', abbreviation: 'FL'},
-    {name: 'Georgia', abbreviation: 'GA'},
-    {name: 'Guam', abbreviation: 'GU'},
-    {name: 'Hawaii', abbreviation: 'HI'},
-    {name: 'Idaho', abbreviation: 'ID'},
-    {name: 'Illinois', abbreviation: 'IL'},
-    {name: 'Indiana', abbreviation: 'IN'},
-    {name: 'Iowa', abbreviation: 'IA'},
-    {name: 'Kansas', abbreviation: 'KS'},
-    {name: 'Kentucky', abbreviation: 'KY'},
-    {name: 'Louisiana', abbreviation: 'LA'},
-    {name: 'Maine', abbreviation: 'ME'},
-    {name: 'Marshall Islands', abbreviation: 'MH'},
-    {name: 'Maryland', abbreviation: 'MD'},
-    {name: 'Massachusetts', abbreviation: 'MA'},
-    {name: 'Michigan', abbreviation: 'MI'},
-    {name: 'Minnesota', abbreviation: 'MN'},
-    {name: 'Mississippi', abbreviation: 'MS'},
-    {name: 'Missouri', abbreviation: 'MO'},
-    {name: 'Montana', abbreviation: 'MT'},
-    {name: 'Nebraska', abbreviation: 'NE'},
-    {name: 'Nevada', abbreviation: 'NV'},
-    {name: 'New Hampshire', abbreviation: 'NH'},
-    {name: 'New Jersey', abbreviation: 'NJ'},
-    {name: 'New Mexico', abbreviation: 'NM'},
-    {name: 'New York', abbreviation: 'NY'},
-    {name: 'North Carolina', abbreviation: 'NC'},
-    {name: 'North Dakota', abbreviation: 'ND'},
-    {name: 'Northern Mariana Islands', abbreviation: 'MP'},
-    {name: 'Ohio', abbreviation: 'OH'},
-    {name: 'Oklahoma', abbreviation: 'OK'},
-    {name: 'Oregon', abbreviation: 'OR'},
-    {name: 'Palau', abbreviation: 'PW'},
-    {name: 'Pennsylvania', abbreviation: 'PA'},
-    {name: 'Puerto Rico', abbreviation: 'PR'},
-    {name: 'Rhode Island', abbreviation: 'RI'},
-    {name: 'South Carolina', abbreviation: 'SC'},
-    {name: 'South Dakota', abbreviation: 'SD'},
-    {name: 'Tennessee', abbreviation: 'TN'},
-    {name: 'Texas', abbreviation: 'TX'},
-    {name: 'Utah', abbreviation: 'UT'},
-    {name: 'Vermont', abbreviation: 'VT'},
-    {name: 'Virgin Islands', abbreviation: 'VI'},
-    {name: 'Virginia', abbreviation: 'VA'},
-    {name: 'Washington', abbreviation: 'WA'},
-    {name: 'West Virginia', abbreviation: 'WV'},
-    {name: 'Wisconsin', abbreviation: 'WI'},
-    {name: 'Wyoming', abbreviation: 'WY'}
-  ];
+  constructor(private fb: FormBuilder, private gService: GenericService,
+    private router: Router, private activeRouter: ActivatedRoute) {
+    this.formularioReactive();
+    this.listaSucursales();
+    this.listaDisponibilidades();
+  }
 
-  constructor(private fb: FormBuilder) {}
+  //* Actualizar sí se envían los datos con el update
+  ngOnInit(): void {
+    //* Verificar si se envio un id por parametro para crear formulario para actualizar
+    //* Obtener mesa a actualizar del API
+    this.activeRouter.params.subscribe((params: Params) => {
+      this.idMesa = params['id']; //? Recibe el código
+      if (this.idMesa !== undefined) { //* Validamos que no esté indefinido (id enviado por params)
+        this.isCreate = false; 
+        this.titleForm = 'Actualizar'; //* Cambiamos el título
+        this.gService.get('mesas/codigo', this.idMesa)
+          .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+            this.mesaInfo = data; //* Obtenemos la data y la asignamos
+            //! ESTABLEZCO TODOS, Solo que código no es editable y el id es invisible [hidden]
+            //? Solo puedo usar el set value si establezco TODOS LOS CAMPOS DE LA TABLA por eso el comentario...
+            this.mesasForm.setValue({
+              id: this.mesaInfo.id,
+              codigo: this.mesaInfo.codigo,
+              capacidad: this.mesaInfo.capacidad,
+              estado: this.mesaInfo.estado,
+              idSucursal: this.mesaInfo.idSucursal,
+              idDisponibilidad: this.mesaInfo.idDisponibilidad
+            });
+          });
+      }
+    })
+  }
 
-  onSubmit(): void {
-    alert('Thanks!');
+  //* Crear Formulario
+  //* Con su validaciones
+  formularioReactive() {
+    //? [null, Validators.required]
+    this.mesasForm = this.fb.group({
+      //* Nombre del FormControl: [valor, validación]
+      id: null, //* No válida [invisible] - input hidden
+      codigo: null, //* No válida [readonly - show on update] - se genera en el backend seguiendo las reglas del formato correspondiente
+      //? Único campo en el que el usuario puede digitar
+      capacidad: [null, Validators.compose([
+        Validators.required, Validators.min(1), Validators.max(20)
+      ])],
+      estado: [null, Validators.requiredTrue], //* Checkbox
+      idSucursal: [null, Validators.required], //* Sucursal, solo 1 [combobox - 1 no múltiple]
+      idDisponibilidad: [null, Validators.required]//*  Combo box, solo 1 igualmente, sin múltiples
+    });
+  }
+
+  //* Carga la lista de sucursales para el combo
+  listaSucursales() {
+    this.sucursalesList = null;
+    this.gService
+      .list('sucursales') //* ruta para llamar esa API, viene del generic service, Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.sucursalesList = data;
+      });
+  }
+
+  //* Carga la lista de disponibilidades de mesa para el combo
+  listaDisponibilidades() {
+    this.disponibilidadesList = null;
+    this.gService
+      .list('disponibilidades') //* Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.disponibilidadesList = data;
+      });
+  }
+
+  //* Manejo de errores
+  public errorHandling = (control: string, error: string) => {
+    return this.mesasForm.controls[control].hasError(error);
+  };
+
+  //* Crear Mesa [POST]
+  crearMesa(): void {
+
+    //* Establecer submit verdadero 
+    this.submitted = true; //* Sí se subió
+
+    //* Verificar validación del form
+    if (this.mesasForm.invalid) {
+      return;
+    }
+
+    //! tener cuidado con el formato
+    //* Revisar el formato con un console log, nunca viene mal
+    console.log(this.mesasForm.value);
+
+    //* Accion API create enviando toda la informacion del formulario
+    this.gService.create('mesas', this.mesasForm.value)
+      .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+        this.respMesa = data; //* Obtenemos y asignamos la data
+        //? Rederigimos
+        this.router.navigate(['/mesas/all'], {
+          queryParams: { create: 'true' }
+        });
+      });
+  }
+
+
+  //* Actualizar una mesa [PUT]
+  actualizarMesa() {
+    //* Establecer submit verdadero - Sí hace submit el update
+    this.submitted = true; //* Sí se subió
+
+    //* Verificar validación del form
+    if (this.mesasForm.invalid) {
+      return;
+    }
+
+    //? Verificamos la data
+    console.log(this.mesasForm.value);
+
+    //* Accion API create enviando toda la informacion del formulario
+    this.gService.update('mesas', this.mesasForm.value)
+      .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+        this.respMesa = data; //* Obtenemos y asignamos la data
+        //? Redirigimos
+        this.router.navigate(['/mesas/all'], {
+          queryParams: { update: 'true' }
+        });
+      });
+  }
+
+  onReset() {
+    //* Resetear
+    this.submitted = false;
+    this.mesasForm.reset();
+  }
+
+  onBack() {
+    //* Cuando intenté salir - botón salir
+    this.router.navigate(['/mesas/all']);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    //* Desinscribirse
+    this.destroy$.unsubscribe();
   }
 }
