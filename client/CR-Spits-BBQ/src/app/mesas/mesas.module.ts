@@ -8,12 +8,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort'; 
-import {MatDividerModule} from '@angular/material/divider'; 
+import {MatDividerModule} from '@angular/material/divider';
+import { MesasFormComponent } from './mesas-form/mesas-form.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MesasAllComponent } from './mesas-all/mesas-all.component'; 
 
 @NgModule({
   declarations: [
     GestionMesasComponent,
-    MesaDetailComponent
+    MesaDetailComponent,
+    MesasFormComponent,
+    MesasAllComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +36,12 @@ import {MatDividerModule} from '@angular/material/divider';
     MatPaginatorModule,
     MatSortModule,
     MatDividerModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule,
   ],
   exports: [
     GestionMesasComponent
