@@ -64,7 +64,7 @@ module.exports.createReservation = async (request, response, next) => {
             idUsuario: reservation.idUsuario,
             mesas: {
                 createMany: {
-                    mesas: reservation.mesas
+                    data: reservation.mesas
                 }
             }
         }
@@ -77,5 +77,22 @@ module.exports.createReservation = async (request, response, next) => {
  */
 module.exports.updateReservation = async (request, response, next) => {
     let reservation = request.body;
-    let reservationId = request.params
+    // let userId= request.params.idUsuario;
+    // let sucursalId = request.params.idSucursal;
+    let reservationId = parseInt(request.params.id);
+    const updatedReservation = await prismaClient.reservacion.update({
+        where: {id: reservationId},
+        data: {
+            fecha_hora: reservation.fecha_hora,
+            idSucursal: reservation.idSucursal,
+            idUsuario: reservation.idUsuario,
+            mesas:{
+                updateMany:{
+                    where: {idReservacion: reservationId},
+                    data: reservation.mesas
+                }
+            }
+        }
+    });
+    response.json(updatedReservation);
 }
