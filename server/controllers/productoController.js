@@ -16,7 +16,13 @@ module.exports.getAllProducts = async (request, response, next) => {
       sucursales_producto: {
         include: {
           Sucursal: true,
-        }
+        },
+      },
+      Categoria_Producto: {
+        select: {
+          id: false,
+          descripcion: true,
+        },
       },
     },
   });
@@ -32,9 +38,14 @@ module.exports.getProductById = async (request, response, next) => {
       sucursales_producto: {
         include: {
           Sucursal: true,
-        }
+        },
       },
-      Categoria_Producto: true,
+      Categoria_Producto: {
+        select: {
+          id: false,
+          descripcion: true,
+        },
+      },
     },
   });
   response.json(product);
@@ -66,7 +77,17 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
       include: {
-        sucursales_producto: true,
+        sucursales_producto: {
+          include: {
+            Sucursal: true,
+          },
+        },
+        Categoria_Producto: {
+          select: {
+            id: false,
+            descripcion: true,
+          },
+        },
       },
     });
     return producto;
@@ -78,7 +99,7 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
 };
 
 /*
- *POST APIs
+ * POST APIs
  */
 module.exports.createProduct = async (request, response, next) => {
   let product = request.body;
@@ -95,13 +116,13 @@ module.exports.createProduct = async (request, response, next) => {
       idCategoria: product.idCategoria,
       sucursales_producto: {
         createMany: {
-          data: product.sucursales_producto
-        }
+          data: product.sucursales_producto,
+        },
       },
     },
   });
   response.json(newProduct);
-}
+};
 
 /*
  *  PUT APIs
@@ -109,9 +130,9 @@ module.exports.createProduct = async (request, response, next) => {
 module.exports.updateProduct = async (request, response, next) => {
   let product = request.body;
   let productId = parseInt(request.params.id);
- 
+
   const updatedProduct = await prismaClient.producto.update({
-    where: {id: productId},
+    where: { id: productId },
     data: {
       nombre: product.nombre,
       descripcion: product.descripcion,
@@ -129,4 +150,4 @@ module.exports.updateProduct = async (request, response, next) => {
     }
   });
   response.json(updatedProduct);
-}
+};

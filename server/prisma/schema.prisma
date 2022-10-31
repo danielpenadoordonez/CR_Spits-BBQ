@@ -201,7 +201,7 @@ model Pedido {
   nombre       String?
   precio       Decimal
   fecha        DateTime          @default(now())
-  detalles    Pedido_Producto[]
+  detalles     Pedido_Producto[]
   estadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
   idEstado     Int
 
