@@ -63,6 +63,7 @@ export class ProductosAllComponent implements AfterViewInit {
     });
   }
 
+  //* Crear producto
   crearProducto() {
     this.router.navigate(['/productos/create'], {
       relativeTo: this.route,
