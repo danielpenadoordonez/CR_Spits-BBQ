@@ -14,7 +14,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { ProductosModule } from './productos/productos.module';
 
-
 @NgModule({
   declarations: [
     AppComponent
@@ -22,7 +21,7 @@ import { ProductosModule } from './productos/productos.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,                                                         
     //* importar los módulos creados propios en orden de sin rutas a los que estan con rutas
     CoreModule,
     ShareModule,

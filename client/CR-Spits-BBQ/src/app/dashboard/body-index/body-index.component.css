@@ -3,11 +3,10 @@
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
     width: 80%;
-    margin: 0 auto;
+    margin: 3rem auto;
 }
 
 .statistic-card{
-    background: rgba(155, 0, 0, .5);
     border-radius: .7rem;
     padding: 0rem 0rem 1rem;
     overflow: hidden;
@@ -18,11 +17,16 @@
     transition: all .5s ease-in-out;
 }
 
+.statistic-box{
+    background: rgba(155, 0, 0, .5);
+    border-radius: 0 0 .7rem .7rem;
+}
+
 .statistic-card:hover{
     transform: scale(1.05);
 }
 
-.statistic-card:nth-child(even){
+.statistic-card:nth-child(even) .statistic-box{
     background: rgba(23, 23, 23, .8);
 }
 

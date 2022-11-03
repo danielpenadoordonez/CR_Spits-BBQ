@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
+import * as AOS from 'aos'
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-gestion-mesas',
@@ -13,7 +15,7 @@ import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
   styleUrls: ['./gestion-mesas.component.css'],
 })
 
-export class GestionMesasComponent implements AfterViewInit {
+export class GestionMesasComponent implements AfterViewInit, OnInit {
   datos: any; //* Data
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción
   displayedColumns = ['mesa']//* Columnas que se verán de las mesas, solo para MatTable
@@ -23,12 +25,24 @@ export class GestionMesasComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   dataSource= new MatTableDataSource<any>();
 
-  constructor(private gService: GenericService, private dialog: MatDialog) {}
+  constructor(private gService: GenericService, private dialog: MatDialog,
+    private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(){ 
+    this.listaMesas();
+    window.onscroll = AOS.refresh();
+  }
 
   ngAfterViewInit(): void {
-    this.listaMesas();
     document.querySelectorAll('#mesas-table tbody')[0].classList.add('grid-table-body');
     document.querySelectorAll('#mesas-table thead')[0].classList.add('grid-table-head');
+   // this.setDelay();
+  }
+
+  actualizarMesa(id: number) {
+    this.router.navigate(['update', id], {
+      relativeTo: this.route,
+    });
   }
 
   listaMesas() {
@@ -55,4 +69,10 @@ export class GestionMesasComponent implements AfterViewInit {
     };
     this.dialog.open(MesaDetailComponent, dialogConfig);
   }
+
+  // setDelay() {
+  //   let delay = .1;
+  //   let items = Array.from( document.getElementsByClassName("table-container") as HTMLCollectionOf<HTMLElement>);
+  //   items.forEach(item => { item.style.transitionDelay = `${delay}s`; delay += .1})
+  // }
 }

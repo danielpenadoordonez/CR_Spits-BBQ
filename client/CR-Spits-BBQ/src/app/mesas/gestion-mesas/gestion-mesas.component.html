@@ -13,33 +13,14 @@
       <p class="tip-description">Ocupado</p>
     </div>
   </div>
-  <!-- <div>
-        <h1 class="sucursal-selected">Sucursal San José</h1>
-        <div class="table-container">
-            <div class="table-content">
-                <div class="table-description">
-                    <p class="table-code bg-reserved">Mesa TB-1-S4</p>
-                </div>
-                <img class="table-icon" src="https://img.icons8.com/ios-filled/150/024F8B/table-top-view.png" />
-                <div class="table-diners-information flexbox">
-                    <i class="fa-solid fa-user diners"></i>
-                    <p class="diners-quantity">X6</p>
-                </div>
-                <p class="tag bg-reserved">Reservado</p>
-                <div class="table-configuration-container">
-                    <i class="fa-solid fa-gear settings"></i>
-                </div>
-            </div>
-        </div>
-    </div> -->
-  <div class="mat-elevation-z8 grid-table-container" id="mesas-table" *ngIf="dataSource">
+  <div class="mat-elevation-z8 grid-table-container" id="mesas-table" *ngIf="dataSource" onload="setReveal()">
     <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
       aria-label="Elements">
       <!-- Columna mesa -->
       <ng-container matColumnDef="mesa">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none;">Mesa</th>
         <td mat-cell *matCellDef="let row">
-          <div class="table-container">
+          <div class="table-container" data-aos="zoom-in" data-aos-duration="750">
             <div class="table-content">
               <div class="table-description">
                 <p class="table-code "
@@ -60,8 +41,9 @@
                 [ngClass]="row.EstadoMesa.descripcion == 'Disponible'? 'bg-available' : row.EstadoMesa.descripcion == 'Reservada'? 'bg-reserved': 'bg-unavailable'">
                 {{row.EstadoMesa.descripcion}}
               </p>
-              <div class="table-configuration-container">
+              <div class="table-configuration-container flexbox">
                 <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)">info</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)">edit</mat-icon>
               </div>
             </div>
           </div>

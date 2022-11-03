@@ -1,35 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { ThisReceiver } from '@angular/compiler';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
+import { Scroll } from '../../../assets/ts/scrollreveal';
 
 @Component({
   selector: 'app-body-index',
   templateUrl: './body-index.component.html',
   styleUrls: ['./body-index.component.css']
 })
-export class BodyIndexComponent implements OnInit {
+export class BodyIndexComponent implements OnInit, AfterViewChecked {
 
   destroy$: Subject<boolean> = new Subject<boolean>();
   statisticData = [];
+  dataLoaded: boolean = false;
   constructor(private gService: GenericService) { }
 
-  ngOnInit(): void {
-    this.getStatisticsData('users', 'Usuarios', 'person');
-    this.getStatisticsData('mesas', 'Mesas', 'table_restaurant');
-    this.getStatisticsData('productos', 'Productos', 'fastfood');
-    this.getStatisticsData('pedidos', 'Comandas', 'edit_note');
+  ngAfterViewChecked(): void {
+    this.setDelay();
   }
 
-  getStatisticsData(URL:string, statisticType:string, icon:string){
+  ngOnInit(): void {
+    this.initStatistics();
+  }
+
+  getStatisticsData(URL: string, statisticType: string, icon: string) {
     return this.gService
       .list(URL)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data:any) => {
-          this.pushStatisticData(data.length, statisticType, icon);
+      .subscribe((data: any) => {
+        this.pushStatisticData(data.length, statisticType, icon);
       })
   }
 
-  pushStatisticData(qty:number, statisticType:string, icon:string){
+  pushStatisticData(qty: number, statisticType: string, icon: string) {
     this.statisticData.push({
       description: statisticType,
       icon: icon,
@@ -37,4 +41,16 @@ export class BodyIndexComponent implements OnInit {
     })
   }
 
+  initStatistics() {
+    this.getStatisticsData('users', 'Usuarios', 'person');
+    this.getStatisticsData('mesas', 'Mesas', 'table_restaurant');
+    this.getStatisticsData('productos', 'Productos', 'fastfood');
+    this.getStatisticsData('pedidos', 'Comandas', 'edit_note');
+  }
+
+  setDelay() {
+    let delay = .1;
+    let items = Array.from( document.getElementsByClassName("statistic-card") as HTMLCollectionOf<HTMLElement>);
+    items.forEach(item => { item.style.transitionDelay = `${delay}s`; delay += .1})
+  }
 }

@@ -25,10 +25,11 @@
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css",
-              "src/assets/css/swiper-bundle.min.css"
+              "src/assets/css/swiper-bundle.min.css",
+              "node_modules/aos/dist/aos.css"
             ],
             "scripts": [
-              
+              "node_modules/aos/dist/aos.js"
             ]
           },
           "configurations": {

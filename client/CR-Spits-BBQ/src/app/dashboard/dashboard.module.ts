@@ -20,7 +20,7 @@ import { BodyIndexComponent } from './body-index/body-index.component';
     CommonModule,
     DashboardRoutingModule,
     // Angular Material
-    MatIconModule
+    MatIconModule,
   ],
   exports: [
     DashboardIndexComponent,

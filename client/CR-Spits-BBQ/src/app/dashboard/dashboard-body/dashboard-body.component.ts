@@ -19,7 +19,9 @@ export class DashboardBodyComponent implements OnInit {
 
   getBodyClass(): string {
     let styleClass;
-    if (this.collapsed && this.screenWidth > 768) {
+    if(this.screenWidth <= 568 && this.screenWidth > 0){
+      styleClass = 'body-full-screen'
+    }else if (this.collapsed && this.screenWidth > 768) {
       styleClass = "body-trimmed";
     } else if (this.collapsed && this.screenWidth <= 768 && this.screenWidth > 0) {
       styleClass = "body-md-screen";

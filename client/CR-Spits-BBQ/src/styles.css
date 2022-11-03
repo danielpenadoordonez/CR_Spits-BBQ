@@ -76,7 +76,6 @@ body {
     background-size: 100% 100%;
     background-attachment: fixed;
     /* scroll-behavior: smooth; */
-    overflow-x: hidden;
     margin: var(--header_height) 0 0 0;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
@@ -227,6 +226,16 @@ span.swiper-pagination-bullet-active{
 }
 
 
+/* Reveal Animation */
+
+.reveal-element{
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    opacity: 1 !important;
+}
+
 /* grid table */
 .grid-table-head{
     display: none;
@@ -335,4 +344,26 @@ tr.mat-row{
 .mat-ink-bar{
     background-color: #8B0000 !important;
     height: 3px !important;
+}
+
+
+/* MAT FORM */
+.mat-select-value, .mat-select-arrow, .mat-form-field-label, .mat-hint{
+    color: #fff !important;
+}
+
+.mat-form-field-underline {
+    background-color: #fff !important;
+}
+
+.mat-radio-inner-circle{
+    background-color: #8B0000 !important;
+}
+
+.mat-radio-outer-circle{
+    border-color: #8B0000 !important;
+}
+
+.shipping-card .mat-card-content{
+    font-size: 1.2rem;
 }

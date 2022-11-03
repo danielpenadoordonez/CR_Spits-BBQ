@@ -10,14 +10,13 @@ import { LoadScriptsService } from 'src/app/share/load-scripts.service';
 export class HomeIndexComponent implements OnInit {
   scripts = ['swiper-bundle.min.js', 'home.js'];
   
-  private sService: LoadScriptsService;
   constructor(private scriptService: LoadScriptsService) {
-    this.sService = scriptService;
   }
 
   ngOnInit(): void {
     this.scripts.forEach(element => {
-       this.sService.loadScript(element, element);
+       this.scriptService.loadScript(element, element);
+
     });
   }
 }

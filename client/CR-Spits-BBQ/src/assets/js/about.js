@@ -24,12 +24,3 @@ document.querySelectorAll('.profile-card-content').forEach(card => {
     delay += 0.5;
     card.classList.add('card-reveal');
 })
-
-// const srAbout = ScrollReveal({
-//     origin: 'top',
-//     distance: '30px',
-//     duration: 1500,
-//     delay: 3000,
-// })
-
-// srAbout.reveal('.nav-item'); 

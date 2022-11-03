@@ -56,6 +56,10 @@
     letter-spacing: .15rem;
 }
 
+.table-code{
+    padding: .25rem 0;
+}
+
 .mesas-paginator {
     background: #000;
     color: #fff;
@@ -107,7 +111,7 @@
 .table-diners-information {
     position: absolute;
     left: 50%;
-    top: 55%;
+    top: 43.5%;
     transform: translate(-50%, -50%);
     color: #000822;
     z-index: 100;
@@ -119,8 +123,6 @@
     padding: 0 .2rem;
     font-weight: bolder;
 }
-
-
 
 .table-icon {
     object-fit: contain;
@@ -147,18 +149,22 @@
 
 .table-configuration-container {
     position: relative;
+    justify-content: start;
+    padding: .5rem .75rem;
 }
 
 .table-configuration-container .settings {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding: .5rem;
-    position: absolute;
-    left: 1rem;
-    bottom: .5rem;
     cursor: pointer;
     width: auto !important;
     height: auto !important;
+    transition: .5s ease-in-out;
+}
+
+.table-configuration-container .settings:hover{
+    transform: translateY(-4px);
 }
 
 .table-content .table-icon:hover {
