@@ -12,6 +12,9 @@ const prismaClient = new PrismaClient();
 //Todos los productos
 module.exports.getAllProducts = async (request, response, next) => {
   const products = await prismaClient.producto.findMany({
+    orderBy: {
+      id: "asc",
+    },
     include: {
       sucursales_producto: {
         include: {
@@ -56,6 +59,9 @@ module.exports.getProductsByCategory = async (request, response, next) => {
   let categoria = parseInt(request.params.idCategoria);
   const products = await prismaClient.producto.findMany({
     where: { idCategoria: categoria },
+    orderBy: {
+      id: "asc",
+    },
     include: {
       sucursales_producto: true,
     },
@@ -76,6 +82,9 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     let prodID = parseInt(product.idProducto);
     let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
+      orderBy: {
+        id: "asc",
+      },
       include: {
         sucursales_producto: {
           include: {
@@ -106,7 +115,6 @@ module.exports.createProduct = async (request, response, next) => {
   console.log(product);
   const newProduct = await prismaClient.producto.create({
     data: {
-      id: product.id,
       nombre: product.nombre,
       descripcion: product.descripcion,
       ingredientes: product.ingredientes,
@@ -129,7 +137,7 @@ module.exports.createProduct = async (request, response, next) => {
  */
 module.exports.updateProduct = async (request, response, next) => {
   let product = request.body;
-  let productId = parseInt(request.params.id);
+  let productId = parseInt(product.id);
 
   const updatedProduct = await prismaClient.producto.update({
     where: { id: productId },
@@ -143,11 +151,10 @@ module.exports.updateProduct = async (request, response, next) => {
       idCategoria: product.idCategoria,
       sucursales_producto: {
         updateMany: {
-          where: {idProducto: productId},
-          data: product.sucursales_producto
-        }
-      }
-    }
+          data: product.sucursales_producto,
+        },
+      },
+    },
   });
   response.json(updatedProduct);
 };

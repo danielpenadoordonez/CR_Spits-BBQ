@@ -1,5 +1,6 @@
 <form
   [formGroup]="mesasForm"
+  #ngForm="ngForm"
   novalidate
   (ngSubmit)="isCreate ? crearMesa() : actualizarMesa()"
 >
@@ -7,14 +8,30 @@
   <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>{{ titleForm }} Mesa</mat-card-title>
+      <mat-card-title
+        >{{ titleForm }} Mesa
+        <mat-icon>{{
+          isCreate ? "note_add" : "edit"
+        }}</mat-icon></mat-card-title
+      >
     </mat-card-header>
     <mat-card-content>
       <div class="row" *ngIf="!isCreate">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #capacidadMesa placeholder="Código" formControlName="codigo" readonly="true">
-            <mat-error *ngIf="mesasForm.controls['codigo'].hasError('required')">
+            <input
+              matInput
+              #codigoMesa
+              placeholder="Código"
+              formControlName="codigo"
+              readonly
+            />
+            <mat-hint align="end"
+              >{{ codigoMesa.value.length }} / 20</mat-hint
+            >
+            <mat-error
+              *ngIf="mesasForm.controls['codigo'].hasError('required')"
+            >
               El código de la mesa es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
@@ -23,9 +40,22 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #capacidadMesa min="1" max="20" placeholder="Ex. 1,2,3.." formControlName="capacidad" type="number">
-            <mat-hint align="end">{{capacidadMesa.value }} min 1 / max 20</mat-hint>
-            <mat-error *ngIf="mesasForm.controls['capacidad'].hasError('required')">
+            <input
+              matInput
+              #capacidadMesa
+              min="1"
+              max="20"
+              pattern="^[0-9]*$"
+              placeholder="Ex. 1,2,3.."
+              formControlName="capacidad"
+              type="number"
+            />
+            <mat-hint align="end"
+              >{{ capacidadMesa.value }} / máx 20</mat-hint
+            >
+            <mat-error
+              *ngIf="mesasForm.controls['capacidad'].hasError('required')"
+            >
               La capacidad de la mesa es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
@@ -35,24 +65,43 @@
         <!-- ! Single -->
         <div class="col" *ngIf="sucursalesList">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Sucursal de la mesa" formControlName="idSucursal">
-              <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id">
+            <mat-select
+              placeholder="Sucursal de la mesa"
+              formControlName="idSucursal"
+              [disabled]="!isCreate"
+            >
+              <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
                 {{ sucursal.nombre }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="mesasForm.controls['idSucursal'].hasError('required')">
+            <mat-error
+              *ngIf="mesasForm.controls['idSucursal'].hasError('required')"
+            >
               La sucursal es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col" *ngIf="disponibilidadesList">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Disponibilidad de la mesa" formControlName="idDisponibilidad">
-              <mat-option *ngFor="let disponibilidad of disponibilidadesList" [value]="disponibilidad.id">
+            <mat-select
+              placeholder="Disponibilidad de la mesa"
+              formControlName="idDisponibilidad"
+            >
+              <mat-option
+                *ngFor="let disponibilidad of disponibilidadesList"
+                [value]="disponibilidad.id"
+              >
                 {{ disponibilidad.descripcion }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="mesasForm.controls['idDisponibilidad'].hasError('required')">
+            <mat-error
+              *ngIf="
+                mesasForm.controls['idDisponibilidad'].hasError('required')
+              "
+            >
               La disponibilidad de la mesa es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
@@ -61,19 +110,23 @@
       <div class="row">
         <div class="col">
           <mat-label>Estado</mat-label>
-          <mat-radio-group formControlName="estado">
+          <mat-radio-group [ngClass]="{'invalid': ngForm.submitted && mesasForm.get('estado').invalid}"  formControlName="estado">
             <mat-radio-button [value]="true">Habilitado</mat-radio-button>
-            <mat-radio-button [value]="false">Deshabilitado</mat-radio-button>            
+            <mat-radio-button [value]="false">Deshabilitado</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>
     </mat-card-content>
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <button mat-raesed-button color="primary" type="submit">Guardar</button>
+      <button mat-raesed-button color="primary" type="submit">
+        Guardar<mat-icon>save</mat-icon>
+      </button>
       <mat-button-toggle *ngIf="isCreate" (click)="onReset()"
-        >Limpiar</mat-button-toggle
+        >Limpiar<mat-icon>restore</mat-icon></mat-button-toggle
       >
-      <mat-button-toggle (click)="onBack()">Cancelar</mat-button-toggle>
+      <mat-button-toggle (click)="onBack()"
+        >Cancelar<mat-icon>keyboard_return</mat-icon></mat-button-toggle
+      >
     </mat-button-toggle-group>
   </mat-card>
 </form>
