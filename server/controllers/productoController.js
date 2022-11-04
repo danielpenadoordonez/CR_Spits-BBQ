@@ -137,7 +137,7 @@ module.exports.createProduct = async (request, response, next) => {
  */
 module.exports.updateProduct = async (request, response, next) => {
   let product = request.body;
-  let productId = parseInt(product.id);
+  let productId = parseInt(request.params.id);
 
   const updatedProduct = await prismaClient.producto.update({
     where: { id: productId },
@@ -149,11 +149,6 @@ module.exports.updateProduct = async (request, response, next) => {
       imagen: product.imagen,
       estado: product.estado,
       idCategoria: product.idCategoria,
-      sucursales_producto: {
-        updateMany: {
-          data: product.sucursales_producto,
-        },
-      },
     },
   });
   response.json(updatedProduct);
