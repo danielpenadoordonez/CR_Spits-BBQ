@@ -32,6 +32,30 @@ module.exports.getAllProducts = async (request, response, next) => {
   response.json(products);
 };
 
+//Todos los productos habilitados
+module.exports.getAllHabilityProducts = async (request, response, next) => {
+  const products = await prismaClient.producto.findMany({
+    where: { estado: true },
+    orderBy: {
+      id: "asc",
+    },
+    include: {
+      sucursales_producto: {
+        include: {
+          Sucursal: true,
+        },
+      },
+      Categoria_Producto: {
+        select: {
+          id: false,
+          descripcion: true,
+        },
+      },
+    },
+  });
+  response.json(products);
+};
+
 //* Obtener producto por id
 module.exports.getProductById = async (request, response, next) => {
   let productId = parseInt(request.params.id);
@@ -151,6 +175,7 @@ module.exports.updateProduct = async (request, response, next) => {
       idCategoria: product.idCategoria,
       sucursales_producto: {
         updateMany: {
+          where: {idProducto : productId},
           data: product.sucursales_producto,
         },
       },

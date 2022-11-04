@@ -33,7 +33,7 @@ export class GestionMesasComponent implements AfterViewInit {
 
   listaMesas() {
     this.gService
-      .list('mesas/')
+      .list('mesas/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);
