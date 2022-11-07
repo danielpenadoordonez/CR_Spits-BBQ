@@ -34,7 +34,7 @@ export class GestionProductoComponent implements AfterViewInit {
 
   listaProductos() {
     this.gService
-      .list('productos/')
+      .list('productos/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

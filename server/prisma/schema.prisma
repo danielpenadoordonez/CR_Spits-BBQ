@@ -127,9 +127,9 @@ model Producto {
 }
 
 model Sucursal_Producto {
-  Producto   Producto @relation(fields: [idProducto], references: [id])
+  Producto   Producto? @relation(fields: [idProducto], references: [id])
   idProducto Int
-  Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
+  Sucursal   Sucursal? @relation(fields: [idSucursal], references: [id])
   idSucursal Int
 
   @@id([idProducto, idSucursal])

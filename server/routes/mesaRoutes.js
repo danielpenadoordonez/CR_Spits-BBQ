@@ -8,6 +8,7 @@ const mesaController = require("../controllers/mesaController");
 router.get("/", mesaController.getAllMesas);
 router.post("/", mesaController.createTable);
 router.get("/all", mesaController.getAllMesas);
+router.get("/all-hability", mesaController.getAllHabilityMesas);
 router.get("/:id", mesaController.getMesaById);
 router.get("/codigo/:codigo", mesaController.getMesaByCode);
 router.get("/sucursal/:idSucursal", mesaController.getMesasBySucursal);

@@ -21,6 +21,20 @@ module.exports.getAllMesas = async (request, response, next) => {
   response.json(mesas);
 };
 
+//* Todas las mesas habilitadas
+module.exports.getAllHabilityMesas = async (request, response, next) => {
+  const mesas = await prismaClient.mesa.findMany({
+    where: { estado: true },
+    orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
+    include: {
+      Sucursal: true,
+      EstadoMesa: true,
+    },
+  });
+
+  response.json(mesas);
+};
+
 //* Obtener mesa por el id
 module.exports.getMesaById = async (request, response, next) => {
   let id = parseInt(request.params.id);
