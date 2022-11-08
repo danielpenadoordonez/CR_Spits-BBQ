@@ -85,6 +85,8 @@ module.exports.getMesasBySucursal = async (request, response, next) => {
     where: { idSucursal: sucursal },
     include: {
       reservaciones: true,
+      Sucursal: true,
+      EstadoMesa: true,
     },
   });
   response.json(mesas);
