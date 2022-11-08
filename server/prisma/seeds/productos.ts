@@ -1,9 +1,9 @@
 //* Corresponden a los distintos productos que se ofrecen (platos)
 
+//! Nota: id eliminado debido a que ahora es autoincrement
 export const productos = [
     //? Categoría 1 - Bebidas
     {
-        id: 1,
         nombre: 'Té frío de limón',
         descripcion: 'bebida natural',
         ingredientes: '',
@@ -13,7 +13,6 @@ export const productos = [
         idCategoria: 1,
     },
     {
-        id: 2,
         nombre: 'Coca Cola',
         descripcion: 'bebida gaseosa',
         ingredientes: '',
@@ -23,7 +22,6 @@ export const productos = [
         idCategoria: 1
     },
     {
-        id: 3,
         nombre: 'Café negro',
         descripcion: 'Café 1820 a gusto, incluye sobres de azúcar',
         ingredientes: '',
@@ -33,7 +31,6 @@ export const productos = [
         idCategoria: 1
     },
     {
-        id: 4,
         nombre: 'Batido natural',
         descripcion: 'batidos de guanabana, fresa, mango y sandía',
         ingredientes: 'zumo de fruta',
@@ -43,7 +40,6 @@ export const productos = [
         idCategoria: 1
     },
     {
-        id: 5,
         nombre: 'Imperial',
         descripcion: 'Cerveza',
         ingredientes: '',
@@ -54,7 +50,6 @@ export const productos = [
     },
     //? Categoría 2 - Entradas
     {
-        id: 6,
         nombre: 'Patacones',
         descripcion: 'plato de entrada',
         ingredientes: 'Plátano verde',
@@ -64,7 +59,6 @@ export const productos = [
         idCategoria: 2
     },
     {
-        id: 7,
         nombre: 'Pinchos a la parilla',
         descripcion: 'mixto de pollo y cerdo',
         ingredientes: 'carne de res, de pollo pimentón rojo y verde',
@@ -74,7 +68,6 @@ export const productos = [
         idCategoria: 2
     },
     {
-        id: 8,
         nombre: 'Costillas BBQ',
         descripcion: 'de cerdo ahumadas con salsa BBQ incluida',
         ingredientes: '',
@@ -84,7 +77,6 @@ export const productos = [
         idCategoria: 2
     },
     {
-        id: 9,
         nombre: 'Papas fritas',
         descripcion: 'papas a la francesa incluye sobres de mayonesa, ketchup y mostaza',
         ingredientes: '',
@@ -94,7 +86,6 @@ export const productos = [
         idCategoria: 2
     },
     {
-        id: 10,
         nombre: 'Dedos de Pollo',
         descripcion: 'empanizados con salsa BBQ y papas fritas',
         ingredientes: 'pollo, salsa BBQ, papas',
@@ -105,7 +96,6 @@ export const productos = [
     },
     //? Categoría 3 - Carnes
     {
-        id: 11,
         nombre: 'Pincho de res',
         descripcion: '4 pinchos grandes de res',
         ingredientes: 'carne de res',
@@ -115,7 +105,6 @@ export const productos = [
         idCategoria: 3
     },
     {
-        id: 12,
         nombre: 'New York Steak',
         descripcion: 'corte de carne New York al gusto, con papas horneadas con tocineta y queso',
         ingredientes: 'carne de res, papas, tocineta, queso',
@@ -125,7 +114,6 @@ export const productos = [
         idCategoria: 3
     },
     {
-        id: 13,
         nombre: 'Baby Back Ribs',
         descripcion: '6 costillas en un adobo hecho a base de salsa BBQ con papas a la francesa',
         ingredientes: 'costillas de cerdo, papas',
@@ -135,7 +123,6 @@ export const productos = [
         idCategoria: 3
     },
     {
-        id: 14,
         nombre: 'Hamburguesa CRSpits',
         descripcion: 'Hamburguesa con doble torta de carne Angus, con tocineta, doble queso, hongos salteados, salsa BBQ',
         ingredientes: 'carne Angus, tocineta, hongos, queso, salsa BBQ',
@@ -145,7 +132,6 @@ export const productos = [
         idCategoria: 3
     },
     {
-        id: 15,
         nombre: 'Pollo Tejano',
         descripcion: 'Pollo cocinado el horno con salsa de mostaza y BBQ, con queso derretido con hongos y tocineta encima acompañado de papas horneadas con tocineta y queso',
         ingredientes: 'pollo, salsa de mostaza, BBQ, tocineta, hongos, queso, papas',
@@ -155,7 +141,6 @@ export const productos = [
         idCategoria: 3
     },
     {
-        id: 16,
         nombre: 'Asado Mixto',
         descripcion: 'Chuleta de Cerdo en Salsa BBQ, 3 chorizos con tortilla, pollo a la plancha, pico de gallo, guacamole, tortillas tostadas, frijoles molidos',
         ingredientes: 'carne de cerdo, chorizo, pollo, tomate, aguacate, tortilla, cebolla',
@@ -166,7 +151,6 @@ export const productos = [
     },
     //? Categoría 4 - Pescados
     {
-        id: 17,
         nombre: 'Mero al ajillo',
         descripcion: 'pescado blanco, con arroz blanco incluye 2 filetes pequeños y una ensalada verde',
         ingredientes: 'Mero, filetes',
@@ -176,7 +160,6 @@ export const productos = [
         idCategoria: 4
     },
     {
-        id: 18,
         nombre: 'Pescado Frito',
         descripcion: 'Pargo entero frito con patacones y ensalada',
         ingredientes: 'Pargo, platano verde, repollo, zanahoria, limon',
@@ -186,7 +169,6 @@ export const productos = [
         idCategoria: 4
     },
     {
-        id: 19,
         nombre: 'Pescado Empanizado',
         descripcion: 'Corvina empanizada, con pure de papas y vegetales',
         ingredientes: 'Corvina, papas, brocoli, zanahoria, mantequilla, ajo',
@@ -197,7 +179,6 @@ export const productos = [
     },
     //? Categoría 5 - Mariscos
     {
-        id: 20,
         nombre: 'Mariscada',
         descripcion: 'incluye camarones, almejas, pulpo y calamar, incluye papas fritas y ensalada verde',
         ingredientes: 'orégano, chile dulce, apio, ajo',
@@ -207,7 +188,6 @@ export const productos = [
         idCategoria: 5
     },
     {
-        id: 21,
         nombre: 'Triple de Camarones',
         descripcion: 'Camarones al ajillo, empanizados y en salsa BBQ con pure de papas y vegetales',
         ingredientes: 'camarones, ajo, papas, brocoli, zanahoria, salsa BBQ',

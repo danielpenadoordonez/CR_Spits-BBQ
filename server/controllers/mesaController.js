@@ -11,9 +11,21 @@ const tableService = require("../services/TableService");
 //* Todas las mesas
 module.exports.getAllMesas = async (request, response, next) => {
   const mesas = await prismaClient.mesa.findMany({
-    orderBy: {
-      idSucursal: "asc",
+    orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
+    include: {
+      Sucursal: true,
+      EstadoMesa: true,
     },
+  });
+
+  response.json(mesas);
+};
+
+//* Todas las mesas habilitadas
+module.exports.getAllHabilityMesas = async (request, response, next) => {
+  const mesas = await prismaClient.mesa.findMany({
+    where: { estado: true },
+    orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       Sucursal: true,
       EstadoMesa: true,
@@ -57,6 +69,7 @@ module.exports.getMesasByDisponibilidad = async (request, response, next) => {
   let disponibilidad = parseInt(request.params.idDisponibilidad);
   const mesas = await prismaClient.mesa.findMany({
     where: { idDisponibilidad: disponibilidad },
+    orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       reservaciones: true,
     },
@@ -83,6 +96,9 @@ module.exports.getMesasBySucursalandDisp = async (request, response, next) => {
   let disponibilidad = parseInt(request.params.idDisponibilidad);
   const mesas = await prismaClient.mesa.findMany({
     where: { idSucursal: sucursal, idDisponibilidad: disponibilidad },
+    orderBy: {
+      id: "asc",
+    },
     include: {
       reservaciones: true,
     },
@@ -91,7 +107,7 @@ module.exports.getMesasBySucursalandDisp = async (request, response, next) => {
 };
 
 /*
-  *POST APIs
+ *POST APIs
  */
 module.exports.createTable = async (request, response, next) => {
   let table = request.body;
@@ -118,18 +134,18 @@ module.exports.createTable = async (request, response, next) => {
 };
 
 /*
-  *  PUT APIs
+ *  PUT APIs
  */
 
 module.exports.updateTable = async (request, response, next) => {
   let table = request.body;
-  let tableCode = String(table.codigo);
+  let tableCode = String(table.codigo); //? es el código, por eso string
   const updatedTable = await prismaClient.mesa.update({
     where: { codigo: tableCode },
     data: {
       capacidad: table.capacidad,
       estado: table.estado,
-      idSucursal: table.idSucursal,
+      //idSucursal: table.idSucursal, -- No se actualiza...
       idDisponibilidad: table.idDisponibilidad,
     },
   });

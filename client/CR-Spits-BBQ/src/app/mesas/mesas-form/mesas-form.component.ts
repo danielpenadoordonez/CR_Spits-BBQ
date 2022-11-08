@@ -25,7 +25,7 @@ export class MesasFormComponent {
   isCreate: boolean = true; //* si es update o create
 
   /* 
-  * FORMATO JSON
+  * FORMATO JSON - MESA
   * "capacidad": 4,
   * "estado": true,
   * "idSucursal": 2,
@@ -77,9 +77,9 @@ export class MesasFormComponent {
       codigo: null, //* No válida [readonly - show on update] - se genera en el backend seguiendo las reglas del formato correspondiente
       //? Único campo en el que el usuario puede digitar
       capacidad: [null, Validators.compose([
-        Validators.required, Validators.min(1), Validators.max(20)
+        Validators.required, Validators.min(1), Validators.max(20), Validators.pattern('^[0-9]*$') //? Sólo números
       ])],
-      estado: [null, Validators.requiredTrue], //* Checkbox
+      estado: [null, Validators.required], //? radio buttons - habilitado - deshabilitado, usar Validators.requiredTrue para checkboxes, mas no para radio
       idSucursal: [null, Validators.required], //* Sucursal, solo 1 [combobox - 1 no múltiple]
       idDisponibilidad: [null, Validators.required]//*  Combo box, solo 1 igualmente, sin múltiples
     });
@@ -107,7 +107,7 @@ export class MesasFormComponent {
       });
   }
 
-  //* Manejo de errores
+  //* Manejo de errores - público
   public errorHandling = (control: string, error: string) => {
     return this.mesasForm.controls[control].hasError(error);
   };
@@ -148,6 +148,7 @@ export class MesasFormComponent {
 
     //* Verificar validación del form
     if (this.mesasForm.invalid) {
+      console.log('invalid:');
       return;
     }
 

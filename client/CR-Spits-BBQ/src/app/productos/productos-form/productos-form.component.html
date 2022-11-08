@@ -1,30 +1,86 @@
-<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+<form
+  [formGroup]="productosForm"
+  #ngForm="ngForm"
+  novalidate
+  (ngSubmit)="isCreate ? crearProducto() : actualizarProducto()"
+>
+  <!-- ! Campos ocultos -->
+  <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>Shipping Information</mat-card-title>
+      <mat-card-title
+        >{{ titleForm }} Producto
+        <mat-icon>{{
+          isCreate ? "note_add" : "edit"
+        }}</mat-icon></mat-card-title
+      >
     </mat-card-header>
     <mat-card-content>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Company" formControlName="company">
+            <input
+              matInput
+              #nombreProducto
+              minlength="3"
+              maxlength="30"
+              pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+              placeholder="Nombre del producto"
+              formControlName="nombre"
+            />
+            <mat-hint align="end"
+              >{{ nombreProducto.value.length }} / 30</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['nombre'].hasError('required')"
+            >
+              El nombre del producto es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              #descripcionProducto
+              minlength="5"
+              maxlength="100"
+              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              placeholder="Descripción del producto"
+              formControlName="descripcion"
+            />
+            <mat-hint align="end"
+              >{{ descripcionProducto.value.length }} / 100</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['descripcion'].hasError('required')"
+            >
+              La descripción del producto es <strong>requerida</strong>
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="First name" formControlName="firstName">
-            <mat-error *ngIf="addressForm.controls['firstName'].hasError('required')">
-              First name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Last name" formControlName="lastName">
-            <mat-error *ngIf="addressForm.controls['lastName'].hasError('required')">
-              Last name is <strong>required</strong>
+            <input
+              matInput
+              #ingredientesProducto
+              minlength="5"
+              maxlength="100"
+              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              placeholder="Ingredientes del producto"
+              formControlName="ingredientes"
+            />
+            <mat-hint align="end"
+              >{{ ingredientesProducto.value.length }} / 100</mat-hint
+            >
+            <mat-error
+              *ngIf="
+                productosForm.controls['ingredientes'].hasError('required')
+              "
+            >
+              El mínimo es de 5 carácteres <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
@@ -32,69 +88,115 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address" formControlName="address"></textarea>
-            <mat-error *ngIf="addressForm.controls['address'].hasError('required')">
-              Address is <strong>required</strong>
+            <input
+              matInput
+              #precioProducto
+              min="100"
+              max="100000"
+              pattern="^[0-9]*$"
+              placeholder="Ex. 5500, 1500, 4500 colones (₡)"
+              formControlName="precio"
+              type="number"
+            />
+            <mat-hint align="end"
+              >{{ precioProducto.value }} / máx 100000₡</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['precio'].hasError('required')"
+            >
+              El precio es <strong>requerido y un número entero</strong>
             </mat-error>
           </mat-form-field>
         </div>
-      </div>
-      <div class="row" *ngIf="!hasUnitNumber">
-        <div class="col">
-          <button mat-button type="button" (click)="hasUnitNumber = !hasUnitNumber">
-            + Add C/O, Apt, Suite, Unit
-          </button>
-        </div>
-      </div>
-      <div class="row" *ngIf="hasUnitNumber">
         <div class="col">
           <mat-form-field class="full-width">
-            <textarea matInput placeholder="Address 2" formControlName="address2"></textarea>
+            <input
+              matInput
+              #imagenProducto
+              minlength="25"
+              maxlength="100"
+              pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$"
+              placeholder="https://example.com/imagen.png"
+              formControlName="imagen"
+            />
+            <mat-hint align="end"
+              >{{ imagenProducto.value.length }} / 100</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['imagen'].hasError('required')"
+            >
+              La imagen es <strong>requerida y debe ser un URL</strong>
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col" *ngIf="sucursalesList">
           <mat-form-field class="full-width">
-            <input matInput placeholder="City" formControlName="city">
-            <mat-error *ngIf="addressForm.controls['city'].hasError('required')">
-              City is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <mat-select placeholder="State" formControlName="state">
-              <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-                {{ state.name }}
+            <mat-select
+              placeholder="Sucursales disponibles"
+              formControlName="sucursales_producto"
+              multiple
+            >
+              <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
+                {{ sucursal.nombre }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="addressForm.controls['state'].hasError('required')">
-              State is <strong>required</strong>
+            <mat-error
+              *ngIf="
+                productosForm.controls['sucursales_producto'].hasError(
+                  'required'
+                )
+              "
+            >
+              La(s) sucursal(es) es/son <strong>requerido(s)</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col" *ngIf="categoriasList">
+          <mat-form-field class="full-width">
+            <mat-select
+              placeholder="Cateogría del producto"
+              formControlName="idCategoria"
+            >
+              <mat-option
+                *ngFor="let categoria of categoriasList"
+                [value]="categoria.id"
+              >
+                {{ categoria.descripcion }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="productosForm.controls['idCategoria'].hasError('required')"
+            >
+              La categoría del producto es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <mat-form-field class="full-width">
-            <input matInput #postalCode maxlength="5" placeholder="Postal Code" type="number" formControlName="postalCode">
-            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-radio-group formControlName="shipping">
-            <mat-radio-button value="free">Free Shipping</mat-radio-button>
-            <mat-radio-button value="priority">Priority Shipping</mat-radio-button>
-            <mat-radio-button value="nextday">Next Day Shipping</mat-radio-button>
-          </mat-radio-group>
+            <mat-label>Estado</mat-label>
+            <mat-radio-group [ngClass]="{'invalid': ngForm.submitted && productosForm.get('estado').invalid}" formControlName="estado">
+              <mat-radio-button [value]="true">Habilitado</mat-radio-button>
+              <mat-radio-button [value]="false">Deshabilitado</mat-radio-button>
+            </mat-radio-group>
         </div>
       </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
-    </mat-card-actions>
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <button mat-raesed-button color="primary" type="submit">
+        Guardar<mat-icon>save</mat-icon>
+      </button>
+      <mat-button-toggle *ngIf="isCreate" (click)="onReset()"
+        >Limpiar<mat-icon>restore</mat-icon></mat-button-toggle
+      >
+      <mat-button-toggle (click)="onBack()"
+        >Cancelar<mat-icon>keyboard_return</mat-icon></mat-button-toggle
+      >
+    </mat-button-toggle-group>
   </mat-card>
 </form>

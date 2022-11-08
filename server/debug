@@ -1,0 +1,88 @@
+/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:28329
+    const error2 = new PrismaClientValidationError(renderErrorStr(validationCallsite));
+                   ^
+
+PrismaClientValidationError: 
+Invalid `prismaClient.producto.update()` invocation in
+/home/danielp/Documents/WEB/CR Spits & BBQ/server/controllers/productoController.js:154:54
+
+  151   }
+  152 });
+  153 
+→ 154 const updatedProduct = await prismaClient.producto.update({
+        where: {
+          id: 22
+        },
+        data: {
+          nombre: 'Camarones al Ajillo',
+          descripcion: 'Camarones al ajillo, con papas fritas y ensalada',
+          ingredientes: 'Camarones, ajo, papas, brocoli, zanahoria, mantequilla',
+          precio: '6500',
+          imagen: 'https://i.ibb.co/w61GHrx/camarones-ajillo.png',
+          estado: true,
+          idCategoria: 4,
+          sucursales_producto: {
+            disconnect: [
+              {
+                idSucursal: 1
+                ~~~~~~~~~~
+              },
+              {
+                idSucursal: 2
+                ~~~~~~~~~~
+              },
+              {
+                idSucursal: 3
+                ~~~~~~~~~~
+              }
+            ],
+            connect: [
+              {
+                id: 1
+                ~~
+              },
+              {
+                id: 2
+                ~~
+              }
+            ]
+          }
+        }
+      })
+
+Unknown arg `idSucursal` in data.sucursales_producto.disconnect.0.idSucursal for type Sucursal_ProductoWhereUniqueInput. Did you mean `select`? Available args:
+type Sucursal_ProductoWhereUniqueInput {
+  idProducto_idSucursal?: Sucursal_ProductoIdProductoIdSucursalCompoundUniqueInput
+}
+Unknown arg `idSucursal` in data.sucursales_producto.disconnect.1.idSucursal for type Sucursal_ProductoWhereUniqueInput. Did you mean `select`? Available args:
+type Sucursal_ProductoWhereUniqueInput {
+  idProducto_idSucursal?: Sucursal_ProductoIdProductoIdSucursalCompoundUniqueInput
+}
+Unknown arg `idSucursal` in data.sucursales_producto.disconnect.2.idSucursal for type Sucursal_ProductoWhereUniqueInput. Did you mean `select`? Available args:
+type Sucursal_ProductoWhereUniqueInput {
+  idProducto_idSucursal?: Sucursal_ProductoIdProductoIdSucursalCompoundUniqueInput
+}
+Unknown arg `id` in data.sucursales_producto.connect.0.id for type Sucursal_ProductoWhereUniqueInput. Available args:
+
+type Sucursal_ProductoWhereUniqueInput {
+  idProducto_idSucursal?: Sucursal_ProductoIdProductoIdSucursalCompoundUniqueInput
+}
+Unknown arg `id` in data.sucursales_producto.connect.1.id for type Sucursal_ProductoWhereUniqueInput. Available args:
+
+type Sucursal_ProductoWhereUniqueInput {
+  idProducto_idSucursal?: Sucursal_ProductoIdProductoIdSucursalCompoundUniqueInput
+}
+
+
+    at Document.validate (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:28329:20)
+    at serializationFn (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30929:19)
+    at runInChildSpan (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:24157:12)
+    at PrismaClient._executeRequest (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30936:31)
+    at consumer (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30862:23)
+    at /home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30867:51
+    at AsyncResource.runInAsyncScope (node:async_hooks:203:9)
+    at /home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30867:29
+    at runInChildSpan (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:24157:12)
+    at PrismaClient._request (/home/danielp/Documents/WEB/CR Spits & BBQ/server/node_modules/@prisma/client/runtime/index.js:30864:22) {
+  clientVersion: '4.3.1'
+}

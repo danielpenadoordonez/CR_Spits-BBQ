@@ -12,6 +12,33 @@ const prismaClient = new PrismaClient();
 //Todos los productos
 module.exports.getAllProducts = async (request, response, next) => {
   const products = await prismaClient.producto.findMany({
+    orderBy: {
+      id: "asc",
+    },
+    include: {
+      sucursales_producto: {
+        include: {
+          Sucursal: true,
+        },
+      },
+      Categoria_Producto: {
+        select: {
+          id: false,
+          descripcion: true,
+        },
+      },
+    },
+  });
+  response.json(products);
+};
+
+//Todos los productos habilitados
+module.exports.getAllHabilityProducts = async (request, response, next) => {
+  const products = await prismaClient.producto.findMany({
+    where: { estado: true },
+    orderBy: {
+      id: "asc",
+    },
     include: {
       sucursales_producto: {
         include: {
@@ -56,6 +83,9 @@ module.exports.getProductsByCategory = async (request, response, next) => {
   let categoria = parseInt(request.params.idCategoria);
   const products = await prismaClient.producto.findMany({
     where: { idCategoria: categoria },
+    orderBy: {
+      id: "asc",
+    },
     include: {
       sucursales_producto: true,
     },
@@ -76,6 +106,9 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     let prodID = parseInt(product.idProducto);
     let producto = await prismaClient.producto.findFirst({
       where: { id: prodID },
+      orderBy: {
+        id: "asc",
+      },
       include: {
         sucursales_producto: {
           include: {
@@ -106,7 +139,6 @@ module.exports.createProduct = async (request, response, next) => {
   console.log(product);
   const newProduct = await prismaClient.producto.create({
     data: {
-      id: product.id,
       nombre: product.nombre,
       descripcion: product.descripcion,
       ingredientes: product.ingredientes,
@@ -131,6 +163,18 @@ module.exports.updateProduct = async (request, response, next) => {
   let product = request.body;
   let productId = parseInt(request.params.id);
 
+  const oldProduct = await prismaClient.producto.findUnique({
+    where: {id: productId},
+    include:{
+      sucursales_producto: {
+        select: {
+          //idProducto: true,
+          idSucursal: true
+        }
+      }
+    }
+  });
+
   const updatedProduct = await prismaClient.producto.update({
     where: { id: productId },
     data: {
@@ -142,12 +186,10 @@ module.exports.updateProduct = async (request, response, next) => {
       estado: product.estado,
       idCategoria: product.idCategoria,
       sucursales_producto: {
-        updateMany: {
-          where: {idProducto: productId},
-          data: product.sucursales_producto
-        }
+        disconnect: oldProduct.sucursales_producto,
+        connect: product.sucursales_producto
       }
-    }
+    },
   });
   response.json(updatedProduct);
 };
