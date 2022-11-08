@@ -18,8 +18,8 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
 
 export class GestionMesasComponent implements AfterViewInit, OnInit {
   datos: any; //* Data
-  mesaObject: any; // Objeto mesa
-  sucursalesList: any; // Lista sucursales
+  mesaObject: any; //* Objeto mesa
+  sucursalesList: any; //* Lista sucursales
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción
   displayedColumns = ['mesa']//* Columnas que se verán de las mesas, solo para MatTable
 

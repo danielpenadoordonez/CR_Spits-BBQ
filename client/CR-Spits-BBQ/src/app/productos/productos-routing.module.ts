@@ -8,7 +8,7 @@ import { ProductosFormComponent } from './productos-form/productos-form.componen
 const routes: Routes = [
   //* Rutas ordenadas 
   { path: 'productos', component: GestionProductoComponent },
-  { path: 'productos/all', component: ProductosAllComponent },
+  //* { path: 'productos/all', component: ProductosAllComponent }, desactivada temporalmente
   // { path: 'productos/create', component: ProductosFormComponent },
   // { path: 'productos/update/:id', component: ProductosFormComponent }
 ];
