@@ -39,7 +39,6 @@ export class MesaDetailComponent implements OnInit {
         console.log(data);
         this.datos = data;
       });
-
   }
   close() {
     this.dialogRef.close();

@@ -348,22 +348,56 @@ tr.mat-row{
 
 
 /* MAT FORM */
-.mat-select-value, .mat-select-arrow, .mat-form-field-label, .mat-hint{
+.mat-select-value, .mat-select-arrow, .mat-hint{
     color: #fff !important;
+}
+
+.mat-form-field-label{
+    color: #8C8C8C !important;
 }
 
 .mat-form-field-underline {
     background-color: #fff !important;
 }
 
-.mat-radio-inner-circle{
+.mat-radio-inner-circle, .mat-form-field-ripple{
     background-color: #8B0000 !important;
 }
 
 .mat-radio-outer-circle{
     border-color: #8B0000 !important;
+    border-width: 3px !important;
 }
 
 .shipping-card .mat-card-content{
     font-size: 1.2rem;
+}
+
+.mat-card-header-text{
+    margin: 1rem 0 !important;
+}
+
+.mat-button-toggle-group-appearance-standard, .mat-button-toggle + .mat-button-toggle{
+    border: none !important;
+}
+
+.mat-button-toggle-label-content{
+    padding: 0 !important;
+}
+
+/* .mat-form-field-appearance-legacy{
+    transform: translateY(-1.5rem) scale(.75) perspective(100px) !important;
+} */
+
+
+
+/* MAT SELECT Class Filter */
+.filter .mat-form-field-flex{
+    background-color: #171717;
+    box-shadow: inset 0 0 15px #000;
+    font-weight: bolder !important;
+}
+
+.filter .mat-form-field-infix{
+    width: 250px !important;
 }

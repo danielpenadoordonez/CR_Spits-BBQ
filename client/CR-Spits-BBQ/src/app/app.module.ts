@@ -13,6 +13,7 @@ import { AcercaDeModule } from './acerca-de/acerca-de.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { ProductosModule } from './productos/productos.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ProductosModule } from './productos/productos.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    BrowserAnimationsModule,                                                         
+    BrowserAnimationsModule,  
+    ToastrModule.forRoot(),                                                       
     //* importar los módulos creados propios en orden de sin rutas a los que estan con rutas
     CoreModule,
     ShareModule,

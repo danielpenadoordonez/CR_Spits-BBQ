@@ -44,7 +44,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
-    this.validateSidenavScreenWidth();
+    this.onResize();
     // este método se tiene que cambiar más adelante
     this.user = this.userService.getUserLogged('208320565').subscribe((data: any) => {
       this.user = data;

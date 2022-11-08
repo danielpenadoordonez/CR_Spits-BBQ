@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
 @Component({
   selector: 'app-mesas-form',
@@ -32,7 +33,8 @@ export class MesasFormComponent {
   */
 
   constructor(private fb: FormBuilder, private gService: GenericService,
-    private router: Router, private activeRouter: ActivatedRoute) {
+    private router: Router, private activeRouter: ActivatedRoute,
+    private notification: NotificacionService) {
     this.formularioReactive();
     this.listaSucursales();
     this.listaDisponibilidades();
@@ -45,7 +47,7 @@ export class MesasFormComponent {
     this.activeRouter.params.subscribe((params: Params) => {
       this.idMesa = params['id']; //? Recibe el código
       if (this.idMesa !== undefined) { //* Validamos que no esté indefinido (id enviado por params)
-        this.isCreate = false; 
+        this.isCreate = false;
         this.titleForm = 'Actualizar'; //* Cambiamos el título
         this.gService.get('mesas/codigo', this.idMesa)
           .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
@@ -129,6 +131,8 @@ export class MesasFormComponent {
     this.gService.create('mesas', this.mesasForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respMesa = data; //* Obtenemos y asignamos la data
+        // Se muestra una notificacion al usuario
+        this.notification.mensaje('Mesas', `Mesa: ${this.respMesa.codigo} ha sido creada.`, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['/mesas/all'], {
           queryParams: { create: 'true' }
@@ -155,8 +159,9 @@ export class MesasFormComponent {
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respMesa = data; //* Obtenemos y asignamos la data
         //? Redirigimos
-        this.router.navigate(['/mesas/all'], {
-          queryParams: { update: 'true' }
+        this.notification.mensaje('Mesas', `Mesa: ${this.respMesa.codigo} ha sido actualizada.`, TipoMessage.success);
+        this.router.navigate(['/dashboard/mesas'], {
+          queryParams: { update: 'true', code: data.codigo }
         });
       });
   }
@@ -169,7 +174,7 @@ export class MesasFormComponent {
 
   onBack() {
     //* Cuando intenté salir - botón salir
-    this.router.navigate(['/mesas/all']);
+    this.router.navigate(['dashboard/mesas']);
   }
 
   ngOnDestroy() {

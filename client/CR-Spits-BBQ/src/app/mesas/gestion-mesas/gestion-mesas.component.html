@@ -1,5 +1,5 @@
 
-  <div class="tips-information flexbox">
+  <div class="tips-information flexbox" data-aos="zoom-in">
     <div class="tip-content flexbox">
       <img class="table-icon" src="https://img.icons8.com/ios-filled/75/C8C0B5/table-top-view.png" />
       <p class="tip-description">Disponible</p>
@@ -13,6 +13,22 @@
       <p class="tip-description">Ocupado</p>
     </div>
   </div>
+  <div class="flexbox" data-aos="zoom-in">
+    <mat-form-field appearance="fill" class="filter">
+      <mat-label>Sucursales</mat-label>
+      <mat-select>
+        <mat-option (click)="filterMesasSucursales(0)" aria-selected="true">
+          Todas
+        </mat-option>
+        <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="filterMesasSucursales(sucursal.id)">
+          {{sucursal.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="add-table flexbox" data-aos="zoom-in">
+    <mat-icon class="add-table-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
+  </div>
   <div class="mat-elevation-z8 grid-table-container" id="mesas-table" *ngIf="dataSource" onload="setReveal()">
     <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
       aria-label="Elements">
@@ -23,8 +39,7 @@
           <div class="table-container" data-aos="zoom-in" data-aos-duration="750">
             <div class="table-content">
               <div class="table-description">
-                <p class="table-code "
-                  [ngClass]="row.EstadoMesa.descripcion == 'Disponible'? 'bg-available' : row.EstadoMesa.descripcion == 'Reservada'? 'bg-reserved': 'bg-unavailable'">
+                <p class="table-code">
                   Mesa {{row.codigo}}
                 </p>
               </div>
@@ -42,8 +57,8 @@
                 {{row.EstadoMesa.descripcion}}
               </p>
               <div class="table-configuration-container flexbox">
-                <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)">info</mat-icon>
-                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)">edit</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle">info</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar">edit</mat-icon>
               </div>
             </div>
           </div>
@@ -54,6 +69,6 @@
     </table>
 
     <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="9"
-      [pageSizeOptions]="[3, 5, 10]" aria-label="Seleccione una pagina" class="mesas-paginator">
+      [pageSizeOptions]="[3, 6, 9]" aria-label="Seleccione una pagina" class="mesas-paginator">
     </mat-paginator>
   </div>
