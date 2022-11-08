@@ -30,7 +30,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
   imports: [
     CommonModule,
     ProductosRoutingModule,
-
     //* angular material
     MatDialogModule,
     MatButtonToggleModule,

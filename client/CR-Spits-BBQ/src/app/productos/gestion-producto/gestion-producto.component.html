@@ -5,7 +5,7 @@
       <ng-container matColumnDef="producto">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none;">Producto</th>
         <td mat-cell *matCellDef="let row">
-            <div class="products-container">
+            <div class="products-container" data-aos="zoom-in" data-aos-duration="750">
                 <div class="product-image">
                     <img [src]="row.imagen" alt="" class="product-img" (click)="detalleProducto(row.id)">
                 </div>
@@ -14,7 +14,7 @@
                     <p class="product-name">{{row.nombre}}</p>
                 </div>
                 <div class="actions">
-                    <mat-icon class="sidenav-link-icon settings" (click)="detalleProducto(row.id)">info</mat-icon>
+                    <mat-icon class="settings" (click)="detalleProducto(row.id)">info</mat-icon>
                 </div>
             </div>
         </td>

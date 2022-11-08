@@ -56,6 +56,13 @@
     letter-spacing: .15rem;
 }
 
+.table-code{
+    padding: .5rem 0;
+    color: #fff;
+    background: #171717;
+    box-shadow: inset 0 0 15px #000;
+}
+
 .mesas-paginator {
     background: #000;
     color: #fff;
@@ -81,6 +88,20 @@
     background-color: #024F8B;
 }
 
+.add-table-icon{
+    color: #fff;
+    font-size: 3rem;
+    background-color: #171717;
+    box-shadow: inset 0 0 15px #000;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    transition: all .75s ease;
+    cursor: pointer;
+}
+
+.add-table-icon:hover{
+    transform: rotate(90deg);
+}
 
 .table-content {
     text-align: center;
@@ -107,7 +128,7 @@
 .table-diners-information {
     position: absolute;
     left: 50%;
-    top: 55%;
+    top: 44.5%;
     transform: translate(-50%, -50%);
     color: #000822;
     z-index: 100;
@@ -119,8 +140,6 @@
     padding: 0 .2rem;
     font-weight: bolder;
 }
-
-
 
 .table-icon {
     object-fit: contain;
@@ -147,18 +166,22 @@
 
 .table-configuration-container {
     position: relative;
+    justify-content: start;
+    padding: .5rem .75rem;
 }
 
 .table-configuration-container .settings {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding: .5rem;
-    position: absolute;
-    left: 1rem;
-    bottom: .5rem;
     cursor: pointer;
     width: auto !important;
     height: auto !important;
+    transition: .5s ease-in-out;
+}
+
+.table-configuration-container .settings:hover{
+    transform: translateY(-4px);
 }
 
 .table-content .table-icon:hover {

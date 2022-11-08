@@ -13,6 +13,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "aos"
+            ],
             "outputPath": "dist/cr-spits-bbq",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -25,10 +28,12 @@
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css",
-              "src/assets/css/swiper-bundle.min.css"
+              "src/assets/css/swiper-bundle.min.css",
+              "node_modules/aos/dist/aos.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
-              
+              "node_modules/aos/dist/aos.js"
             ]
           },
           "configurations": {

@@ -2,9 +2,16 @@
   width: 100%;
 }
 
+.header-title{
+  font-size: 1.5rem;
+}
+
 .shipping-card {
   min-width: 120px;
   margin: 20px auto;
+  background: #171717;
+  border-radius: 1rem;
+  color: white !important;
 }
 
 .mat-radio-button {
@@ -15,6 +22,8 @@
 .row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  margin: 1.2rem 0;
 }
 
 .col {
@@ -26,6 +35,37 @@
   margin-right: 0;
 }
 
-.invalid{
-  color:#f44336;
+button{
+  border: none;
+}
+
+.mat-button-toggle, button{
+  background-color: #171717 !important;
+}
+
+.actions{
+  color: #FFF;
+  cursor: pointer;
+  font-size: 2.5rem;
+  transition: all .5s ease-in-out;
+  padding: 1rem;
+}
+
+.actions:hover{
+  border-radius: 50%;
+  background-color: #FE0202;
+}
+
+.actions-group{
+  border: none !important;
+}
+
+.radio-button{
+  padding: .75rem .5rem;
+}
+
+@media screen and (max-width: 576px) {
+  .shipping-card{
+    margin-top: 15vh;
+  }
 }

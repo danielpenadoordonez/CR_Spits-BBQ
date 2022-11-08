@@ -29,7 +29,6 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
   imports: [
     CommonModule,
     MesasRoutingModule,
-
      //* Angular material 
     MatDialogModule,
     MatButtonToggleModule,
@@ -46,7 +45,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     ReactiveFormsModule,
   ],
   exports: [
-    GestionMesasComponent
+    GestionMesasComponent,
+    MesasFormComponent,
   ]
 })
 export class MesasModule { }

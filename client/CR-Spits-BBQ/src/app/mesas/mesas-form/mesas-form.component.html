@@ -3,17 +3,14 @@
   #ngForm="ngForm"
   novalidate
   (ngSubmit)="isCreate ? crearMesa() : actualizarMesa()"
+  data-aos="zoom-in-up"
+  data-aos-duration="500"
 >
   <!-- ! Campos ocultos -->
   <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title
-        >{{ titleForm }} Mesa
-        <mat-icon>{{
-          isCreate ? "note_add" : "edit"
-        }}</mat-icon></mat-card-title
-      >
+      <mat-card-title class="header-title">{{ titleForm }} Mesa</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row" *ngIf="!isCreate">
@@ -36,30 +33,17 @@
             </mat-error>
           </mat-form-field>
         </div>
-      </div>
-      <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              #capacidadMesa
-              min="1"
-              max="20"
-              pattern="^[0-9]*$"
-              placeholder="Ex. 1,2,3.."
-              formControlName="capacidad"
-              type="number"
-            />
-            <mat-hint align="end"
-              >{{ capacidadMesa.value }} / máx 20</mat-hint
-            >
-            <mat-error
-              *ngIf="mesasForm.controls['capacidad'].hasError('required')"
-            >
+            <input matInput #capacidadMesa min="1" max="10" placeholder="Capacidad de la mesa" formControlName="capacidad" type="number">
+            <mat-hint align="end">{{capacidadMesa.value }} min 1 / max 10</mat-hint>
+            <mat-error *ngIf="mesasForm.controls['capacidad'].hasError('required')">
               La capacidad de la mesa es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
         </div>
+      </div>
+      <div class="row">
       </div>
       <div class="row">
         <!-- ! Single -->
@@ -110,23 +94,23 @@
       <div class="row">
         <div class="col">
           <mat-label>Estado</mat-label>
-          <mat-radio-group [ngClass]="{'invalid': ngForm.submitted && mesasForm.get('estado').invalid}"  formControlName="estado">
-            <mat-radio-button [value]="true">Habilitado</mat-radio-button>
-            <mat-radio-button [value]="false">Deshabilitado</mat-radio-button>
+          <mat-radio-group formControlName="estado">
+            <mat-radio-button class="radio-button" [value]="true">Habilitado</mat-radio-button>
+            <mat-radio-button class="radio-button" [value]="false">Deshabilitado</mat-radio-button>            
           </mat-radio-group>
         </div>
       </div>
     </mat-card-content>
-    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <button mat-raesed-button color="primary" type="submit">
-        Guardar<mat-icon>save</mat-icon>
+    <mat-button-toggle-group class="actions-group" name="fontStyle" aria-label="Font Style">
+      <button mat-raesed-button type="submit" title="Guardar">
+        <mat-icon class="actions">save</mat-icon>
       </button>
-      <mat-button-toggle *ngIf="isCreate" (click)="onReset()"
-        >Limpiar<mat-icon>restore</mat-icon></mat-button-toggle
-      >
-      <mat-button-toggle (click)="onBack()"
-        >Cancelar<mat-icon>keyboard_return</mat-icon></mat-button-toggle
-      >
+      <mat-button-toggle *ngIf="isCreate" (click)="onReset()" title="Limpiar">
+        <mat-icon class="actions">cleaning_services</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle (click)="onBack()" title="Cancelar">
+        <mat-icon class="actions">cancel</mat-icon>
+      </mat-button-toggle>
     </mat-button-toggle-group>
   </mat-card>
 </form>
