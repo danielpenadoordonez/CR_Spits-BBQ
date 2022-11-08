@@ -77,7 +77,7 @@ export class MesasFormComponent {
       codigo: null, //* No válida [readonly - show on update] - se genera en el backend seguiendo las reglas del formato correspondiente
       //? Único campo en el que el usuario puede digitar
       capacidad: [null, Validators.compose([
-        Validators.required, Validators.min(1), Validators.max(20), Validators.pattern('^[0-9]*$') //? Sólo números
+        Validators.required, Validators.min(1), Validators.max(10), Validators.pattern('^[0-9]*$') //? Sólo números
       ])],
       estado: [null, Validators.required], //? radio buttons - habilitado - deshabilitado, usar Validators.requiredTrue para checkboxes, mas no para radio
       idSucursal: [null, Validators.required], //* Sucursal, solo 1 [combobox - 1 no múltiple]
@@ -134,7 +134,7 @@ export class MesasFormComponent {
         // Se muestra una notificacion al usuario
         this.notification.mensaje('Mesas', `Mesa: ${this.respMesa.codigo} ha sido creada.`, TipoMessage.success);
         //? Rederigimos
-        this.router.navigate(['/mesas/all'], {
+        this.router.navigate(['dashboard/mesas'], {
           queryParams: { create: 'true' }
         });
       });
