@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
 @Component({
   selector: 'app-productos-form',
@@ -38,7 +39,8 @@ export class ProductosFormComponent {
 
 
   constructor(private fb: FormBuilder, private gService: GenericService,
-    private router: Router, private activeRouter: ActivatedRoute) {
+    private router: Router, private activeRouter: ActivatedRoute,
+    private notification: NotificacionService) {
     this.formularioReactive();
     this.listaCategorias();
     this.listaSucursales();
@@ -49,7 +51,7 @@ export class ProductosFormComponent {
     this.activeRouter.params.subscribe((params: Params) => {
       this.idProducto = params['id']; //? Recibe el id [int]
       if (this.idProducto !== undefined) {
-        this.isCreate = false; //* No... es actualizar pá
+        this.isCreate = false; //* No... es actualizar
         this.titleForm = 'Actualizar';
         this.gService.get('productos', this.idProducto) //? Trae por medio del id númerico [int]
           .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
@@ -119,6 +121,21 @@ export class ProductosFormComponent {
       });
   }
 
+
+  // Obtener el URL de la imagen con el evento onPaste
+  ImageOnPaste(event: ClipboardEvent) {
+    let clipboardData = event.clipboardData;
+    let pastedText = clipboardData.getData('text');
+    document.getElementById('imagenProducto').innerText = pastedText;
+    this.ShowImage(pastedText);
+  }
+
+  // Muestra imagen creando una nueva tag img
+  ShowImage(imgURL) {
+    let imgContainer = document.getElementById('product-image-container');
+    imgContainer.innerHTML = `<img src='${imgURL}'  alt='Producto' class='product-img' data-aos='zoom-in'>`;
+  }
+
   //* Manejo de errores - público
   public errorHandling = (control: string, error: string) => {
     return this.productosForm.controls[control].hasError(error);
@@ -148,8 +165,10 @@ export class ProductosFormComponent {
     this.gService.create('productos', this.productosForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
+        // Notificacion de la tarea realizada
+        this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido creado.`, TipoMessage.success);
         //? Rederigimos
-        this.router.navigate(['/productos/all'], {
+        this.router.navigate(['/dashboard/productos'], {
           queryParams: { create: 'true' }
         });
       });
@@ -178,8 +197,10 @@ export class ProductosFormComponent {
     this.gService.update('productos', this.productosForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
+        // Notificacion de la tarea realizada
+        this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido actualizado.`, TipoMessage.success);
         //? Redirigimos
-        this.router.navigate(['/productos/all'], {
+        this.router.navigate(['/dashboard/productos'], {
           queryParams: { update: 'true' }
         });
       });
@@ -193,7 +214,7 @@ export class ProductosFormComponent {
 
   onBack() {
     //* Cuando intenté salir - botón salir
-    this.router.navigate(['/productos/all']);
+    this.router.navigate(['/dashboard/productos']);
   }
 
   ngOnDestroy() {

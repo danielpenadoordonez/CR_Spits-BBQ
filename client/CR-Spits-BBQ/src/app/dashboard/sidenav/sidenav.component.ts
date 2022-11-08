@@ -36,8 +36,12 @@ export class SidenavComponent implements OnInit {
   onResize() {
     this.screenWidth = window.innerWidth;
     this.validateSidenavScreenWidth();
+    // Si el ancho de pantalla es menor o igual a 768px cierre el sidenav
     if (this.screenWidth <= 768) {
-      this.closeCollapsed();
+        this.closeCollapsed();
+        this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
+    }else{
+      // Si el ancho de pantalla es mayor a 768px solo emita los parametros al hacer resize
       this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
     }
   }
