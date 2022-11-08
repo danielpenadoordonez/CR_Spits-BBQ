@@ -4,6 +4,7 @@ import { GestionMesasComponent } from '../mesas/gestion-mesas/gestion-mesas.comp
 import { MesasFormComponent } from '../mesas/mesas-form/mesas-form.component';
 import { GestionPedidosComponent } from '../pedidos/gestion-pedidos/gestion-pedidos.component';
 import { GestionProductoComponent } from '../productos/gestion-producto/gestion-producto.component';
+import { ProductosFormComponent } from '../productos/productos-form/productos-form.component';
 import { BodyIndexComponent } from './body-index/body-index.component';
 import { DashboardIndexComponent } from './dashboard-index/dashboard-index.component';
 
@@ -17,9 +18,10 @@ const routes: Routes = [
     { path: 'comandas', component: GestionPedidosComponent},
     { path: 'comandas', component: GestionPedidosComponent},
     { path: 'mesas/create', component: MesasFormComponent },
-
+    { path: 'productos/create', component: ProductosFormComponent },
     // Rutas de segundo nivel
     { path: 'mesas/update/:id', component: MesasFormComponent },
+    { path: 'productos/update/:id', component: ProductosFormComponent }
   ]},
 ];
 

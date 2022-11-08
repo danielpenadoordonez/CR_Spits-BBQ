@@ -1,3 +1,19 @@
+<div class="flexbox" data-aos="zoom-in">
+  <mat-form-field appearance="fill" class="filter">
+    <mat-label>Sucursales</mat-label>
+    <mat-select>
+      <mat-option (click)="filterProductoSucursales(0)" aria-selected="true">
+        Todas
+      </mat-option>
+      <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="filterProductoSucursales(sucursal.id)">
+        {{sucursal.nombre}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="add-table flexbox" data-aos="zoom-in">
+  <mat-icon class="add-product-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
+</div>
 <div class="mat-elevation-z8 grid-table-container" id="product-table" *ngIf="dataSource">
     <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
       aria-label="Elements">
@@ -15,6 +31,7 @@
                 </div>
                 <div class="actions">
                     <mat-icon class="settings" (click)="detalleProducto(row.id)">info</mat-icon>
+                    <mat-icon class="settings" (click)="actualizarProducto(row.id)" title="Editar">edit</mat-icon>
                 </div>
             </div>
         </td>

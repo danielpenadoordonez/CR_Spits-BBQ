@@ -9,8 +9,8 @@ const routes: Routes = [
   //* Rutas ordenadas 
   { path: 'productos', component: GestionProductoComponent },
   { path: 'productos/all', component: ProductosAllComponent },
-  { path: 'productos/create', component: ProductosFormComponent },
-  { path: 'productos/update/:id', component: ProductosFormComponent }
+  // { path: 'productos/create', component: ProductosFormComponent },
+  // { path: 'productos/update/:id', component: ProductosFormComponent }
 ];
 //* No se necesita ruta con el id y el detail, es innecesaria 100%
 
