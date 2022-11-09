@@ -79,7 +79,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   listaMesas() {
     this.gService
-      .list('mesas/all-hability')
+      .list('mesas') //* /all-hability usar para el avance 6
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.datos = data;

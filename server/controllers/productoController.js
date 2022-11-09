@@ -1,7 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const { parse } = require("path");
-const { stringify } = require("querystring");
-const { json } = require("stream/consumers");
 
 const prismaClient = new PrismaClient();
 
@@ -92,14 +89,15 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     },
   });
 
-  //* Declaramos la variable
-  let productos = ""; 
+  //* Declaramos la variable para reducir la sentencia JSON
+  let productos = "";
 
-  products.forEach(element => {
+  //* Array para sacar todo
+  products.forEach((element) => {
     productos = element.productos;
   });
 
-  //* Evita problemas
+  //* Evitador de problemas 3000
   setTimeout(() => {
     response.json(productos);
   }, 100);
