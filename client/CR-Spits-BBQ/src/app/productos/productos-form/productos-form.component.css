@@ -63,6 +63,8 @@ button{
   padding: .75rem 0rem;
 }
 
+
+
 @media screen and (max-width: 576px) {
   .shipping-card{
     margin-top: 15vh;

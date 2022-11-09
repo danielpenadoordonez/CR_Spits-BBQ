@@ -22,9 +22,8 @@ export class NotificacionService {
     this.options.positionClass = 'toast-top-right';
     //Tiempo que se presenta el mensaje
     // this.options.timeOut = 5000;
-    this.options.timeOut = 20000;
-    this.options.progressBar = true;
     this.options.closeButton = true;
+    this.options.disableTimeOut = true;
   }
   /*
 Presentar mensaje de notificación

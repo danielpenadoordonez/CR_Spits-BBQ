@@ -148,6 +148,9 @@ export class ProductosFormComponent {
 
     //* Verificar validación del form
     if (this.productosForm.invalid) {
+      this.notification.mensaje("Productos", 
+                        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+                        TipoMessage.error);
       return; //* Sacamos
     }
 
@@ -166,7 +169,11 @@ export class ProductosFormComponent {
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
         //* Notificacion de la tarea realizada
-        this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido creado.`, TipoMessage.success);
+        let notificationBody = `<div class='flexbox'><p>Producto código: ${this.respProducto.id} <br> ${this.respProducto.nombre} 
+        ha sido <b>creado</b>.</p>
+        <img src='${this.respProducto.imagen}' alt='${this.respProducto.nombre}'
+        class='notification-img'></div>`
+        this.notification.mensaje('Productos', notificationBody, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['/dashboard/productos'], {
           queryParams: { create: 'true' }
@@ -181,6 +188,9 @@ export class ProductosFormComponent {
 
     //* Verificar validación del form
     if (this.productosForm.invalid) {
+      this.notification.mensaje("Productos", 
+      "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+      TipoMessage.error);
       return;
     }
     //* Subimos
@@ -198,7 +208,11 @@ export class ProductosFormComponent {
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
         //* Notificacion de la tarea realizada
-        this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido actualizado.`, TipoMessage.success);
+        let notificationBody = `<div class='flexbox'><p>Producto código: ${this.respProducto.id} <br> ${this.respProducto.nombre} 
+                                ha sido <b>actualizado</b>.</p>
+                                <img src='${this.respProducto.imagen}' alt='${this.respProducto.nombre}'
+                                class='notification-img'></div>`
+        this.notification.mensaje('Productos', notificationBody, TipoMessage.success);
         //? Redirigimos
         this.router.navigate(['/dashboard/productos'], {
           queryParams: { update: 'true' }

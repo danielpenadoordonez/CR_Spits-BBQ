@@ -90,13 +90,13 @@ module.exports.getProductsBySucursal = async (request, response, next) => {
     select: {
       productos: true,
     },
-  });
-
+  }); 
+// 
   //* Declaramos la variable
   let productos = ""; 
-
+  
   products.forEach(element => {
-    productos = element.productos;
+        productos = element.productos;
   });
 
   //* Evita problemas

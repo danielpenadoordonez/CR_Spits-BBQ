@@ -385,11 +385,6 @@ tr.mat-row{
     padding: 0 !important;
 }
 
-/* .mat-form-field-appearance-legacy{
-    transform: translateY(-1.5rem) scale(.75) perspective(100px) !important;
-} */
-
-
 
 /* MAT SELECT Class Filter */
 .filter .mat-form-field-flex{
@@ -403,13 +398,39 @@ tr.mat-row{
 }
 
 
-
-/* Product form image */
+/* IMGAGEN PARA EL MAT FORM */
 #product-image-container .product-img{
-    padding: .5rem 2rem;
-    border: .5rem dashed #FFF;
+    padding: 1rem;
+    border: .25rem dashed #FFF;
     box-shadow: inset 0 0 40px #000, inset 0 0 80px #000;
     border-radius: 1rem;
     height: 250px;
     object-fit: contain;
   }
+
+
+/* TOASTR NOTIFICATION STYLES */
+
+.notification-img{
+    height: 75px;
+    padding: 0 .75rem;
+}
+
+.toast-container .ngx-toastr{
+    box-shadow: inset 0 0 10px #000, inset 0 0 15px #000 !important;
+    border-radius: .75rem !important;
+}
+
+.toast-container .ngx-toastr .flexbox{
+    justify-content: flex-start !important;
+}
+
+.toast-close-button{
+    right: .3rem !important;
+}
+
+@media screen and (min-width: 992px) {
+    .toast-container .ngx-toastr {
+        width: 500px !important;
+    }
+}
