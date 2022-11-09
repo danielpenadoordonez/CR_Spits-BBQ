@@ -16,11 +16,7 @@ module.exports.getAllProducts = async (request, response, next) => {
       id: "asc",
     },
     include: {
-      sucursales_producto: {
-        include: {
-          Sucursal: true,
-        },
-      },
+      sucursales: true,
       Categoria_Producto: {
         select: {
           id: false,
@@ -40,11 +36,7 @@ module.exports.getAllHabilityProducts = async (request, response, next) => {
       id: "asc",
     },
     include: {
-      sucursales_producto: {
-        include: {
-          Sucursal: true,
-        },
-      },
+      sucursales: true,
       Categoria_Producto: {
         select: {
           id: false,
@@ -62,11 +54,7 @@ module.exports.getProductById = async (request, response, next) => {
   const product = await prismaClient.producto.findFirst({
     where: { id: productId },
     include: {
-      sucursales_producto: {
-        include: {
-          Sucursal: true,
-        },
-      },
+      sucursales: true,
       Categoria_Producto: {
         select: {
           id: false,
@@ -87,7 +75,7 @@ module.exports.getProductsByCategory = async (request, response, next) => {
       id: "asc",
     },
     include: {
-      sucursales_producto: true,
+      sucursales: true,
     },
   });
   response.json(products);
@@ -96,38 +84,24 @@ module.exports.getProductsByCategory = async (request, response, next) => {
 //* Obtener productos por idSucursal (Muchos a Muchos)
 module.exports.getProductsBySucursal = async (request, response, next) => {
   let sucursal = parseInt(request.params.idSucursal);
-  //Se trae todos los productos en esa sucursal
-  let products = await prismaClient.sucursal_Producto.findMany({
-    where: { idSucursal: sucursal },
+  //* Se trae todos los productos en esa sucursal
+  let products = await prismaClient.sucursal.findMany({
+    where: { id: sucursal },
+    select: {
+      productos: true,
+    },
   });
 
-  //* Por cada producto se trae toda su informacion de la tabla producto
-  async function getProductInfo(product) {
-    let prodID = parseInt(product.idProducto);
-    let producto = await prismaClient.producto.findFirst({
-      where: { id: prodID },
-      orderBy: {
-        id: "asc",
-      },
-      include: {
-        sucursales_producto: {
-          include: {
-            Sucursal: true,
-          },
-        },
-        Categoria_Producto: {
-          select: {
-            id: false,
-            descripcion: true,
-          },
-        },
-      },
-    });
-    return producto;
-  }
-  products = await Promise.all(products.map(getProductInfo));
+  //* Declaramos la variable
+  let productos = ""; 
+
+  products.forEach(element => {
+    productos = element.productos;
+  });
+
+  //* Evita problemas
   setTimeout(() => {
-    response.json(products);
+    response.json(productos);
   }, 100);
 };
 
@@ -146,10 +120,8 @@ module.exports.createProduct = async (request, response, next) => {
       imagen: product.imagen,
       estado: product.estado,
       idCategoria: product.idCategoria,
-      sucursales_producto: {
-        createMany: {
-          data: product.sucursales_producto,
-        },
+      sucursales: {
+        connect: product.sucursales,
       },
     },
   });
@@ -164,15 +136,15 @@ module.exports.updateProduct = async (request, response, next) => {
   let productId = parseInt(request.params.id);
 
   const oldProduct = await prismaClient.producto.findUnique({
-    where: {id: productId},
-    include:{
-      sucursales_producto: {
+    where: { id: productId },
+    include: {
+      sucursales: {
         select: {
           //idProducto: true,
-          idSucursal: true
-        }
-      }
-    }
+          id: true,
+        },
+      },
+    },
   });
 
   const updatedProduct = await prismaClient.producto.update({
@@ -185,11 +157,12 @@ module.exports.updateProduct = async (request, response, next) => {
       imagen: product.imagen,
       estado: product.estado,
       idCategoria: product.idCategoria,
-      sucursales_producto: {
-        disconnect: oldProduct.sucursales_producto,
-        connect: product.sucursales_producto
-      }
+      sucursales: {
+        disconnect: oldProduct.sucursales,
+        connect: product.sucursales,
+      },
     },
   });
+
   response.json(updatedProduct);
 };

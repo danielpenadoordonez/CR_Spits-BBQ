@@ -38,58 +38,7 @@ export const users = [
         direccion: "Grecia, Alajuela",
         idPerfil: 1 //! Admin
     },
-    //* 4
-    {
-        id: "463650893",
-        nombre: "María",
-        apellido1: "Molina",
-        apellido2: "Arroyo",
-        correo: "mariaarroyo@gmail.com",
-        username: "maria_molina",
-        clave: "12345678",
-        telefono: "74670781",
-        direccion: "Santa Barbara, Heredia",
-        idPerfil: 2 //? Mesero - Sucursal 1
-    },
-    //* 5
-    {
-        id: "365730621",
-        nombre: "Christian",
-        apellido1: "Mora",
-        apellido2: "Quesada",
-        correo: "cristhianmora@hotmail.com",
-        username: "christian_mora",
-        clave: "12345678",
-        telefono: "74601503",
-        direccion: "Turrialba, cartago",
-        idPerfil: 2 //? Mesero - Sucursal 2
-    },
-    //* 6
-    {
-        id: "40625724512",
-        nombre: "Belén",
-        apellido1: "Alfaro",
-        apellido2: "Ruíz",
-        correo: "belenalfaro@gmail.com",
-        username: "belen_alfaro",
-        clave: "12345678",
-        telefono: "68036014",
-        direccion: "La Rivera, Heredia",
-        idPerfil: 2 //? Mesero - Sucursal 3
-    },
-    //* 7
-    {
-        id: "207636120",
-        nombre: "Gary",
-        apellido1: "Flores",
-        apellido2: "Paniagua",
-        correo: "garyflores@gmail.com",
-        username: "gary_flores",
-        clave: "12345678",
-        telefono: "10596839",
-        direccion: "Naranjo, Alajuela",
-        idPerfil: 2 //? Mesero - Sucursal 4
-    },
+    //? Meseros fueron movidos debido a su relación con sucursal
     //* 8 [Clientes No usan dirección]
     {
         id: "65440685802",

@@ -8,6 +8,6 @@ const sucursalController = require("../controllers/sucursalController");
 router.get("/", sucursalController.getAllSucursales);
 router.get("/all", sucursalController.getAllSucursales);
 router.get("/:id", sucursalController.getSucursalById);
-router.get("/:codigo", sucursalController.getSucursalByCode);
+router.get("/codigo/:codigo", sucursalController.getSucursalByCode);
 
 module.exports = router;
