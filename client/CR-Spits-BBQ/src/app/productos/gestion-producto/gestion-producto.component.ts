@@ -21,7 +21,7 @@ export class GestionProductoComponent implements AfterViewInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
 
-  //data table
+  //* data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
@@ -38,7 +38,7 @@ export class GestionProductoComponent implements AfterViewInit {
 
   listaProductos() {
     this.gService
-      .list('productos/all-hability')
+      .list('productos') //* /all-hability usar para el avance 6
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

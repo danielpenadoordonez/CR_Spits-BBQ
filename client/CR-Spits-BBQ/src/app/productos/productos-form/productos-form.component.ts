@@ -79,16 +79,16 @@ export class ProductosFormComponent {
     this.productosForm = this.fb.group({
       id: null, //* No válida - input hidden
       nombre: [null, Validators.compose([
-        Validators.required, Validators.minLength(2), Validators.pattern('^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$') //? Solo letras - Español
+        Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$/) //? Solo letras - Español
       ])],
       descripcion: [null, Validators.compose([
-        Validators.required, Validators.minLength(5), Validators.pattern('^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$') //? Acepta números igualmente
+        Validators.required, Validators.minLength(5), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Acepta números igualmente
       ])],
       ingredientes: [null, Validators.compose([
-        Validators.minLength(5), Validators.pattern('^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$') //? Es opcional, valida en caso de que tenga algo...
+        Validators.minLength(5), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Es opcional, valida en caso de que tenga algo...
       ])],
       precio: [null, Validators.compose([
-        Validators.required, Validators.min(100), Validators.max(100000), Validators.pattern('^[0-9]*$') //? Sólo números enteros [decimal, pero no tiene sentido los decimales acá]
+        Validators.required, Validators.min(100), Validators.max(100000), Validators.pattern(/^[0-9]*$/) //? Sólo números enteros [decimal, pero no tiene sentido los decimales acá]
       ])],
       imagen: [null, Validators.compose([
         Validators.required, Validators.minLength(25), Validators.pattern(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/) //? pattern especial para urls
@@ -122,7 +122,7 @@ export class ProductosFormComponent {
   }
 
 
-  // Obtener el URL de la imagen con el evento onPaste
+  //* Obtener el URL de la imagen con el evento onPaste
   ImageOnPaste(event: ClipboardEvent) {
     let clipboardData = event.clipboardData;
     let pastedText = clipboardData.getData('text');
@@ -130,7 +130,7 @@ export class ProductosFormComponent {
     this.ShowImage(pastedText);
   }
 
-  // Muestra imagen creando una nueva tag img
+  //* Muestra imagen creando una nueva tag img
   ShowImage(imgURL) {
     let imgContainer = document.getElementById('product-image-container');
     imgContainer.innerHTML = `<img src='${imgURL}'  alt='Producto' class='product-img' data-aos='zoom-in'>`;

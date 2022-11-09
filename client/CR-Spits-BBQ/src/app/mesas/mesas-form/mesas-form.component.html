@@ -1,6 +1,5 @@
 <form
   [formGroup]="mesasForm"
-  #ngForm="ngForm"
   novalidate
   (ngSubmit)="isCreate ? crearMesa() : actualizarMesa()"
   data-aos="zoom-in-up"
@@ -21,6 +20,7 @@
               #codigoMesa
               placeholder="Código"
               formControlName="codigo"
+              title="Código de la mesa, no editable"
               readonly
             />
             <mat-hint align="end">{{ codigoMesa.value.length }} / 20</mat-hint>
@@ -43,6 +43,7 @@
               placeholder="Capacidad de la mesa"
               formControlName="capacidad"
               type="number"
+              title="Capacidad de la mesa entera"
             />
             <mat-hint align="end"
               >{{ capacidadMesa.value }} - min 1 / max 10</mat-hint
@@ -62,6 +63,7 @@
             <mat-select
               placeholder="Sucursal de la mesa"
               formControlName="idSucursal"
+              title="Lista única de sucursales"
               [disabled]="!isCreate"
             >
               <mat-option
@@ -83,6 +85,7 @@
             <mat-select
               placeholder="Disponibilidad de la mesa"
               formControlName="idDisponibilidad"
+              title="Disponibilidades de la mesa"
             >
               <mat-option
                 *ngFor="let disponibilidad of disponibilidadesList"
@@ -105,10 +108,16 @@
         <div class="col">
           <mat-label>Estado</mat-label>
           <mat-radio-group formControlName="estado">
-            <mat-radio-button class="radio-button" [value]="true"
+            <mat-radio-button
+              class="radio-button"
+              [value]="true"
+              title="Estado: habilitado"
               >Habilitado</mat-radio-button
             >
-            <mat-radio-button class="radio-button" [value]="false"
+            <mat-radio-button
+              class="radio-button"
+              [value]="false"
+              title="Estado: inhabilitado"
               >Deshabilitado</mat-radio-button
             >
           </mat-radio-group>
