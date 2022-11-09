@@ -9,8 +9,8 @@ const prismaClient = new PrismaClient();
 //* Todas las sucursales
 module.exports.getAllSucursales = async (request, response, next) => {
   const sucursales = await prismaClient.sucursal.findMany({
-    orderBy: {
-      nombre: "asc",
+    orderBy: { //* Van ordenadas
+      id: "asc",
     },
   });
   response.json(sucursales);
