@@ -120,6 +120,9 @@ export class MesasFormComponent {
 
     //* Verificar validación del form
     if (this.mesasForm.invalid) {
+      this.notification.mensaje("Productos", 
+      "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+      TipoMessage.error);
       return;
     }
 
@@ -148,7 +151,9 @@ export class MesasFormComponent {
 
     //* Verificar validación del form
     if (this.mesasForm.invalid) {
-      console.log('invalid:');
+      this.notification.mensaje("Productos", 
+      "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+      TipoMessage.error);
       return;
     }
 

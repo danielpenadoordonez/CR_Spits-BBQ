@@ -32,6 +32,9 @@ export class SidenavComponent implements OnInit {
     private router: Router,
     private gService: GenericService) { }
 
+
+  //Evento que emite al dashboard-body como 
+  // manejar el contenido al hacer resize y valida si ocultar o mostrar el sidenav 
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.screenWidth = window.innerWidth;
@@ -48,6 +51,8 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+    // llama al metodo resize para validar de primera 
+    // instancia como mostrar el contenido el body y el sidenav
     this.onResize();
     // este método se tiene que cambiar más adelante
     this.user = this.userService.getUserLogged('208320565').subscribe((data: any) => {
@@ -60,6 +65,7 @@ export class SidenavComponent implements OnInit {
     this.setNavItemScrollReveal();
   }
 
+  // Muestra u oculta el sidenav
   toggleCollapsed() {
     this.collapsed = !this.collapsed;
     this.validateSidenavScreenWidth();
@@ -67,24 +73,29 @@ export class SidenavComponent implements OnInit {
     this.toggleNavItem();
   }
 
+  // Mueatra u oculta los textos de los elementos "<a>" de los items del sidenav 
   toggleNavItem() {
     document.querySelectorAll(".sidenav-link-text").forEach(item => {
       item.classList.toggle('quit-sidenav-link-text');
     })
   }
 
+  // Quita todos los textos de los elementos "<a>" de los items del sidenav 
   closeeNavItem() {
     document.querySelectorAll(".sidenav-link-text").forEach(item => {
       item.classList.remove('quit-sidenav-link-text');
     })
   }
 
+  // añade un retraso de animiación
+  // al mostrar u ocultar el texto de los links del Sidenav
   addNavItemDelay() {
     let delay = 0;
     let items = Array.from(document.getElementsByClassName("sidenav-link-text") as HTMLCollectionOf<HTMLElement>);
     items.forEach(item => { item.style.transitionDelay = `${delay}s`; delay += .025 })
   }
 
+  // Oculta el sidenav parcial o totalmente
   closeCollapsed() {
     this.collapsed = false;
     this.validateSidenavScreenWidth();
@@ -92,20 +103,34 @@ export class SidenavComponent implements OnInit {
     this.closeeNavItem();
   }
 
+    // Cuando el ancho de la pantalla sea igual o menor a 576px
+    // va a quitar el sidenav cada vez que se click a un link del
+    // sidenav
+  closeSideNavCollapsed(){
+    if(this.screenWidth <= 576){
+      this.closeCollapsed();
+    }
+  }
+
+  // Muestra el menu lateral. Aplica solamente
+  // cuando el ancho de la pantalla sea igual o menor a 576px
   openMenu(){
     this.sidenavHidden = false;
     this.collapsed = true;
     this.toggleNavItem();
   }
 
+  // Cierra sesión del usuario actual
   Logout() {
     this.router.navigate(['/']);
   }
 
+  // Muestra los elementos del menu con un intervalo de 100ms cada uno
   setNavItemScrollReveal() {
     Scroll.reveal('.sidenav-nav-item', { interval: 100, origin: 'left' });
   }
 
+  // Cuando el ancho de la pantalla sea igual o menor a 576px oculta el sidenav 
   validateSidenavScreenWidth(){
     this.screenWidth <= 576 ? this.sidenavHidden = true : this.sidenavHidden = false;
   }
