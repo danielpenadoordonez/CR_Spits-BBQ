@@ -32,8 +32,8 @@ export class ProductosFormComponent {
       * "imagen": "https://i.ibb.co/w61GHrx/camarones-ajillo.png",
       * "estado": true,
       * "idCategoria": 5,
-      * "sucursales_producto" : 
-      *   [{"idSucursal" : 1}, {"idSucursal" : 2}, {"idSucursal" : 3}]     
+      * "sucursales" : 
+      *   [{"id" : 1}, {"id" : 2}, {"id" : 3}]     
 }
   */
 
@@ -66,7 +66,7 @@ export class ProductosFormComponent {
               imagen: this.productoInfo.imagen,
               estado: this.productoInfo.estado,
               idCategoria: this.productoInfo.idCategoria,
-              sucursales_producto: this.productoInfo.sucursales_producto.map(({ idSucursal }) => idSucursal)
+              sucursales: this.productoInfo.sucursales.map(({ id }) => id)
             });
           });
       }
@@ -95,7 +95,7 @@ export class ProductosFormComponent {
       ])],
       estado: [null, Validators.required], //? radio buttons - habilitado - deshabilitado, usar Validators.requiredTrue para checkboxes, mas no para radio
       idCategoria: [null, Validators.required], //* Sucursal [only one] - válida que elija uno
-      sucursales_producto: [null, Validators.required] //*  Combo box [multiple]
+      sucursales: [null, Validators.required] //*  Combo box [multiple]
     });
   }
 
@@ -156,16 +156,16 @@ export class ProductosFormComponent {
 
     //! tener muchísimo cuidado con el formato
     //* Obtener id de sucursal del Formulario y Crear arreglo con {idSucursal: value}
-    let gFormat: any = this.productosForm.get('sucursales_producto').value.map(x => ({ ['idSucursal']: x }));
+    let gFormat: any = this.productosForm.get('sucursales').value.map(x => ({ ['id']: x }));
 
     //* Asignar los valores al formulario 
-    this.productosForm.patchValue({ sucursales_producto: gFormat });
+    this.productosForm.patchValue({ sucursales: gFormat });
 
     //* Accion API create enviando toda la informacion del formulario
     this.gService.create('productos', this.productosForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
-        // Notificacion de la tarea realizada
+        //* Notificacion de la tarea realizada
         this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido creado.`, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['/dashboard/productos'], {
@@ -188,16 +188,16 @@ export class ProductosFormComponent {
 
     //? Formato
     //* Obtener id de sucursal del Formulario y Crear arreglo con {idSucursal: value}
-    let gFormat: any = this.productosForm.get('sucursales_producto').value.map(x => ({ ['idSucursal']: x }));
+    let gFormat: any = this.productosForm.get('sucursales').value.map(x => ({ ['id']: x }));
 
     //* Asignar los valores al formulario 
-    this.productosForm.patchValue({ sucursales_producto: gFormat });
+    this.productosForm.patchValue({ sucursales: gFormat });
 
     //* Accion API create enviando toda la informacion del formulario
     this.gService.update('productos', this.productosForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respProducto = data;
-        // Notificacion de la tarea realizada
+        //* Notificacion de la tarea realizada
         this.notification.mensaje('Productos', `Producto: ${this.respProducto.id} ha sido actualizado.`, TipoMessage.success);
         //? Redirigimos
         this.router.navigate(['/dashboard/productos'], {

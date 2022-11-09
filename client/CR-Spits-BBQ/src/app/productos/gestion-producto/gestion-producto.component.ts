@@ -17,14 +17,14 @@ import { ProductoDetailComponent } from '../producto-detail/producto-detail.comp
 export class GestionProductoComponent implements AfterViewInit {
 
   datos: any;
-  sucursalesList:any // Sucursales para filtro
+  sucursalesList: any //* Sucursales para filtro
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
 
-   //data table
-   @ViewChild(MatPaginator) paginator!: MatPaginator;
-   @ViewChild(MatSort) sort!: MatSort;
-   dataSource= new MatTableDataSource<any>();
+  //data table
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<any>();
 
   constructor(private gService: GenericService, private dialog: MatDialog,
     private route: ActivatedRoute, private router: Router) { }
@@ -43,13 +43,13 @@ export class GestionProductoComponent implements AfterViewInit {
       .subscribe((data: any) => {
         console.log(data);
         this.datos = data;
-        this.dataSource= new MatTableDataSource(this.datos);
+        this.dataSource = new MatTableDataSource(this.datos);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       });
   }
 
-  listarProductosBySucursal(filter: number){
+  listarProductosBySucursal(filter: number) {
     this.gService
       .get('productos/sucursal', filter)
       .pipe(takeUntil(this.destroy$))

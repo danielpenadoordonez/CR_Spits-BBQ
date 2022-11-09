@@ -131,7 +131,7 @@ export class MesasFormComponent {
     this.gService.create('mesas', this.mesasForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.respMesa = data; //* Obtenemos y asignamos la data
-        // Se muestra una notificacion al usuario
+        //* Se muestra una notificacion al usuario
         this.notification.mensaje('Mesas', `Mesa: ${this.respMesa.codigo} ha sido creada.`, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['dashboard/mesas'], {

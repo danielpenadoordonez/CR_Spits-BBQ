@@ -21,46 +21,47 @@ model Perfil {
 }
 
 model Usuario {
-  id               String               @id //* Corresponde  a la cédula
-  nombre           String
-  apellido1        String
-  apellido2        String
-  correo           String //* Email
-  username         String
-  clave            String //* Contraseña, no sé si usará MD5
-  telefono         String
-  direccion        String? //* Opcional
-  reservaciones    Reservacion[]
-  facturas         Factura_Encabezado[]
-  pedidos          Pedido[]             @relation("Pedidos") //* Por parte del cliente
-  encargos         Pedido[]             @relation("Encargos") //* Por parte del mesero
-  Perfil           Perfil               @relation(fields: [idPerfil], references: [id])
-  idPerfil         Int
-  MeseroOnSucursal MeseroOnSucursal[]
+  id            String               @id //* Corresponde  a la cédula
+  nombre        String
+  apellido1     String
+  apellido2     String
+  correo        String //* Email
+  username      String
+  clave         String //* Contraseña, no sé si usará MD5
+  telefono      String
+  direccion     String? //* Opcional
+  reservaciones Reservacion[]
+  facturas      Factura_Encabezado[]
+  pedidos       Pedido[]             @relation("Pedidos") //* Por parte del cliente
+  encargos      Pedido[]             @relation("Encargos") //* Por parte del mesero
+  Perfil        Perfil               @relation(fields: [idPerfil], references: [id])
+  idPerfil      Int
+  sucursales    Sucursal[]
 
   @@unique([correo, username, telefono])
 }
 
-model MeseroOnSucursal {
-  Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
-  idSucursal Int
-  Usuario    Usuario  @relation(fields: [idMesero], references: [id])
-  idMesero   String
+//* Deshabilitado 8/11/2022
+//model MeseroOnSucursal {
+//  Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
+//  idSucursal Int
+//  Usuario    Usuario  @relation(fields: [idMesero], references: [id])
+//  idMesero   String
 
-  @@id([idSucursal, idMesero])
-}
+//  @@id([idSucursal, idMesero])
+//}
 
 model Sucursal {
-  id               Int                 @id //* Nombre de la sursal
-  codigo           String //? Pienso que debería tener código
-  nombre           String //? Igualmente un nombre
-  ubicacion        String
-  capacidad        Int
-  mesas            Mesa[]
-  reservaciones    Reservacion[]
-  productos        Sucursal_Producto[]
-  MeseroOnSucursal MeseroOnSucursal[]
-  pedidos          Pedido[]
+  id            Int           @id //* Nombre de la sursal
+  codigo        String //? Pienso que debería tener código
+  nombre        String //? Igualmente un nombre
+  ubicacion     String
+  capacidad     Int
+  mesas         Mesa[]
+  reservaciones Reservacion[]
+  productos     Producto[]
+  meseros       Usuario[]
+  pedidos       Pedido[]
 
   @@unique([codigo, nombre])
 }
@@ -112,28 +113,29 @@ model Categoria_Producto {
 }
 
 model Producto {
-  id                  Int                 @id @default(autoincrement())
-  nombre              String
-  descripcion         String //* Incluye los acompañamientos
-  ingredientes        String? //* Opcional
-  precio              Decimal
-  imagen              String //* agrego esta columna por que es muy importante mostrar que se vende
-  estado              Boolean             @default(true) //* Habilitado / Deshabilitado
-  Categoria_Producto  Categoria_Producto  @relation(fields: [idCategoria], references: [id])
-  idCategoria         Int
-  detalles            Factura_Detalle[]
-  pedidos             Pedido_Producto[]
-  sucursales_producto Sucursal_Producto[]
+  id                 Int                @id @default(autoincrement())
+  nombre             String
+  descripcion        String //* Incluye los acompañamientos
+  ingredientes       String? //* Opcional
+  precio             Decimal
+  imagen             String //* agrego esta columna por que es muy importante mostrar que se vende
+  estado             Boolean            @default(true) //* Habilitado / Deshabilitado
+  Categoria_Producto Categoria_Producto @relation(fields: [idCategoria], references: [id])
+  idCategoria        Int
+  detalles           Factura_Detalle[]
+  pedidos            Pedido_Producto[]
+  sucursales         Sucursal[]
 }
 
-model Sucursal_Producto {
-  Producto   Producto? @relation(fields: [idProducto], references: [id])
-  idProducto Int
-  Sucursal   Sucursal? @relation(fields: [idSucursal], references: [id])
-  idSucursal Int
+//* Deshabilitado - 8/11/2022
+// model Sucursal_Producto {
+//  Producto   Producto? @relation(fields: [idProducto], references: [id])
+//  idProducto Int
+//  Sucursal   Sucursal? @relation(fields: [idSucursal], references: [id])
+//  idSucursal Int
 
-  @@id([idProducto, idSucursal])
-}
+//  @@id([idProducto, idSucursal])
+//} 
 
 model TipoPago {
   id                 Int                         @id
