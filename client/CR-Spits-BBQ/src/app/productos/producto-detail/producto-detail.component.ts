@@ -32,7 +32,7 @@ export class ProductoDetailComponent implements OnInit {
   //? Sí hay producto by id
   obtenerProductoByID(id: any) {
     this.gService
-      .get('productos/', id)
+      .get('productos', id)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

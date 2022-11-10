@@ -14,7 +14,7 @@ module.exports.getAllMesas = async (request, response, next) => {
     orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       Sucursal: true,
-      EstadoMesa: true,
+      EstadoMesa: true
     },
   });
 
@@ -28,7 +28,7 @@ module.exports.getAllHabilityMesas = async (request, response, next) => {
     orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       Sucursal: true,
-      EstadoMesa: true,
+      EstadoMesa: true
     },
   });
 
@@ -38,13 +38,12 @@ module.exports.getAllHabilityMesas = async (request, response, next) => {
 //* Obtener mesa por el id
 module.exports.getMesaById = async (request, response, next) => {
   let id = parseInt(request.params.id);
-  console.log(id);
   const mesa = await prismaClient.mesa.findFirst({
     where: { id: id },
     include: {
       reservaciones: true,
       Sucursal: true,
-      EstadoMesa: true,
+      EstadoMesa: true
     },
   });
 
@@ -58,6 +57,8 @@ module.exports.getMesaByCode = async (request, response, next) => {
     where: { codigo: code },
     include: {
       reservaciones: true,
+      Sucursal: true,
+      EstadoMesa: true
     },
   });
 
@@ -83,6 +84,9 @@ module.exports.getMesasBySucursal = async (request, response, next) => {
   let sucursal = parseInt(request.params.idSucursal);
   const mesas = await prismaClient.mesa.findMany({
     where: { idSucursal: sucursal },
+    orderBy:{
+      id: 'asc' //* Orden claro que sí
+    },
     include: {
       reservaciones: true,
       Sucursal: true,
@@ -147,7 +151,7 @@ module.exports.updateTable = async (request, response, next) => {
     data: {
       capacidad: table.capacidad,
       estado: table.estado,
-      //idSucursal: table.idSucursal, -- No se actualiza...
+      //! idSucursal: table.idSucursal, -- No se actualiza... no makes any sense
       idDisponibilidad: table.idDisponibilidad,
     },
   });
