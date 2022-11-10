@@ -439,7 +439,7 @@ async function main() {
             nombre: 'Mariscada',
             descripcion: 'incluye camarones, almejas, pulpo y calamar, incluye papas fritas y ensalada verde',
             ingredientes: 'orégano, chile dulce, apio, ajo',
-            precio: 4000,
+            precio: 7500,
             imagen: 'https://i.ibb.co/LpWqRGZ/mariscada.png',
             estado: true,
             idCategoria: 5,

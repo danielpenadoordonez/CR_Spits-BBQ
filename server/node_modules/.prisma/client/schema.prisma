@@ -12,7 +12,7 @@ datasource db {
 
 //? antes de migrate 1. Obvio iniciar el XAMPP con mysql y apache, 2. Estar en este archivo, 3. cd ./server/
 //? npx prisma migrate dev --name <name>
-//* Prisma versión: 4.5.0 - 11/10 - Angular CLI 14.2.5
+//* Prisma versión: 4.6.1 - 10/11 - Angular CLI 14.2.5
 
 model Perfil {
   id          Int       @id
@@ -201,7 +201,7 @@ model EstadoPedido {
 model Pedido {
   id           Int               @id @default(autoincrement())
   nombre       String?
-  precio       Decimal
+  precio       Decimal           @default(0)
   fecha        DateTime          @default(now())
   detalles     Pedido_Producto[]
   estadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
@@ -211,7 +211,7 @@ model Pedido {
   idCliente String
 
   Mesero   Usuario? @relation(name: "Encargos", fields: [idMesero], references: [id])
-  idMesero String? //* Ya que es la misma tabla y se utiliza doble llave fóranea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
+  idMesero String? //* Ya que es la misma tabla y se utiliza doble llave fóran//? Pq no tiene detallesea con relación ambigua, se añade un campo para distinguir del id mesero y el id cliente
 
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
   idSucursal Int //* Sucursal que se haga cargo
