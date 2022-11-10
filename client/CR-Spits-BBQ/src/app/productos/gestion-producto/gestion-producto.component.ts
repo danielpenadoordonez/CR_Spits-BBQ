@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 import { ProductoDetailComponent } from '../producto-detail/producto-detail.component';
 
 @Component({
@@ -18,27 +19,36 @@ export class GestionProductoComponent implements AfterViewInit {
 
   datos: any;
   sucursalesList: any //* Sucursales para filtro
+  categoriaList: any // Lista categorias de productos
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
 
-  //* data table
+  //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
 
+  filtros: any = {
+    sucursal: -1,
+    estado: -1,
+    categoria: -1
+  }
+
   constructor(private gService: GenericService, private dialog: MatDialog,
-    private route: ActivatedRoute, private router: Router) { }
+    private route: ActivatedRoute, private router: Router,
+    private notification: NotificacionService) { }
 
   ngAfterViewInit(): void {
     this.listaSucursales();
-    this.filterProductoSucursales(0)
+    this.listaCategoriasProducto();
+    this.listaProductos();
     document.querySelectorAll('#product-table tbody')[0].classList.add('grid-table-body');
     document.querySelectorAll('#product-table thead')[0].classList.add('grid-table-head');
   }
 
   listaProductos() {
     this.gService
-      .list('productos') //* /all-hability usar para el avance 6
+      .list('productos/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);
@@ -71,13 +81,57 @@ export class GestionProductoComponent implements AfterViewInit {
       });
   }
 
+  listaCategoriasProducto() {
+    this.sucursalesList = null;
+    this.gService
+      .list('categ-prods') //* ruta para llamar esa API, viene del generic service, Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.categoriaList = data;
+      });
+  }
+
+  // FILTROS
+
+  listaProductosToFilter() {
+    return this.gService
+      .list('productos/all')
+      .pipe(takeUntil(this.destroy$));
+  }
+
   filterProductoSucursales(filter: number) {
-    if (filter <= 0) {
-      this.listaProductos();
+    this.filtros.sucursal = filter;
+  }
+
+  filterProductoEstado(filter: boolean) {
+    this.filtros.estado = filter;
+  }
+
+  filterProductoCategoria(filter: number) {
+    this.filtros.categoria = filter;
+  }
+
+  aplicarFiltro() {
+    if (this.filtros.sucursal == -1 && this.filtros.estado == -1 && this.filtros.categoria == -1) {
+      this.notification.mensaje('Filtro', "No se puede filtrar sin antes haber escogido algún filtro", TipoMessage.warning);
+      return;
     }
-    else {
-      this.listarProductosBySucursal(filter);
-    }
+
+    this.listaProductosToFilter().subscribe((data:any) => {
+      if(this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
+        data = data.filter(item => item.sucursales.some(sucursal => sucursal.id == this.filtros.sucursal));
+      
+      if(this.filtros.estado != null && this.filtros.estado != -1)
+        data = data.filter(item => item.estado == this.filtros.estado);
+
+      if(this.filtros.categoria != 0 && this.filtros.categoria != -1)
+        data = data.filter(item => item.idCategoria == this.filtros.categoria);
+
+      this.datos = data
+      this.dataSource = new MatTableDataSource(this.datos);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;  
+    })
   }
 
 

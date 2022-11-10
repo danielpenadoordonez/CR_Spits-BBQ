@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
-import * as AOS from 'aos'
+import { filter, map } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
@@ -20,9 +20,16 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   datos: any; //* Data
   mesaObject: any; //* Objeto mesa
   sucursalesList: any; //* Lista sucursales
+  disponibilidadesList // Lista de disponiilidades
+
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción
   displayedColumns = ['mesa']//* Columnas que se verán de las mesas, solo para MatTable
 
+  filtros: any = {
+    sucursal: -1,
+    estado: -1,
+    disponibilidad: -1
+  }
   //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -34,7 +41,8 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.listaSucursales();
-    this.filterMesasSucursales(0);
+    this.listaDisponibilidades();
+    this.listaMesas();
   }
 
   ngAfterViewInit(): void {
@@ -79,7 +87,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   listaMesas() {
     this.gService
-      .list('mesas') //* /all-hability usar para el avance 6
+      .list('mesas/all')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.datos = data;
@@ -89,7 +97,13 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       });
   }
 
-  listarMesasBySucursal(filter: number){
+  listaMesasToFilter() {
+    return this.gService
+      .list('mesas/all')
+      .pipe(takeUntil(this.destroy$));
+  }
+
+  listarMesasBySucursal(filter: number) {
     this.gService
       .get('mesas/sucursal', filter)
       .pipe(takeUntil(this.destroy$))
@@ -111,15 +125,50 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       });
   }
 
-  filterMesasSucursales(filter: number) {
-    if (filter <= 0) {
-      this.listaMesas();
-    }
-    else {
-      this.listarMesasBySucursal(filter);
-    }
+  listaDisponibilidades() {
+    this.sucursalesList = null;
+    this.gService
+      .list('disponibilidades') //* ruta para llamar esa API, viene del generic service, Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.disponibilidadesList = data;
+      });
   }
 
+  filterMesasSucursales(filter: number) {
+    this.filtros.sucursal = filter;
+  }
+
+  filterMesasEstado(filter: boolean) {
+    this.filtros.estado = filter;
+  }
+
+  filterMesasDisponibilidad(filter: number) {
+    this.filtros.disponibilidad = filter;
+  }
+
+  aplicarFiltro() {
+    if (this.filtros.sucursal == -1 && this.filtros.estado == -1 && this.filtros.disponibilidad == -1) {
+      this.notification.mensaje('Filtro', "No se puede filtrar sin antes haber escogido algún filtro", TipoMessage.warning);
+      return;
+    }
+
+    this.listaMesasToFilter().subscribe((data:any) => {
+      if(this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
+        data = data.filter(item => item.idSucursal == this.filtros.sucursal);
+      
+      if(this.filtros.estado != null && this.filtros.estado != -1)
+        data = data.filter(item => item.estado == this.filtros.estado);
+
+      if(this.filtros.disponibilidad != 0 && this.filtros.disponibilidad != -1)
+        data = data.filter(item => item.idDisponibilidad == this.filtros.disponibilidad);
+
+      this.datos = data
+      this.dataSource = new MatTableDataSource(this.datos);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;  
+    })
+  }
   //* Llamada en el front (click)="detalleMesa(item.id) - No sé si quiere trabajarlo por id o código
 
   //! ¿Qué no hay mesa by id? - Añadido

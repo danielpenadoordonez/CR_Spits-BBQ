@@ -1,8 +1,8 @@
-<div class="flexbox" data-aos="zoom-in">
+<div class="flexbox filter-container" data-aos="zoom-in">
   <mat-form-field appearance="fill" class="filter">
     <mat-label>Sucursales</mat-label>
     <mat-select>
-      <mat-option (click)="filterProductoSucursales(0)" aria-selected="true">
+      <mat-option (click)="filterProductoSucursales(0)" aria-selected="true" value="Todas">
         Todas
       </mat-option>
       <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="filterProductoSucursales(sucursal.id)">
@@ -10,6 +10,32 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field appearance="fill" class="filter">
+    <mat-label>Categoria</mat-label>
+    <mat-select>
+      <mat-option (click)="filterProductoCategoria(0)" aria-selected="true" value="Todas">
+        Todas
+      </mat-option>
+      <mat-option *ngFor="let categoria of categoriaList" [value]="categoria.id" (click)="filterProductoCategoria(categoria.id)">
+        {{categoria.descripcion}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="filter">
+    <mat-label>Estado</mat-label>
+    <mat-select>
+      <mat-option (click)="filterProductoEstado(null)" aria-selected="true" value="Todas">
+        Todas
+      </mat-option>
+      <mat-option (click)="filterProductoEstado(true)" aria-selected="true" value="Habilitado">
+        Habilitado
+      </mat-option>
+      <mat-option (click)="filterProductoEstado(false)" aria-selected="true" value="Deshabilitado">
+        Deshabilitado
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon class="filter-icon" (click)="aplicarFiltro()" title="Filtrar">filter_alt</mat-icon>
 </div>
 <div class="add-table flexbox" data-aos="zoom-in">
   <mat-icon class="add-product-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
