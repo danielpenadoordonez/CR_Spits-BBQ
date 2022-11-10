@@ -23,16 +23,16 @@ export class GestionProductoComponent implements AfterViewInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
 
-  // Filtros
+  //data table
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<any>();
+
   filtros: any = {
     sucursal: -1,
     estado: -1,
     categoria: -1
   }
-  //data table
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  dataSource = new MatTableDataSource<any>();
 
   constructor(private gService: GenericService, private dialog: MatDialog,
     private route: ActivatedRoute, private router: Router,
@@ -48,7 +48,7 @@ export class GestionProductoComponent implements AfterViewInit {
 
   listaProductos() {
     this.gService
-      .list('productos/all')
+      .list('productos/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);

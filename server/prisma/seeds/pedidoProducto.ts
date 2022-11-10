@@ -1,6 +1,7 @@
 //* Corresponden al detalle de los pedidos (comandas)
 
 export const pedido_producto = [
+    //* Pedido #1
     {
         idPedido: 1,
         idProducto: 1,
@@ -19,6 +20,7 @@ export const pedido_producto = [
         cantidad: 1,
         notas: 'Con poco tomate la hamburguesa'
     },
+    //* Pedido #2
     {
         idPedido: 2,
         idProducto: 4,
@@ -49,4 +51,60 @@ export const pedido_producto = [
         cantidad: 2,
         notas: 'Dos, una con ensalada verde en lugar de papas'
     },
+    //* Pedido #3
+    {
+        idPedido: 3,
+        idProducto: 2,
+        cantidad: 2,
+        notas: 'Sin hielo, bien fría'
+    },
+    {
+        idPedido: 3,
+        idProducto: 6,
+        cantidad: 1,
+        notas: ''
+    },
+    {
+        idPedido: 3,
+        idProducto: 11,
+        cantidad: 1,
+        notas: 'Carne cocida a término medio'
+    },
+    {
+        idPedido: 3,
+        idProducto: 18,
+        cantidad: 1,
+        notas: 'Sin espinas y con papas fritas'
+    },
+    //* Pedido 4
+    {
+        idPedido: 4,
+        idProducto: 4,
+        cantidad: 1,
+        notas: 'Batido de natural de fresa'
+    },
+    {
+        idPedido: 4,
+        idProducto: 2,
+        cantidad: 1,
+        notas: 'Sin hielo'
+    },
+    {
+        idPedido: 4,
+        idProducto: 7,
+        cantidad: 2,
+        notas: ''
+    },
+    {
+        idPedido: 4,
+        idProducto: 20,
+        cantidad: 1,
+        notas: 'Con ensadala rusa, no verde'
+    },
+    {
+        idPedido: 4,
+        idProducto: 19,
+        cantidad: 1,
+        notas: 'Con arroz blanco y sin espinas'
+    }
 ];

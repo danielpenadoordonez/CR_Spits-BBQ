@@ -15,7 +15,7 @@ export const estadospedidos = [
     },
     {
         id : 4,
-        descripcion : 'Entregada'
+        descripcion : 'Entregado'
     },
     {
         id : 5,

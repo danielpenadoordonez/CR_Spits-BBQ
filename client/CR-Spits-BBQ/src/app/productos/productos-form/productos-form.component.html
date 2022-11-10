@@ -1,31 +1,59 @@
-<form [formGroup]="productosForm" #ngForm="ngForm" novalidate
-  (ngSubmit)="isCreate ? crearProducto() : actualizarProducto()" data-aos="zoom-in">
+<form
+  [formGroup]="productosForm"
+  novalidate
+  (ngSubmit)="isCreate ? crearProducto() : actualizarProducto()"
+  data-aos="zoom-in"
+>
   <!-- ! Campos ocultos -->
   <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>{{ titleForm }} Producto
-      </mat-card-title>
+      <mat-card-title>{{ titleForm }} Producto </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #nombreProducto minlength="3" maxlength="30" pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
-              placeholder="Nombre del producto" formControlName="nombre" />
-            <mat-hint align="end">{{ nombreProducto.value.length }} / 30</mat-hint>
-            <mat-error *ngIf="productosForm.controls['nombre'].hasError('required')">
+            <input
+              matInput
+              #nombreProducto
+              minlength="3"
+              maxlength="40"
+              pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+              placeholder="Nombre del producto"
+              formControlName="nombre"
+              title="Nombre del producto"
+              autocomplete="true"
+            />
+            <mat-hint align="end"
+              >{{ nombreProducto.value.length }} / 30</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['nombre'].hasError('required')"
+            >
               El nombre del producto es <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #descripcionProducto minlength="5" maxlength="100"
-              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$" placeholder="Descripción del producto"
-              formControlName="descripcion" />
-            <mat-hint align="end">{{ descripcionProducto.value.length }} / 100</mat-hint>
-            <mat-error *ngIf="productosForm.controls['descripcion'].hasError('required')">
+            <input
+              matInput
+              #descripcionProducto
+              minlength="5"
+              maxlength="100"
+              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              placeholder="Descripción del producto"
+              formControlName="descripcion"
+              title="Descripción del producto"
+              autocomplete="false"
+            />
+            <mat-hint align="end"
+              >{{ descripcionProducto.value.length }} / 100</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['descripcion'].hasError('required')"
+            >
               La descripción del producto es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
@@ -34,23 +62,49 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #ingredientesProducto minlength="5" maxlength="100"
-              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$" placeholder="Ingredientes del producto"
-              formControlName="ingredientes" />
-            <mat-hint align="end">{{ ingredientesProducto.value.length }} / 100</mat-hint>
-            <mat-error *ngIf="
+            <input
+              matInput
+              #ingredientesProducto
+              minlength="5"
+              maxlength="100"
+              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              placeholder="Ingredientes del producto"
+              formControlName="ingredientes"
+              title="Ingredientes del producto [opcional]"
+              autocomplete="true"
+            />
+            <mat-hint align="end"
+              >{{ ingredientesProducto.value.length }} / 100</mat-hint
+            >
+            <mat-error
+              *ngIf="
                 productosForm.controls['ingredientes'].hasError('required')
-              ">
+              "
+            >
               El mínimo es de 5 carácteres <strong>requerido</strong>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #precioProducto min="100" max="100000" pattern="^[0-9]*$"
-              placeholder="Precio. Ex. 5500, 1500, 4500 colones (₡)" formControlName="precio" type="number" />
-            <mat-hint align="end">{{ precioProducto.value }} min 100₡ / máx 100000₡</mat-hint>
-            <mat-error *ngIf="productosForm.controls['precio'].hasError('required')">
+            <input
+              matInput
+              #precioProducto
+              min="100"
+              max="100000"
+              pattern="^[0-9]*$"
+              placeholder="Precio. Ex. 5500, 1500, 4500 colones (₡)"
+              formControlName="precio"
+              title="precio del producto entero"
+              type="number"
+              autocomplete="false"
+            />
+            <mat-hint align="end"
+              >{{ precioProducto.value }} - min 100₡ / máx 100000₡</mat-hint
+            >
+            <mat-error
+              *ngIf="productosForm.controls['precio'].hasError('required')"
+            >
               El precio es <strong>requerido y un número entero</strong>
             </mat-error>
           </mat-form-field>
@@ -59,24 +113,43 @@
       <div class="row">
         <div class="col" *ngIf="sucursalesList">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Sucursales disponibles" formControlName="sucursales" multiple>
-              <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id">
+            <mat-select
+              placeholder="Sucursales disponibles"
+              formControlName="sucursales"
+              title="Lista múltiple de sucursales"
+              multiple
+            >
+              <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
                 {{ sucursal.nombre }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="productosForm.controls['sucursales'].hasError('required')">
+            <mat-error
+              *ngIf="productosForm.controls['sucursales'].hasError('required')"
+            >
               La(s) sucursal(es) es/son <strong>requerido(s)</strong>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col" *ngIf="categoriasList">
           <mat-form-field class="full-width">
-            <mat-select placeholder="Cateogría del producto" formControlName="idCategoria">
-              <mat-option *ngFor="let categoria of categoriasList" [value]="categoria.id">
+            <mat-select
+              placeholder="Cateogría del producto"
+              formControlName="idCategoria"
+              title="Lista única de categorías de producto"
+            >
+              <mat-option
+                *ngFor="let categoria of categoriasList"
+                [value]="categoria.id"
+              >
                 {{ categoria.descripcion }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="productosForm.controls['idCategoria'].hasError('required')">
+            <mat-error
+              *ngIf="productosForm.controls['idCategoria'].hasError('required')"
+            >
               La categoría del producto es <strong>requerida</strong>
             </mat-error>
           </mat-form-field>
@@ -86,29 +159,62 @@
         <div class="col">
           <mat-label>Estado</mat-label>
           <mat-radio-group formControlName="estado">
-            <mat-radio-button class="radio-button" [value]="true">Habilitado</mat-radio-button>
-            <mat-radio-button class="radio-button" [value]="false">Deshabilitado</mat-radio-button>
+            <mat-radio-button
+              class="radio-button"
+              [value]="true"
+              title="Estado: habilitado"
+              >Habilitado</mat-radio-button
+            >
+            <mat-radio-button
+              class="radio-button"
+              [value]="false"
+              title="Estado: deshabilitado"
+              >Deshabilitado</mat-radio-button
+            >
           </mat-radio-group>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #imagenProducto id="imagenProducto" minlength="25"
+            <input
+              matInput
+              #imagenProducto
+              id="imagenProducto"
+              minlength="25"
               pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$"
-              placeholder="Imagen. Ejemplo: https://example.com/imagen.png" formControlName="imagen"
-              (input)="ShowImage(imagenProducto.value)" (paste)="ImageOnPaste($event)"/>
-            <mat-error *ngIf="productosForm.controls['imagen'].hasError('required')">
+              placeholder="Imagen. Ejemplo: https://example.com/imagen.png"
+              formControlName="imagen"
+              (input)="ShowImage(imagenProducto.value)"
+              (paste)="ImageOnPaste($event)"
+              title="Imagen del producto"
+              autocomplete="true"
+            />
+            <mat-error
+              *ngIf="productosForm.controls['imagen'].hasError('required')"
+            >
               La imagen es <strong>requerida y debe ser un URL</strong>
             </mat-error>
           </mat-form-field>
         </div>
       </div>
-      <div id="product-image-container" class="flexbox" >
-        <img [src]="productoInfo != undefined ? productoInfo.imagen : '../../../assets/images/logo.png'"  alt="" class="product-img">
+      <div id="product-image-container" class="flexbox">
+        <img
+          [src]="
+            productoInfo != undefined
+              ? productoInfo.imagen
+              : '../../../assets/images/logo.png'
+          "
+          alt=""
+          class="product-img"
+        />
       </div>
     </mat-card-content>
-    <mat-button-toggle-group class="actions-group" name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle-group
+      class="actions-group"
+      name="fontStyle"
+      aria-label="Font Style"
+    >
       <button mat-raesed-button type="submit" title="Guardar">
         <mat-icon class="actions">save</mat-icon>
       </button>
