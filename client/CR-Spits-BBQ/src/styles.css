@@ -387,6 +387,25 @@ tr.mat-row{
 
 
 /* MAT SELECT Class Filter */
+.filter-container{
+    flex-wrap: wrap !important;
+}
+
+.filter-container .filter{
+    margin: 0 .75rem;
+}
+
+.filter-icon{
+    color: #FFF !important;
+    font-size: 2rem;
+    background: #171717 !important;
+    border-radius: 50%;
+    padding: .5rem;
+    cursor: pointer;
+    position: relative;
+    top: -.5rem;
+}
+
 .filter .mat-form-field-flex{
     background-color: #171717;
     box-shadow: inset 0 0 15px #000;

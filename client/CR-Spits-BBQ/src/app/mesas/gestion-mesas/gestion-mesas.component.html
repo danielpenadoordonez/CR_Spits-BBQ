@@ -13,11 +13,11 @@
       <p class="tip-description">Ocupado</p>
     </div>
   </div>
-  <div class="flexbox" data-aos="zoom-in">
+  <div class="flexbox filter-container" data-aos="zoom-in">
     <mat-form-field appearance="fill" class="filter">
       <mat-label>Sucursales</mat-label>
       <mat-select>
-        <mat-option (click)="filterMesasSucursales(0)" aria-selected="true">
+        <mat-option (click)="filterMesasSucursales(0)" aria-selected="true" value="Todas">
           Todas
         </mat-option>
         <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="filterMesasSucursales(sucursal.id)">
@@ -25,6 +25,32 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field appearance="fill" class="filter">
+      <mat-label>Disponibilidad</mat-label>
+      <mat-select>
+        <mat-option (click)="filterMesasDisponibilidad(0)" aria-selected="true" value="Todas">
+          Todas
+        </mat-option>
+        <mat-option *ngFor="let disponibilidad of disponibilidadesList" [value]="disponibilidad.id" (click)="filterMesasDisponibilidad(disponibilidad.id)">
+          {{disponibilidad.descripcion}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="filter">
+      <mat-label>Estado</mat-label>
+      <mat-select>
+        <mat-option (click)="filterMesasEstado(null)" aria-selected="true" value="Todas">
+          Todas
+        </mat-option>
+        <mat-option (click)="filterMesasEstado(true)" aria-selected="true" value="Habilitado">
+          Habilitado
+        </mat-option>
+        <mat-option (click)="filterMesasEstado(false)" aria-selected="true" value="Deshabilitado">
+          Deshabilitado
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-icon class="filter-icon" (click)="aplicarFiltro()" title="Filtrar">filter_alt</mat-icon>
   </div>
   <div class="add-table flexbox" data-aos="zoom-in">
     <mat-icon class="add-table-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
