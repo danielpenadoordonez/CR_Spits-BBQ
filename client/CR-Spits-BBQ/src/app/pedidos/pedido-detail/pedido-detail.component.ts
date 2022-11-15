@@ -26,6 +26,7 @@ export class PedidoDetailComponent implements OnInit {
   ngOnInit(): void {
     if (this.datosDialog.id !== undefined) {
       this.obtenerDetallesByOrderID(this.datosDialog.id);
+      this.addStyleClasses();
     }
   }
 
@@ -43,4 +44,8 @@ export class PedidoDetailComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  addStyleClasses(){
+    document.querySelector('.mat-dialog-container').classList.add('mandatory-flexbox', 'flexbox');
+    document.querySelector('.cdk-overlay-pane').classList.add('cdk-overlay-fullscreen');
+  }
 }
