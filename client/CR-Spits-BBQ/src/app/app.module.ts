@@ -14,6 +14,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { ProductosModule } from './productos/productos.module';
 import { ToastrModule } from 'ngx-toastr';
+import { ReservacionesModule } from './reservaciones/reservaciones.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ToastrModule } from 'ngx-toastr';
     MesasModule,
     PedidosModule,
     ProductosModule,
+    ReservacionesModule,
     AcercaDeModule,
     DashboardModule,
     //* al final el gestor de las rutas principal

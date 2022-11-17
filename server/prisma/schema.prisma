@@ -67,11 +67,11 @@ model Sucursal {
 }
 
 model Mesa {
-  id            Int                @id @default(autoincrement()) //* Identity
-  codigo        String             @unique
+  id            Int           @id @default(autoincrement()) //* Identity
+  codigo        String        @unique
   capacidad     Int
-  estado        Boolean            @default(true) //* Habilitado o deshabilitado
-  reservaciones Reservacion_Mesa[]
+  estado        Boolean       @default(true) //* Habilitado o deshabilitado
+  reservaciones Reservacion[]
   pedidos       Pedido[]
 
   Sucursal         Sucursal           @relation(fields: [idSucursal], references: [id])
@@ -87,24 +87,26 @@ model DisponibilidadMesa {
 }
 
 model Reservacion {
-  id         Int                @id @default(autoincrement())
-  fecha_hora DateTime           @default(now())
-  mesas      Reservacion_Mesa[]
-  Sucursal   Sucursal           @relation(fields: [idSucursal], references: [id])
+  id         Int      @id @default(autoincrement())
+  fecha_hora DateTime @default(now())
+  cantidad   Int
+  mesas      Mesa[]
+  Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
   idSucursal Int
-  Usuario    Usuario            @relation(fields: [idUsuario], references: [id])
-  idUsuario  String
+  Usuario    Usuario  @relation(fields: [idUsuario], references: [id])
+  idUsuario  String //* (representa al cliente o quien lo cree)
 }
 
-model Reservacion_Mesa {
-  Mesa          Mesa        @relation(fields: [idMesa], references: [id])
-  idMesa        Int
-  Reservacion   Reservacion @relation(fields: [idReservacion], references: [id])
-  idReservacion Int
-  cantidad      Int
+//* Deshabilitado 16/11/2022
+//model Reservacion_Mesa {
+//Mesa          Mesa        @relation(fields: [idMesa], references: [id])
+//idMesa        Int
+//Reservacion   Reservacion @relation(fields: [idReservacion], references: [id])
+//idReservacion Int
+//cantidad      Int
 
-  @@id([idMesa, idReservacion])
-}
+//@@id([idMesa, idReservacion])
+//}
 
 model Categoria_Producto {
   id          Int        @id
@@ -139,23 +141,21 @@ model Producto {
 
 model TipoPago {
   id                 Int                         @id
-  descripcion        String
+  descripcion        String //* 1- Crédito, 2- Efectivo, 3- Otros, cheques no aceptados
   facturasEncabezado FacturaEncabezadoTipoPago[]
 }
 
-enum TipoTarjeta {
-  VISA
-  MASTERCARD
-  AMERICAN_EXPRESS
-  JCB
-  DISCOVER
-  NULL //* Sin tipo
+model TipoTarjeta {
+  id          Int                  @id
+  descripcion String               @unique //* 1- Visa, 2- MasterCard, 3- American Express, 4- JCB, 5- DISCOVER
+  facturas    Factura_Encabezado[]
 }
 
 model Factura_Encabezado {
   id             Int                         @id @default(autoincrement())
   numero_tarjeta String? //* Opcional 
-  tarjeta        TipoTarjeta?                @default(NULL) //* Opcional [PUEDE SER EFECTIVO]
+  TipoTarjeta    TipoTarjeta?                @relation(fields: [idTipoTarjeta], references: [id])
+  idTipoTarjeta  Int? //* Opcional [PUEDE SER EFECTIVO]
   fecha          DateTime                    @default(now())
   estado         Boolean                     @default(false) //* Cancelada / pendiente
   detalles       Factura_Detalle[]
@@ -198,13 +198,19 @@ model EstadoPedido {
   pedidos     Pedido[]
 }
 
+model TipoPedido {
+  id          Int      @id //* Tipos: 1- En Persona, 2- En línea
+  descripcion String
+  pedidos     Pedido[]
+}
+
 model Pedido {
   id           Int               @id @default(autoincrement())
-  nombre       String?
+  nombre       String?           @unique
   precio       Decimal           @default(0)
   fecha        DateTime          @default(now())
   detalles     Pedido_Producto[]
-  estadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
+  EstadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
   idEstado     Int
 
   Cliente   Usuario @relation(name: "Pedidos", fields: [idCliente], references: [id])
@@ -218,6 +224,9 @@ model Pedido {
 
   Mesa   Mesa? @relation(fields: [idMesa], references: [id])
   idMesa Int? //* Es totalmente opcional, ya que puede ser que sea online...
+
+  TipoPedido   TipoPedido @relation(fields: [idTipoPedido], references: [id])
+  idTipoPedido Int //* Indica si es en persona o de forma remota - No opcional
 }
 
 model Pedido_Producto {
