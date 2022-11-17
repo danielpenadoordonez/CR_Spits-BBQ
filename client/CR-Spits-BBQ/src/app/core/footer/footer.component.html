@@ -1,1 +1,26 @@
-<p>footer works!</p>
+<footer class="footer section">
+    <div class="footer_container grid">
+        <div class="footer_content" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="500">
+            <a href="#" class="footer_logo-content flexbox">
+                <span>CR Spits & BBQ</span>
+                <img src="../../../assets/images/logo.png" alt="" class="footer_logo" />
+            </a>
+            <p class="footer_description text-gradient">Bienvenido al hogar de la parrilla</p>
+            <div class="footer_social">
+                <div *ngFor="let socialMedia of footerSocialMeida">
+                    <a [href]="socialMedia.link" class="footer_social-link flexbox">
+                        <i [class]='socialMedia.icon'></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer_content" *ngFor="let footerItem of footerLinks" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="1000">
+            <h3 class="footer_title">{{footerItem.title}}</h3>
+            <ul class="footer_links">
+                <li *ngFor="let footerLink of footerItem.links">
+                    <a [href]="footerLink.link" class="footer_link">{{footerLink.description}}</a>
+                </li>
+            </ul>
+        </div>       
+    </div>
+    <span class="footer_copy" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="1000">&copy; {{dateNow}}  Todos los derechos reservados | <b>CR Spits & BBQ</b></span>

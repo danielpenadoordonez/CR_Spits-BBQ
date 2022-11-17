@@ -1,76 +1,80 @@
-<header class="header" id="header">
-    <nav class="nav main_container">
-        <div class="nav_logo">
-            <a href="#">
-                <img src="../../../assets/images/logo.png" alt="" class="nav_logo-img" />
-                <!-- <span class="snowflake"></span>
-                <span class="snowflake"></span>
-                <span class="snowflake"></span>
-                <span class="snowflake"></span>
-                <span class="snowflake"></span>
-                <span class="snowflake"></span> -->
-            </a>
-        </div>
-        <div class="nav_menu" id="nav-menu">
-            <ul class="nav_list">
-                <li class="nav_item">
-                    <a href="#" class="nav_link">Inicio</a>
-                </li>
-                <li class="nav_item" *ngIf="isAuthenticated">
-                    <a [routerLink]="['/mesas']" class="nav_link">Mesas</a>
-                </li>
-                <li class="nav_item">
-                    <a [routerLink]="['/about']" class="nav_link">Acerca de</a>
-                </li>
-                <li class="nav_item">
-                    <a href="#" class="nav_link">Contacto</a>
-                </li>
-                <hr class="divisor" />
-                <li class="nav_item">
-                    <a href="#" class="nav_link"></a>
-                </li>
-                <li class="nav_item">
-                    <button mat-icon-button [matMenuTriggerFor]="menuLogin">
-                        <mat-icon class="user-icon">person</mat-icon>
-                    </button>
-                    <mat-menu #menuLogin="matMenu" class="mat-menu">
-                        <a mat-menu-item *ngIf="!(isAuthenticated)">
-                            <mat-icon class="mat-menu-user-icon">person</mat-icon>
-                            <span class="mat-menu-description" (click)="Loguear()"> Iniciar Sesión </span>
-                        </a>
-                        <a mat-menu-item *ngIf="!(isAuthenticated)">
-                            <mat-icon class="mat-menu-user-icon">person_add</mat-icon>
-                            <span class="mat-menu-description"> Registrarse </span>
-                        </a>
-                        <p mat-menu-item *ngIf="isAuthenticated" class="user-logged">
-                            Daniel Penado Ordonez
-                            <br>
-                            <span class="user-logged-email">Mesero</span>
-                        </p>
-                        <a mat-menu-item *ngIf="isAuthenticated">
-                            <mat-icon class="mat-menu-user-icon">logout</mat-icon>
-                            <span class="mat-menu-description"> Cerrar Sesión </span>
-                        </a>
-                    </mat-menu>
-                    <!-- <a href="#" class="nav_link button login">
-                        Iniciar Sesión
-                        <i class='bx bxs-user loginIcon'></i>
-                    </a> -->
-                </li>
-            </ul>
-            <div class="nav_close index_close" id="nav-close">
-                <i class='bx bx-x'></i>
+<div class="header-container">
+    <header class="header" id="header">
+        <nav class="nav main_container">
+            <div class="nav_logo">
+                <a href="#">
+                    <img src="../../../assets/images/logo.png" alt="" class="nav_logo-img" />
+                    <!-- <span class="snowflake"></span>
+                    <span class="snowflake"></span>
+                    <span class="snowflake"></span>
+                    <span class="snowflake"></span>
+                    <span class="snowflake"></span>
+                    <span class="snowflake"></span> -->
+                </a>
+            </div>
+            <div class="nav_menu" id="nav-menu">
+                <ul class="nav_list">
+                    <li class="nav_item">
+                        <a href="#" class="nav_link">Inicio</a>
+                    </li>
+                    <li class="nav_item" *ngIf="isAuthenticated">
+                        <a class="nav_link">Mesas</a>
+                    </li>
+                    <li class="nav_item">
+                        <a class="nav_link">Acerca de</a>
+                    </li>
+                    <li class="nav_item">
+                        <a href="#" class="nav_link">Contacto</a>
+                    </li>
+                    <hr class="divisor" />
+                    <li class="nav_item">
+                        <a href="#" class="nav_link"></a>
+                    </li>
+                    <li class="nav_item">
+                        <button mat-icon-button [matMenuTriggerFor]="menuLogin">
+                            <mat-icon class="user-icon">person</mat-icon>
+                        </button>
+                        <mat-menu #menuLogin="matMenu" class="mat-menu">
+                            <a mat-menu-item *ngIf="!(isAuthenticated)">
+                                <mat-icon class="mat-menu-user-icon">person</mat-icon>
+                                <span class="mat-menu-description" (click)="Loguear()"> Iniciar Sesión </span>
+                            </a>
+                            <a mat-menu-item *ngIf="!(isAuthenticated)">
+                                <mat-icon class="mat-menu-user-icon">person_add</mat-icon>
+                                <span class="mat-menu-description"> Registrarse </span>
+                            </a>
+                            <p mat-menu-item *ngIf="isAuthenticated" class="user-logged">
+                                Daniel Penado Ordonez
+                                <br>
+                                <span class="user-logged-email">Mesero</span>
+                            </p>
+                            <a mat-menu-item *ngIf="isAuthenticated">
+                                <mat-icon class="mat-menu-user-icon">logout</mat-icon>
+                                <span class="mat-menu-description"> Cerrar Sesión </span>
+                            </a>
+                        </mat-menu>
+                        <!-- <a href="#" class="nav_link button login">
+                            Iniciar Sesión
+                            <i class='bx bxs-user loginIcon'></i>
+                        </a> -->
+                    </li>
+                </ul>
+                <div class="nav_close index_close" id="nav-close">
+                    <i class='bx bx-x'></i>
+                </div>
+            </div>
+            <div class="nav_toggle" id="nav-toggle">
+                <i class='bx bx-menu'></i>
+            </div>
+        </nav>
+    </header>
+        <div class="social-container">
+            <div class="nav-social-media">
+                <hr class="line">
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-twitter"></i>
+                <hr class="line">
             </div>
         </div>
-        <div class="nav_toggle" id="nav-toggle">
-            <i class='bx bx-menu'></i>
-        </div>
-    </nav>
-    <div class="nav-social-media">
-        <hr class="line">
-        <i class="fa-brands fa-facebook"></i>
-        <i class="fa-brands fa-instagram"></i>
-        <i class="fa-brands fa-twitter"></i>
-        <hr class="line">
-    </div>
-</header>
+</div>
