@@ -2,6 +2,7 @@
 .home_content{
     row-gap: 1rem;
     color: white;
+    height: 80vh;
 }
 
 .home_group{

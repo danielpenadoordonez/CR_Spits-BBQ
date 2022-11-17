@@ -25,20 +25,18 @@ export class DashboardIndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.securityService.isAuthenticated;
-    this.hideNavbar();
-    this.hideEmberSparks();
+    this.hideHTMLElements();
   }
 
-  hideNavbar() {
-    document.getElementsByClassName('header')[0].classList.toggle('hide-nav');
+  hideHTMLElements() {
+    document.getElementsByClassName('header-container')[0].classList.toggle('hide-nav');
+    document.getElementsByClassName('footer')[0].classList.toggle('hide-footer');
+    document.getElementById('sparks').classList.toggle('hide-ember');
   }
 
-  hideEmberSparks(){
-    document.getElementById('sparks').style.zIndex = '-1';
-  }
 
   ngOnDestroy(){
-    this.hideNavbar();
+    this.hideHTMLElements();
   }
 
   onToggleSideNav(data: SideNavToggle): void{
