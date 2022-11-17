@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prismaClient = new PrismaClient();
 
 /*
-   *GET APIs
+ *GET APIs
  */
 
 //Todos los pedidos
@@ -14,10 +14,16 @@ module.exports.getAllPedidos = async (request, response, next) => {
     },
     include: {
       detalles: true,
-      estadoPedido: true,
+      EstadoPedido: true,
       Cliente: true,
       Mesero: true,
-      Mesa: true
+      Mesa: true,
+      Sucursal: true,
+      TipoPedido: {
+        select: {
+          descripcion: true,
+        },
+      },
     },
   });
   response.json(pedidos);
@@ -32,13 +38,18 @@ module.exports.getPedidoById = async (request, response, next) => {
       detalles: {
         include: {
           Producto: true,
-        }
+        },
       },
+      EstadoPedido: true,
       Cliente: true,
       Mesero: true,
-      estadoPedido: true,
       Mesa: true,
       Sucursal: true,
+      TipoPedido: {
+        select: {
+          descripcion: true,
+        },
+      },
     },
   });
   response.json(pedido);
@@ -64,15 +75,15 @@ module.exports.getPedidosByIdSucursal = async (request, response, next) => {
   let sucursal = parseInt(request.params.idSucursal);
   const pedidos = await prismaClient.pedido.findMany({
     where: { idSucursal: sucursal },
-    orderBy:{
-      id: 'asc' //* Orden claro que sí
+    orderBy: {
+      id: "asc", //* Orden claro que sí
     },
     include: {
       detalles: true,
-      estadoPedido: true,
+      EstadoPedido: true,
       Cliente: true,
       Mesero: true,
-      Mesa: true
+      Mesa: true,
     },
   });
   response.json(pedidos);
@@ -83,15 +94,17 @@ module.exports.getPedidosByState = async (request, response, next) => {
   let estado = parseInt(request.params.idEstado);
   const pedidos = await prismaClient.pedido.findMany({
     where: { idEstado: estado },
-    orderBy:{
-      id: 'asc' //* Orden claro que sí
+    orderBy: {
+      id: "asc", //* Orden claro que sí
     },
     include: {
       detalles: true,
-      estadoPedido: true,
+      EstadoPedido: true,
       Cliente: true,
       Mesero: true,
-      Mesa: true
+      Mesa: true,
+      Sucursal: true,
+      TipoPedido: true
     },
   });
   response.json(pedidos);

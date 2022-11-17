@@ -106,5 +106,116 @@ export const pedido_producto = [
         idProducto: 19,
         cantidad: 1,
         notas: 'Con arroz blanco y sin espinas'
-    }
+    },
+    //* Pedido 5
+    {
+        idPedido: 5,
+        idProducto: 2,
+        cantidad: 2,
+        notas: 'Con mucho hielo'
+    },
+    {
+        idPedido: 5,
+        idProducto: 4,
+        cantidad: 1,
+        notas: 'Batido de natural de guanabana'
+    },
+    {
+        idPedido: 5,
+        idProducto: 12,
+        cantidad: 1,
+        notas: 'Con poco condimiento'
+    },
+    {
+        idPedido: 5,
+        idProducto: 18,
+        cantidad: 1,
+        notas: 'Cocción a término medio'
+    },
+    {
+        idPedido: 5,
+        idProducto: 20,
+        cantidad: 1,
+        notas: 'Con pocas almejas'
+    },
+    //* Pedido 6
+    {
+        idPedido: 6,
+        idProducto: 5,
+        cantidad: 2,
+        notas: ''
+    },
+    {
+        idPedido: 6,
+        idProducto: 2,
+        cantidad: 2,
+        notas: 'Bien frías'
+    },
+    {
+        idPedido: 6,
+        idProducto: 6,
+        cantidad: 1,
+        notas: ''
+    },
+    {
+        idPedido: 6,
+        idProducto: 8,
+        cantidad: 1,
+        notas: 'Con poco condimento'
+    },
+    {
+        idPedido: 6,
+        idProducto: 16,
+        cantidad: 2,
+        notas: 'Una con arroz blanco y otra sin aguacate'
+    },
+    {
+        idPedido: 6,
+        idProducto: 17,
+        cantidad: 1,
+        notas: 'Con ensalada'
+    },
+    {
+        idPedido: 6,
+        idProducto: 11,
+        cantidad: 1,
+        notas: 'Con poca sal'
+    },
+    //* Pedido 7
+    {
+        idPedido: 7,
+        idProducto: 2,
+        cantidad: 2,
+        notas: ''
+    },
+    {
+        idPedido: 7,
+        idProducto: 4,
+        cantidad: 1,
+        notas: 'Batido de mango con poco hielo'
+    },
+    {
+        idPedido: 7,
+        idProducto: 9,
+        cantidad: 2,
+        notas: 'Unas con poca sal y otra normal'
+    },
+    {
+        idPedido: 7,
+        idProducto: 14,
+        cantidad: 1,
+        notas: 'Sin tomate'
+    },
+    {
+        idPedido: 7,
+        idProducto: 19,
+        cantidad: 1,
+        notas: 'Con ensalada verde'
+    },
+    {
+        idPedido: 7,
+        idProducto: 13,
+        cantidad: 1,
+        notas: 'Cocción término bien cocido'
+    },
 ];

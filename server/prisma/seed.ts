@@ -1,4 +1,4 @@
-import { prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { profiles } from "./seeds/profiles";
 import { categoria_producto } from "./seeds/categoriaProducto";
 import { estadospedidos } from "./seeds/estadopedido";
@@ -7,14 +7,16 @@ import { sucursales } from "./seeds/sucursales";
 import { users } from "./seeds/users";
 import { tables } from "./seeds/tables";
 import { tiposPago } from "./seeds/tipoPago";
+import { tiposPedido } from "./seeds/tipoPedido"
+import { tiposTarjeta } from "./seeds/tiposTarjeta";
 import { pedidos } from "./seeds/pedidos";
 import { pedido_producto } from "./seeds/pedidoProducto";
 
 
+
 const prismaClient = new PrismaClient();
 
-//* Entregable 4: productos, mesas y comandas.
-//* Con su lista y detalle
+//* Entregable 6: cambios aplicados a la db 16/11/2022
 
 async function main() {
     //! Creación de los registros de las tablas primarias, sin dependencias
@@ -37,6 +39,13 @@ async function main() {
 
     await prismaClient.estadoPedido.createMany({
         data: estadospedidos
+    });
+
+    await prismaClient.tipoPedido.createMany({
+        data: tiposPedido
+    });
+    await prismaClient.tipoTarjeta.createMany({
+        data: tiposTarjeta
     });
 
     //! Creacion de los registros de las tablas secundarias con dependencias (1:N)
@@ -469,11 +478,89 @@ async function main() {
         data: pedidos
     });
 
-    //! Creación de los registros con doble dependencia (M:N)
+    //! Creación de los registros con doble dependencia (N:M)
+
+    //! Coloco a reservaciones acá, ya que utiliza una relación N:M
+    //? es autoincrement, no ocupo el id
+    //? la fecha_hora tiene default, sino se coloca nada
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-5'),
+            cantidad: 5,
+            idSucursal: 1,
+            idUsuario: "508459062",
+            mesas: {
+                connect: [{ id: 5 }]
+            }
+        }
+    });
+
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-6'),
+            cantidad: 4,
+            idSucursal: 2,
+            idUsuario: "206450674",
+            mesas: {
+                connect: [{ id: 13 }]
+            }
+        }
+    });
+
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-8'),
+            cantidad: 2,
+            idSucursal: 1,
+            idUsuario: "508459062",
+            mesas: {
+                connect: [{ id: 7 }]
+            }
+        }
+    });
+
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-9'),
+            cantidad: 4,
+            idSucursal: 3,
+            idUsuario: "167459042",
+            mesas: {
+                connect: [{ id: 26 }]
+            }
+        }
+    });
+
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-11'),
+            cantidad: 6,
+            idSucursal: 2,
+            idUsuario: "206450674",
+            mesas: {
+                connect: [{ id: 14 }]
+            }
+        }
+    });
+
+    await prismaClient.reservacion.create({
+        data: {
+            fecha_hora: new Date('2022-11-13'),
+            cantidad: 5,
+            idSucursal: 4,
+            idUsuario: "65440685802",
+            mesas: {
+                connect: [{ id: 38 }]
+            }
+        }
+    });
 
     await prismaClient.pedido_Producto.createMany({
         data: pedido_producto
     });
+
+    //TODO seeds listos: tipo tarjeta, tipo pedido, tipo pago, reservaciones seed, + pedidos
+    //! APIS FALTANTES: tipo tarjeta, tipo pago, tipo pedido
 };
 
 main()

@@ -40,6 +40,7 @@
               #capacidadMesa
               min="1"
               max="10"
+              required="true"
               placeholder="Capacidad de la mesa"
               formControlName="capacidad"
               type="number"
@@ -62,6 +63,7 @@
           <mat-form-field class="full-width">
             <mat-select
               placeholder="Sucursal de la mesa"
+              required="true"
               formControlName="idSucursal"
               title="Lista única de sucursales"
               [disabled]="!isCreate"
@@ -84,6 +86,7 @@
           <mat-form-field class="full-width">
             <mat-select
               placeholder="Disponibilidad de la mesa"
+              required="true"
               formControlName="idDisponibilidad"
               title="Disponibilidades de la mesa"
             >
@@ -107,7 +110,7 @@
       <div class="row">
         <div class="col">
           <mat-label>Estado</mat-label>
-          <mat-radio-group formControlName="estado">
+          <mat-radio-group required="true" formControlName="estado">
             <mat-radio-button
               class="radio-button"
               [value]="true"

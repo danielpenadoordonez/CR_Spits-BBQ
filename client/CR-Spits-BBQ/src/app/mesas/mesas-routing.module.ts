@@ -8,9 +8,9 @@ import { MesasFormComponent } from './mesas-form/mesas-form.component';
 const routes: Routes = [
   //* Orden de las rutas
   { path: 'mesas', component: GestionMesasComponent },
- //* { path: 'mesas/all', component: MesasAllComponent }, desactivada temporalmente
- // { path: 'mesas/create', component: MesasFormComponent },
- // { path: 'mesas/update/:id', component: MesasFormComponent }
+  //* { path: 'mesas/all', component: MesasAllComponent }, desactivada temporalmente
+  { path: 'mesas/create', component: MesasFormComponent },
+  { path: 'mesas/update/:id', component: MesasFormComponent }
 ];
 
 //* Ruta con el id eliminada, ya que es innecesaria
