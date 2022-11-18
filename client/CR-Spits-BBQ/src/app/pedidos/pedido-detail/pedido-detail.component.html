@@ -8,7 +8,7 @@
       <div class="dialogo-pedido-header flexbox">
         <div class="dialogo-pedido-state">
           <p class="pedido-code">Código {{datos.id}}</p>
-          <p class="pedido-state">Pedido {{datos.estadoPedido.descripcion}}</p>
+          <p class="pedido-state">Pedido {{datos.EstadoPedido.descripcion}}</p>
           <mat-icon class="money-icon">payments</mat-icon>
         </div>
         <div class="dialogo-pedido-total-header">
@@ -25,15 +25,15 @@
           <div class="dialogo-pedido-content">
             <div class="dialogo-pedido-detalles flexbox">
               <div class="dialogo-pedido-detalles-data">
-                <p class="dialogo-pedido-detalles-data-state">{{datos.estadoPedido.descripcion}}</p>
+                <p class="dialogo-pedido-detalles-data-state">{{datos.EstadoPedido.descripcion}}</p>
                 <p class="dialogo-pedido-detalles-data-fecha">{{datos.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
                 <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p>
                 <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}}
                   {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
-                <p class="dialogo-pedido-detalles-data-mesa">Mesa
+                <p *ngIf="datos.idMesa !== null" class="dialogo-pedido-detalles-data-mesa">Mesa
                   {{datos.Mesa.codigo}} <br>
                 </p>
-                <div class="flexbox dialogo-pedido-detalles-data-mesa-capacity" >
+                <div *ngIf="datos.idMesa !== null" class="flexbox dialogo-pedido-detalles-data-mesa-capacity" >
                   <mat-icon class="person-icon">person</mat-icon>
                   X{{datos.Mesa.capacidad}}
                 </div>

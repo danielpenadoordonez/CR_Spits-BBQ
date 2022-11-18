@@ -10,12 +10,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegistroComponent } from './registro/registro.component';
 
 
 @NgModule({
   declarations: [
     UsuarioComponent,
-    InicioSesionComponent
+    InicioSesionComponent,
+    RegistroComponent
   ],
   imports: [
     CommonModule,
