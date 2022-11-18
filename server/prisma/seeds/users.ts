@@ -7,7 +7,8 @@ export const users = [
         apellido2: "Ordóñez",
         correo: "penadodan02@gmail.com",
         username: "danielpenado",
-        clave: "Linux&Python",
+        clave: "99c0e32944d328cb7d1a558d0eb22de2",
+        //? Clave sin hash: Linux&Python
         telefono: "83121660",
         direccion: "Atenas, Alajuela",
         idPerfil: 1 //! Admin
@@ -20,7 +21,8 @@ export const users = [
         apellido2: "Lizano",
         correo: "isaacbarquero22@gmail.com",
         username: "isaacbarliz",
-        clave: "front-end-css",
+        clave: "35ebe1d7d3b896f5cb5e573b1502efdd",
+        //? Clave sin hash: front-end-css
         telefono: "64645793",
         direccion: "Alajuela",
         idPerfil: 1 //! Admin
@@ -33,7 +35,8 @@ export const users = [
         apellido2: "Campos",
         correo: "maritoxd1@gmail.com",
         username: "marito",
-        clave: "12345678",
+        clave: "115d583e96984cbe4523dbcb76bcc066",
+        //? Clave sin hash: maritocrspitsbbq
         telefono: "83140136",
         direccion: "Grecia, Alajuela",
         idPerfil: 1 //! Admin
@@ -47,7 +50,8 @@ export const users = [
         apellido2: "Rojas",
         correo: "diegochavez@gmail.com",
         username: "diego_chavez",
-        clave: "12345678",
+        clave: "25d55ad283aa400af464c76d713c07ad",
+        //? Clave sin hash: 12345678
         telefono: "01657364",
         idPerfil: 3 //* Cliente
     },
@@ -59,7 +63,8 @@ export const users = [
         apellido2: "Bogantes",
         correo: "agustincordoba@hotmail.com",
         username: "agustin_cordoba",
-        clave: "12345678",
+        clave: "25d55ad283aa400af464c76d713c07ad",
+        //? Clave sin hash: 12345678
         telefono: "95367850",
         idPerfil: 3 //* Cliente
     },
@@ -71,7 +76,8 @@ export const users = [
         apellido2: "Quintana",
         correo: "amparocastillo@gmail.com",
         username: "amparo_castillo",
-        clave: "12345678",
+        clave: "25d55ad283aa400af464c76d713c07ad",
+        //? Clave sin hash: 12345678
         telefono: "69737015",
         idPerfil: 3 //* Cliente
     },
@@ -83,7 +89,8 @@ export const users = [
         apellido2: "Garita",
         correo: "davidsolis@gmail.com",
         username: "david_solis",
-        clave: "12345678",
+        clave: "25d55ad283aa400af464c76d713c07ad",
+        //? Clave sin hash: 12345678
         telefono: "73708053",
         idPerfil: 3 //* Cliente
     },

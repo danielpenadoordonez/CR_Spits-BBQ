@@ -69,7 +69,8 @@ async function main() {
             apellido2: "Quesada",
             correo: "cristhianmora@hotmail.com",
             username: "christian_mora",
-            clave: "12345678",
+            clave: "25f9e794323b453885f5181f1b624d0b",
+            //? Clave sin hash: 123456789
             telefono: "74601503",
             direccion: "Turrialba, cartago",
             idPerfil: 2, //? Mesero - Sucursal 2
@@ -88,7 +89,8 @@ async function main() {
             apellido2: "Arroyo",
             correo: "mariaarroyo@gmail.com",
             username: "maria_molina",
-            clave: "12345678",
+            clave: "25f9e794323b453885f5181f1b624d0b",
+            //? Clave sin hash: 123456789
             telefono: "74670781",
             direccion: "Santa Barbara, Heredia",
             idPerfil: 2, //? Mesero - Sucursal 1
@@ -107,7 +109,8 @@ async function main() {
             apellido2: "Ruíz",
             correo: "belenalfaro@gmail.com",
             username: "belen_alfaro",
-            clave: "12345678",
+            clave: "25f9e794323b453885f5181f1b624d0b",
+            //? Clave sin hash: 123456789
             telefono: "68036014",
             direccion: "La Rivera, Heredia",
             idPerfil: 2, //? Mesero - Sucursal 3
@@ -125,7 +128,8 @@ async function main() {
             apellido2: "Paniagua",
             correo: "garyflores@gmail.com",
             username: "gary_flores",
-            clave: "12345678",
+            clave: "25f9e794323b453885f5181f1b624d0b",
+            //? Clave sin hash: 123456789
             telefono: "10596839",
             direccion: "Naranjo, Alajuela",
             idPerfil: 2, //? Mesero - Sucursal 4
