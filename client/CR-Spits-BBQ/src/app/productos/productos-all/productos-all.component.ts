@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './productos-all.component.html',
   styleUrls: ['./productos-all.component.css']
 })
+
 export class ProductosAllComponent implements AfterViewInit {
   datos: any;
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -72,11 +73,11 @@ export class ProductosAllComponent implements AfterViewInit {
 
   //* Obtiene la cantidad total de mesas
   getCantidadTotalProductos() {
-    let countTables : number = 0;
+    let countProducts: number = 0;
     if (this.datos !== undefined) {
-      countTables = this.datos.map(t => t.id).reduce((partialSum: any, a: any) => partialSum + 1, 0);
+      countProducts = this.datos.map(t => t.id).reduce((partialSum: any, a: any) => partialSum + 1, 0);
     }
-    return countTables;
+    return countProducts;
   }
 
   //* Nota: no sé si haga falta el delete, en todo caso sé como hacerlo para añadir el botón...
