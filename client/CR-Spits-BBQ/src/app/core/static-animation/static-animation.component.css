@@ -30,6 +30,10 @@ canvas#sparks {
     animation: ember-shine 3s linear alternate infinite;
 }
 
+.hide-ember{
+    z-index: -1;
+}
+
 @keyframes ember-shine {
     to {
         filter: blur(5px);
