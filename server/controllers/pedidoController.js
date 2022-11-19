@@ -109,3 +109,31 @@ module.exports.getPedidosByState = async (request, response, next) => {
   });
   response.json(pedidos);
 };
+
+/*
+ * POST APIs
+ */
+module.exports.registerPedido = async (request, response, next) => {
+  let pedido = request.body;
+  const newPedido = await prismaClient.pedido.create({
+    id: pedido.id,
+    nombre: pedido.nombre,
+    precio: pedido.precio,
+    idEstado: pedido.idEstado,
+    idCliente: pedido.idCliente,
+    idMesero: pedido.idMesero,
+    idSucursal: pedido.idSucursal,
+    idMesa: pedido.idMesa,
+    idTipoPedido: pedido.idTipoPedido,
+    detalles: {
+      createMany: {
+        data: pedido.detalles,
+      },
+    },
+  });
+  response.status(200).json({
+    status: true,
+    message: `Pedido ${pedido.id} registrado`,
+    data: newPedido
+  });
+}
