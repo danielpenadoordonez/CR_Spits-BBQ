@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   Loguear(): void {
     this.securityService.isAuthenticated = true;
     this.isAuthenticated = this.securityService.isAuthenticated;
-    this.router.navigate(['./dashboard']);
+    this.router.navigate(['./users/login']);
   }
 
   onScroll() {
