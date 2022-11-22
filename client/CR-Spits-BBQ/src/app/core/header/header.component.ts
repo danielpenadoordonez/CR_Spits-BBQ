@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   Loguear(): void {
     this.securityService.isAuthenticated = true;
     this.isAuthenticated = this.securityService.isAuthenticated;
-    this.router.navigate(['./dashboard']);
+    this.router.navigate(['./users/login']);
   }
 
   onScroll() {
@@ -37,6 +37,12 @@ export class HeaderComponent implements OnInit {
 
     if (window.scrollY <= body.offsetHeight - footer.offsetHeight * 2 - 150){ // EL 150 es un margen para detenerse antes de tiempo
       (navSocial as HTMLElement).style.marginTop = `${window.scrollY}px`
+    }
+
+    if(window.scrollY > 100){
+      document.querySelector('header').classList.add('scrolling-header');
+    }else{
+      document.querySelector('header').classList.remove('scrolling-header');
     }
   }
 }

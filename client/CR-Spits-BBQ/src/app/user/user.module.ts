@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistroComponent } from './registro/registro.component';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { RegistroComponent } from './registro/registro.component';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    MatIconModule,
+    ReactiveFormsModule,
   ]
 })
 export class UserModule { }
