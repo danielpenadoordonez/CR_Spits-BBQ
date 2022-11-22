@@ -1,20 +1,27 @@
 .header {
-    width: 95%;
+    width: 100%;
     position: fixed;
-    top: -20%;
     left: 0;
+    top: -20%;
     z-index: 1000;
     transition: .4s;
     animation: show-header .8s ease-in-out forwards;
     animation-delay: 0;
+    padding-top: 2rem;
 }
 
 @keyframes show-header {
     100% {
-        top: 2rem;
+        top: 0;
     }
 }
 
+
+.scrolling-header{
+    background-color: #000;
+    height: 18vh;
+    z-index: 100000;
+}
 
 /* ======================= NAV =================== */
 
@@ -37,12 +44,11 @@
 }
 
 .nav_logo-img {
-    width: 6rem;
-    height: 6rem;
+    width: 5rem;
+    height: 5rem;
     object-fit: cover;
     filter: drop-shadow(0 2px 5px rgba(201, 110, 98, 1));
     position: relative;
-    top: 1rem;
 }
 
 /* .snowflake {
@@ -326,6 +332,10 @@
     .nav_list{
         font-size: var(--h1-font-size);
     }
+
+    .nav-social-media{
+        display: none;
+    }
 }
 
 @media screen and (min-width: 767px) {
@@ -376,13 +386,14 @@
     .loginIcon {
         font-size: 1rem;
     }
+
+    .scrolling-header{
+        height: 14vh;
+    }
 }
 
 /* ======= DISPOSITIVOS GRANDES ========== */
 @media screen and (min-width:992px) {
-    .header {
-        height: calc(var(--header_height) + 2rem);
-    }
 
     .nav_link {
         font-size: var(--h2-font-size);
@@ -396,4 +407,9 @@
         font-size: 2rem;
     }
 
+    .nav_logo-img{
+        width: 6rem;
+        height: 6rem;
+        top: 1rem;
+    }
 }

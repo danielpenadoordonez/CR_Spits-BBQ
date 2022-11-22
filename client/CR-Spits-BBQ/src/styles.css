@@ -470,3 +470,10 @@ tr.mat-row{
         width: 500px !important;
     }
 }
+
+
+
+/* MAT FORM FIELD - LOGIN COMPONENT */
+.login-container .mat-form-field-label{
+    transform: translateY(-1.85rem) scale(.85) perspective(100px) translateZ(.001px) !important;
+}

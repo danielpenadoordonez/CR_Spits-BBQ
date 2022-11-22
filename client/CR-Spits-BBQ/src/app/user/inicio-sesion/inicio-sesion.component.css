@@ -3,7 +3,7 @@
   height: 100vh;
   background-color: #171717;
   font-size: 5rem;
-  position: absolute;
+  position: fixed;
   top: 0;
 }
 
@@ -16,7 +16,7 @@
   left: 0;
   top: 0;
   background: url('../../../assets/images/bg-pattern/pattern-logo.png') center;
-  animation: move-bg 100s linear infinite;
+  animation: move-bg 100s linear infinite alternate;
 }
 
 @keyframes move-bg {
@@ -25,17 +25,136 @@
   }
 }
 
-.login-container{
-  height: 85vh;
+.login{
+  flex-direction: column;
+}
+
+.login-container {
+  height: 100%;
   background-color: #171717;
 }
 
-.login-title{
+.login-title {
   color: #FFF;
   font-size: 3rem;
   font-weight: bold;
 }
 
+
+input {
+  padding: 1.2rem 0;
+  background-color: #FFF;
+  width: 100%;
+  border-radius: .35rem;
+  width: 95%;
+  padding-left: 1rem;
+}
+
+input:focus~label {
+  padding: 0;
+  display: none;
+}
+
+.label {
+  display: block;
+  width: 100%;
+  padding: .75rem 0;
+}
+
+.hide-icon {
+  color: white;
+  position: absolute;
+  top: -65%;
+  cursor: pointer;
+  left: .5rem;
+}
+
+.login-btn{
+  background-color: #9B0000;
+  color: white;
+  width: 95%;
+  padding: 1.5rem .5rem;
+  font-size: 1.5rem;
+  border-radius: .35rem;
+  box-shadow: inset 0 0 10px #000;
+  transition: .4s ease-in-out;
+  cursor: pointer;
+}
+
+.login-btn:hover{
+  box-shadow: inset 0 0 10px #000,  0 0 10px #9B0000;
+  transform: scale(.9);
+}
+
+.forgot-password-helper, .go-to-register{
+  text-align: center;
+  color: #FFF;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.go-to-register{
+  position: relative;
+  margin: 1rem 0;
+}
+
+.go-to-register span{
+  color: #9B0000;
+  font-weight: bold;
+}
+/* Linea del centro */
+
+.other-options{
+  position: relative;
+  flex-direction: column;
+  margin: 0 3rem;
+  margin-top: 2rem;
+}
+
+.line{
+  background-color: white;
+  width: 5px;
+  height: 175px;
+  margin: .3rem 0;
+}
+
+.or{
+  color: white;
+  border-radius: .4rem;
+  border: 4px solid #FFF;
+  padding: .45rem .75rem;
+  font-size: 1.2rem;
+}
+
+/* social login styles */
+.social-login-container{
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.socia-login-item {
+  width: 100%;
+  padding: .75rem;
+  border-radius: .5rem;
+  margin: 1.1rem;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}
+
+.socia-login-item:hover{
+  transform: scale(1.05);
+}
+
+.socia-login-item .social-login-img{
+  height: 45px;
+}
+
+.socia-login-item .social-login-description{
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 
 .full-width {
   width: 100%;
@@ -58,6 +177,7 @@
 .row {
   display: flex;
   flex-direction: row;
+  margin: 1rem 0;
 }
 
 .col {
@@ -67,4 +187,27 @@
 
 .col:last-child {
   margin-right: 0;
+}
+
+
+
+/* BREAKPOINTS */
+@media screen and (max-width: 768px) {
+    .login-container{
+      flex-direction: column;
+    }
+
+    .other-options{
+      flex-direction: row;
+      margin-bottom: 1rem;
+    }
+
+    .other-options .line{
+      height: 5px;
+      width: 175px;
+    }
+
+    .go-to-register{
+      top: 0;
+    }
 }

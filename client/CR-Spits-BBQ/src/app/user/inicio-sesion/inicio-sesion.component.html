@@ -1,52 +1,62 @@
 <div class="background-pattern"></div>
-<div class="login-container flexbox">
-  <form [formGroup]="formulario" (ngSubmit)="submitForm()" novalidate>
-    <mat-card class="shipping-card">
-      <mat-card-header>
-        <mat-card-title class="login-title">¡Iniciar Sesión!</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width" hideRequiredMarker>
-              <mat-label>Correo</mat-label>
-              <input matInput type="text" placeholder="Email usuario" formControlName="email" />
-              <mat-error *ngIf="errorHandling('email', 'required')">
-                El correo es <strong>requerido</strong>
-              </mat-error>
-              <mat-error *ngIf="errorHandling('email','email')">
-                Verifique el <strong>formato</strong> del email
-              </mat-error>
-            </mat-form-field>
+<div class="login flexbox">
+  <div class="login-container flexbox">
+    <form [formGroup]="formulario" (ngSubmit)="submitForm()" novalidate data-aos="fade-down-right" data-aos-duration="750">
+      <mat-card class="shipping-card">
+        <mat-card-header>
+          <mat-card-title class="login-title">¡Iniciar Sesión!</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" hideRequiredMarker>
+                <mat-label class="label">Correo</mat-label>
+                <input matInput type="text" placeholder="Email usuario" formControlName="email" />
+                <mat-error *ngIf="errorHandling('email', 'required')">
+                  El correo es <strong>requerido</strong>
+                </mat-error>
+                <mat-error *ngIf="errorHandling('email','email')">
+                  Verifique el <strong>formato</strong> del email
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width" hideRequiredMarker>
-              <mat-label>Contraseña</mat-label>
-              <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password usuario"
-                formControlName="password" />
-              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </button>
-              <mat-error *ngIf="errorHandling('password', 'required')">
-                La contraseña es <strong>requerida</strong>
-              </mat-error>
-            </mat-form-field>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" hideRequiredMarker>
+                <mat-label class="label">Contraseña</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" placeholder="Contraseña usuario"
+                  formControlName="password" />
+                <button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon class="hide-icon">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="errorHandling('password', 'required')">
+                  La contraseña es <strong>requerida</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Login</button>
-        <button mat-raised-button color="accent" type="reset" (click)="onReset()">Cancelar</button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
-  <div class="other-options">
-    <hr class="line">
-    <span class="or">O</span>
-    <hr class="line">
+        </mat-card-content>
+        <mat-card-actions>
+          <button class="login-btn" type="submit">Iniciar Sesión</button>
+        </mat-card-actions>
+        <div class="forgot-password-helper">¿Olvidaste tu contraseña?</div>
+      </mat-card>
+    </form>
+    <div class="other-options flexbox" data-aos="zoom-in" data-aos-duration="750">
+      <hr class="line">
+      <span class="or">O</span>
+      <hr class="line">
+    </div>
+    <div class="social-login-container flexbox" *ngIf="socialLoginData" data-aos="fade-down-left" data-aos-duration="750">
+      <div class="socia-login-item flexbox" *ngFor="let item of socialLoginData"
+        [ngStyle]="{'background-color': item.background, 'color': item.color}">
+        <img [src]="item.icon" alt="social-login" class="social-login-img">
+        <p class="social-login-description"> Iniciar sesión con {{item.label}}</p>
+      </div>
+    </div>
   </div>
-  <div class="social-login-container flexbox"></div>
+  <div class="go-to-register">
+    ¿No tienes una cuenta? <span>Registrese</span>
+  </div>
 </div>

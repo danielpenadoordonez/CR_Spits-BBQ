@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
+import { sociaLoginData } from './social-login'
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -10,6 +11,8 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
   styleUrls: ['./inicio-sesion.component.css']
 })
 export class InicioSesionComponent {
+
+  socialLoginData = sociaLoginData;
   hide=true;
   formulario: FormGroup;
   makeSubmit: boolean = false;
@@ -33,7 +36,7 @@ export class InicioSesionComponent {
     });
   }
   ngOnInit(): void {
-    this.mensajes();
+    //this.mensajes();
   }
 
   mensajes() {
