@@ -13,7 +13,7 @@ import { sociaLoginData } from './social-login'
 export class InicioSesionComponent {
 
   socialLoginData = sociaLoginData;
-  hide=true;
+  hide = true;
   formulario: FormGroup;
   makeSubmit: boolean = false;
   infoUsuario: any;
@@ -31,8 +31,10 @@ export class InicioSesionComponent {
     /*https://angular.io/guide/reactive-forms
    https://angular.io/api/forms/Validators */
     this.formulario = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: [null, Validators.compose([
+        Validators.required, Validators.email
+      ])],
+      password: [null, Validators.required],
     });
   }
   ngOnInit(): void {
@@ -41,11 +43,11 @@ export class InicioSesionComponent {
 
   mensajes() {
     let register = false;
-    let auth=true;
+    let auth = true;
     //Obtener parámetros de la URL
     this.route.queryParams.subscribe((params) => {
-      register = params['register']==='true' || false;
-      auth = params['auth']==='false' || true;
+      register = params['register'] === 'true' || false;
+      auth = params['auth'] === 'false' || true;
       if (register) {
         this.notificacion.mensaje(
           'Usuario',
@@ -61,13 +63,13 @@ export class InicioSesionComponent {
         );
       }
     });
-   
+
   }
   onReset() {
     this.formulario.reset();
   }
   submitForm() {
-   
+
   }
   /* Manejar errores de formulario en Angular */
 

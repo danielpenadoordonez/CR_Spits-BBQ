@@ -1,93 +1,135 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GenericService } from 'src/app/share/generic.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotificacionService } from 'src/app/share/notification.service';
 
 @Component({
   selector: 'app-pedidos-form',
   templateUrl: './pedidos-form.component.html',
-  styleUrls: ['./pedidos-form.component.css']
+  styleUrls: ['./pedidos-form.component.css'],
 })
 export class PedidosFormComponent {
-  addressForm = this.fb.group({
-    company: null,
-    firstName: [null, Validators.required],
-    lastName: [null, Validators.required],
-    address: [null, Validators.required],
-    address2: null,
-    city: [null, Validators.required],
-    state: [null, Validators.required],
-    postalCode: [null, Validators.compose([
-      Validators.required, Validators.minLength(5)])
-    ],
-    shipping: ['free', Validators.required]
-  });
+  titleForm: string = 'Crear';
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  clientsList: any; //* Lista de clientes
+  sucursalesList: any; //* lista de sucursales
+  statesList: any; //* Lista de estados de pedido
+  pedidoInfo: any; //? información del producto a actualizar [UPDATE]
+  respPedido: any; //* Respuesta del API ante [UPDATE - CREATE]
+  submitted = false; //? Se envío?
+  pedidosForm: FormGroup; //* El nombre del formulario [CUIDADO]
+  idPedido: number = 0; //* id del pedido [int]
+  isCreate: boolean = true; //* si es update o create
 
-  hasUnitNumber = false;
+  /*
+  * FORMATO JSON - PEDIDO
+! CUIDADO CON LA FECHA Y SU FORMATO, SINO ENVIAR POR DEFAULT (HOY)
+        * "nombre": "CRSB-01-12",
+        * "precio": 15000,
+        * "fecha": "2022-11-22", -- Puede usar default
+        * "idEstado": 6, -- estados
+        * "idCliente": "65440685802",
+        * "idMesero": "463650893", -- Viene del servicio de autentificación
+        * "idSucursal": 1,
+        * "idMesa": 3, -- Lista de mesas?
+        * "idTipoPedido": 1,
+        * "detalles":
+          ? [] -- CUIDADO
+  */
 
-  states = [
-    {name: 'Alabama', abbreviation: 'AL'},
-    {name: 'Alaska', abbreviation: 'AK'},
-    {name: 'American Samoa', abbreviation: 'AS'},
-    {name: 'Arizona', abbreviation: 'AZ'},
-    {name: 'Arkansas', abbreviation: 'AR'},
-    {name: 'California', abbreviation: 'CA'},
-    {name: 'Colorado', abbreviation: 'CO'},
-    {name: 'Connecticut', abbreviation: 'CT'},
-    {name: 'Delaware', abbreviation: 'DE'},
-    {name: 'District Of Columbia', abbreviation: 'DC'},
-    {name: 'Federated States Of Micronesia', abbreviation: 'FM'},
-    {name: 'Florida', abbreviation: 'FL'},
-    {name: 'Georgia', abbreviation: 'GA'},
-    {name: 'Guam', abbreviation: 'GU'},
-    {name: 'Hawaii', abbreviation: 'HI'},
-    {name: 'Idaho', abbreviation: 'ID'},
-    {name: 'Illinois', abbreviation: 'IL'},
-    {name: 'Indiana', abbreviation: 'IN'},
-    {name: 'Iowa', abbreviation: 'IA'},
-    {name: 'Kansas', abbreviation: 'KS'},
-    {name: 'Kentucky', abbreviation: 'KY'},
-    {name: 'Louisiana', abbreviation: 'LA'},
-    {name: 'Maine', abbreviation: 'ME'},
-    {name: 'Marshall Islands', abbreviation: 'MH'},
-    {name: 'Maryland', abbreviation: 'MD'},
-    {name: 'Massachusetts', abbreviation: 'MA'},
-    {name: 'Michigan', abbreviation: 'MI'},
-    {name: 'Minnesota', abbreviation: 'MN'},
-    {name: 'Mississippi', abbreviation: 'MS'},
-    {name: 'Missouri', abbreviation: 'MO'},
-    {name: 'Montana', abbreviation: 'MT'},
-    {name: 'Nebraska', abbreviation: 'NE'},
-    {name: 'Nevada', abbreviation: 'NV'},
-    {name: 'New Hampshire', abbreviation: 'NH'},
-    {name: 'New Jersey', abbreviation: 'NJ'},
-    {name: 'New Mexico', abbreviation: 'NM'},
-    {name: 'New York', abbreviation: 'NY'},
-    {name: 'North Carolina', abbreviation: 'NC'},
-    {name: 'North Dakota', abbreviation: 'ND'},
-    {name: 'Northern Mariana Islands', abbreviation: 'MP'},
-    {name: 'Ohio', abbreviation: 'OH'},
-    {name: 'Oklahoma', abbreviation: 'OK'},
-    {name: 'Oregon', abbreviation: 'OR'},
-    {name: 'Palau', abbreviation: 'PW'},
-    {name: 'Pennsylvania', abbreviation: 'PA'},
-    {name: 'Puerto Rico', abbreviation: 'PR'},
-    {name: 'Rhode Island', abbreviation: 'RI'},
-    {name: 'South Carolina', abbreviation: 'SC'},
-    {name: 'South Dakota', abbreviation: 'SD'},
-    {name: 'Tennessee', abbreviation: 'TN'},
-    {name: 'Texas', abbreviation: 'TX'},
-    {name: 'Utah', abbreviation: 'UT'},
-    {name: 'Vermont', abbreviation: 'VT'},
-    {name: 'Virgin Islands', abbreviation: 'VI'},
-    {name: 'Virginia', abbreviation: 'VA'},
-    {name: 'Washington', abbreviation: 'WA'},
-    {name: 'West Virginia', abbreviation: 'WV'},
-    {name: 'Wisconsin', abbreviation: 'WI'},
-    {name: 'Wyoming', abbreviation: 'WY'}
-  ];
-
-  constructor(private fb: FormBuilder) {}
-
-  onSubmit(): void {
-    alert('Thanks!');
+  constructor(private fb: FormBuilder, private gService: GenericService,
+    private router: Router, private activeRouter: ActivatedRoute,
+    private notification: NotificacionService) {
+    this.formularioReactive();
+    this.listaClientes();
+    this.listaSucursales();
+    //! this.listaOrderStates(); - Arreglar luego
   }
+
+  //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
+  ngOnInit(): void {
+
+  }
+
+  //! Nombre del pedido se generá en el back, hacen falta los estados, perfiles, autentificación
+
+  formularioReactive() {
+    //? [null, Validators.required]
+    this.pedidosForm = this.fb.group({
+      id: null, //* No se puede editar
+      fecha: [null, Validators.compose([
+        Validators.required, Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/) //? Formato fecha MM/dd/yyyy
+      ])],
+    });
+  }
+
+  //* Elegir al cliente? [unique]
+  listaClientes() {
+    this.clientsList = null;
+    this.gService
+      .list('users/perfil/3') //? No sé si funcione...
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.clientsList = data;
+      });
+  }
+
+  //* Seleccionar una sucursal [unique - cuidado con la condición de mesero]
+  listaSucursales() {
+    this.sucursalesList = null;
+    this.gService
+      .list('sucursales')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.sucursalesList = data;
+      });
+  }
+
+  //! AÚN NO EXISTE UN API QUE LLAME ESTO
+  listaOrderStates() {
+    this.statesList = null;
+    this.gService
+      .list('estados')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.statesList = data;
+      });
+  }
+
+  //* Manejo de errores - público
+  public errorHandling = (control: string, error: string) => {
+    return this.pedidosForm.controls[control].hasError(error);
+  };
+
+  crearPedido() { }
+
+  actualizarPedido() { }
+
+  onReset() {
+    //* Resetear
+    this.submitted = false;
+    this.pedidosForm.reset();
+  }
+
+  onBack() {
+    //* Cuando intenté salir - botón salir
+    this.router.navigate(['/dashboard/productos']);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    //* Desinscribirse
+    this.destroy$.unsubscribe();
+  }
+
+
+  //? Filtro de fecha - que no sea menor y que no se pase de 1 semana
+  dateFilter = (d: Date | null): boolean => {
+    const datePicked = (d || new Date());
+    let dateToday = new Date();
+
+    return datePicked.getTime() >= dateToday.getTime() && datePicked.getDate() < (dateToday.getDate() + 7);
+  };
 }
