@@ -12,6 +12,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import { PedidosFormComponent } from './pedidos-form/pedidos-form.component';
 import { MatInputModule } from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -37,6 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDividerModule,
     MatTabsModule,
     MatInputModule,
+    MatDatepickerModule,
     MatButtonModule,
     MatSelectModule,
     MatRadioModule,

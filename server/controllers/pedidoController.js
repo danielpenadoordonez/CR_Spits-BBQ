@@ -104,7 +104,7 @@ module.exports.getPedidosByState = async (request, response, next) => {
       Mesero: true,
       Mesa: true,
       Sucursal: true,
-      TipoPedido: true
+      TipoPedido: true,
     },
   });
   response.json(pedidos);
@@ -116,24 +116,28 @@ module.exports.getPedidosByState = async (request, response, next) => {
 module.exports.registerPedido = async (request, response, next) => {
   let pedido = request.body;
   const newPedido = await prismaClient.pedido.create({
-    id: pedido.id,
-    nombre: pedido.nombre,
-    precio: pedido.precio,
-    idEstado: pedido.idEstado,
-    idCliente: pedido.idCliente,
-    idMesero: pedido.idMesero,
-    idSucursal: pedido.idSucursal,
-    idMesa: pedido.idMesa,
-    idTipoPedido: pedido.idTipoPedido,
-    detalles: {
-      createMany: {
-        data: pedido.detalles,
+    data: {
+      //* NO VA EL ID, ES UN AUTOINCREMENT
+      nombre: pedido.nombre, //? EL NOMBRE UNIQUE, OJO CON ESA REGLA [CONSTRAINT]
+      fecha: pedido.fecha !== undefined ? new Date(pedido.fecha) : pedido.fecha, //! LO MÁS NORMAL ES QUE VENGA VACÍO, YA QUE LA FECHA POR DEFAULT SE COLOCA ESE DÍA
+      precio: pedido.precio,
+      idEstado: pedido.idEstado,
+      idCliente: pedido.idCliente,
+      idMesero: pedido.idMesero,
+      idSucursal: pedido.idSucursal,
+      idMesa: pedido.idMesa,
+      idTipoPedido: pedido.idTipoPedido,
+      //* Revisar esto, los detalles los debería insertar el carrito
+      detalles: {
+        createMany: {
+          data: pedido.detalles,
+        },
       },
     },
   });
   response.status(200).json({
     status: true,
-    message: `Pedido ${pedido.id} registrado`,
-    data: newPedido
+    message: `Pedido ${pedido.nombre} registrado`,
+    data: newPedido,
   });
-}
+};

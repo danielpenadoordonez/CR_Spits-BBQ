@@ -37,7 +37,6 @@ export class ProductosFormComponent {
 }
   */
 
-
   constructor(private fb: FormBuilder, private gService: GenericService,
     private router: Router, private activeRouter: ActivatedRoute,
     private notification: NotificacionService) {
@@ -91,7 +90,7 @@ export class ProductosFormComponent {
         Validators.required, Validators.min(100), Validators.max(100000), Validators.pattern(/^[0-9]*$/) //? Sólo números enteros [decimal, pero no tiene sentido los decimales acá]
       ])],
       imagen: [null, Validators.compose([
-        Validators.required, Validators.minLength(25), Validators.pattern(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/) //? pattern especial para urls
+        Validators.required, Validators.minLength(25), Validators.pattern(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*\.[a-zA-Z]{3})$/) //? pattern especial para urls
       ])],
       estado: [null, Validators.required], //? radio buttons - habilitado - deshabilitado, usar Validators.requiredTrue para checkboxes, mas no para radio
       idCategoria: [null, Validators.required], //* Sucursal [only one] - válida que elija uno
@@ -112,7 +111,7 @@ export class ProductosFormComponent {
 
   //* Selección múltiple [CUIDADO]
   listaSucursales() {
-    this.categoriasList = null;
+    this.sucursalesList = null;
     this.gService
       .list('sucursales')
       .pipe(takeUntil(this.destroy$))
@@ -120,7 +119,6 @@ export class ProductosFormComponent {
         this.sucursalesList = data;
       });
   }
-
 
   //* Obtener el URL de la imagen con el evento onPaste
   ImageOnPaste(event: ClipboardEvent) {
@@ -148,9 +146,9 @@ export class ProductosFormComponent {
 
     //* Verificar validación del form
     if (this.productosForm.invalid) {
-      this.notification.mensaje("Productos", 
-                        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
-                        TipoMessage.error);
+      this.notification.mensaje("Productos",
+        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+        TipoMessage.error);
       return; //* Sacamos
     }
 
@@ -188,9 +186,9 @@ export class ProductosFormComponent {
 
     //* Verificar validación del form
     if (this.productosForm.invalid) {
-      this.notification.mensaje("Productos", 
-      "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
-      TipoMessage.error);
+      this.notification.mensaje("Productos",
+        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+        TipoMessage.error);
       return;
     }
     //* Subimos
