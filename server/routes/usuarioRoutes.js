@@ -7,6 +7,7 @@ const usuarioController = require("../controllers/usuarioController");
 //Rutas del API para usuario
 router.get("/", usuarioController.getAllUsers);
 router.post("/register", usuarioController.createUser);
+router.post("/login", usuarioController.login);
 router.get("/all", usuarioController.getAllUsers);
 router.get("/:id", usuarioController.getUserById);
 router.put("/:id", usuarioController.updateUser);
