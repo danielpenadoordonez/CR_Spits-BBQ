@@ -211,7 +211,7 @@ model Pedido {
   fecha        DateTime          @default(now())
   detalles     Pedido_Producto[]
   EstadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
-  idEstado     Int
+  idEstado     Int @default(1) //? Default inicial para mesero
 
   Cliente   Usuario @relation(name: "Pedidos", fields: [idCliente], references: [id])
   idCliente String

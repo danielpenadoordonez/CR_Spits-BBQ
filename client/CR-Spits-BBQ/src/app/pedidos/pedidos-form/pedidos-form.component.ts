@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenericService } from 'src/app/share/generic.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificacionService } from 'src/app/share/notification.service';
 
 @Component({
@@ -16,12 +16,15 @@ export class PedidosFormComponent {
   clientsList: any; //* Lista de clientes
   sucursalesList: any; //* lista de sucursales
   statesList: any; //* Lista de estados de pedido
+  typeOrder: any; //* Lista tipos de órdenes (presencial & online)
   pedidoInfo: any; //? información del producto a actualizar [UPDATE]
   respPedido: any; //* Respuesta del API ante [UPDATE - CREATE]
   submitted = false; //? Se envío?
   pedidosForm: FormGroup; //* El nombre del formulario [CUIDADO]
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
+
+  CurrentUser = null; //* Obtener de la suscripción
 
   /*
   * FORMATO JSON - PEDIDO
@@ -39,18 +42,50 @@ export class PedidosFormComponent {
           ? [] -- CUIDADO
   */
 
-  constructor(private fb: FormBuilder, private gService: GenericService,
-    private router: Router, private activeRouter: ActivatedRoute,
-    private notification: NotificacionService) {
+  constructor(
+    private fb: FormBuilder,
+    private gService: GenericService,
+    private router: Router,
+    private activeRouter: ActivatedRoute,
+    private notification: NotificacionService
+  ) {
     this.formularioReactive();
     this.listaClientes();
     this.listaSucursales();
     //! this.listaOrderStates(); - Arreglar luego
+    //! this.listaTiposOrden(); -- Arreglar luego
   }
 
   //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
   ngOnInit(): void {
-
+    this.activeRouter.params.subscribe((params: Params) => {
+      this.idPedido = params['id']; //? Recibe el id [int]
+      if (this.idPedido !== undefined) {
+        this.isCreate = false; //* No... es actualizar
+        this.titleForm = 'Actualizar';
+        this.gService
+          .get('pedidos', this.idPedido) //? Trae por medio del id númerico [int]
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.pedidoInfo = data;
+            this.pedidosForm.setValue({
+              id: this.pedidoInfo.id,
+              nombre: this.pedidoInfo.nombre,
+              estado: this.pedidoInfo.estado,
+              idEstado: this.pedidoInfo.idEstado,
+              idCliente: this.pedidoInfo.idCliente,
+              idMesero: this.pedidoInfo.idMesero,
+              idSucursal: this.pedidoInfo.idSucursal,
+              idMesa: this.pedidoInfo.idMesa,
+              idTipoPedido: this.pedidoInfo.idTipoPedido,
+              detalles: null, //* No se mapea
+            });
+          });
+      } else {
+        //! CASO DE QUE ENTRE ADMIN O QUE ENTRE MESERO
+        //! Puede elegir fecha, cliente (ambos), tipo de pedido, estado del pedido (mesero va por default)
+      }
+    });
   }
 
   //! Nombre del pedido se generá en el back, hacen falta los estados, perfiles, autentificación
@@ -59,9 +94,22 @@ export class PedidosFormComponent {
     //? [null, Validators.required]
     this.pedidosForm = this.fb.group({
       id: null, //* No se puede editar
-      fecha: [null, Validators.compose([
-        Validators.required, Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/) //? Formato fecha MM/dd/yyyy
-      ])],
+      nombre: null, //* Viene del backend automático
+      precio: null, //* Este campo se autocácula con base en los detalles
+      fecha: [
+        null,
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/), //? Formato fecha MM/dd/yyyy
+        ]),
+      ],
+      idEstado: [null, Validators.required],
+      idCliente: [null, Validators.required], //* Se elige de un combo box
+      idMesero: null, //* Se asigna por el servicio
+      idSucursal: null, //* Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
+      idMesa: null, //* Se elige en el inicio
+      idTipoPedido: [null, Validators.required], //? Se auto hace, si es un cliente es online, sino es presencial
+      detalles: null,
     });
   }
 
@@ -69,7 +117,7 @@ export class PedidosFormComponent {
   listaClientes() {
     this.clientsList = null;
     this.gService
-      .list('users/perfil/3') //? No sé si funcione...
+      .list('users/perfil/3')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.clientsList = data;
@@ -98,14 +146,24 @@ export class PedidosFormComponent {
       });
   }
 
+  listaTiposOrden() {
+    this.statesList = null;
+    this.gService
+      .list('tipos')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.statesList = data;
+      });
+  }
+
   //* Manejo de errores - público
   public errorHandling = (control: string, error: string) => {
     return this.pedidosForm.controls[control].hasError(error);
   };
 
-  crearPedido() { }
+  crearPedido() {}
 
-  actualizarPedido() { }
+  actualizarPedido() {}
 
   onReset() {
     //* Resetear
@@ -124,12 +182,15 @@ export class PedidosFormComponent {
     this.destroy$.unsubscribe();
   }
 
-
   //? Filtro de fecha - que no sea menor y que no se pase de 1 semana
   dateFilter = (d: Date | null): boolean => {
-    const datePicked = (d || new Date());
+    const datePicked = d || new Date();
     let dateToday = new Date();
 
-    return datePicked.getTime() >= dateToday.getTime() && datePicked.getDate() < (dateToday.getDate() + 7);
+    return (
+      datePicked.getDate() >= dateToday.getDate() - 1 &&
+      datePicked.getDate() < dateToday.getDate() + 7 &&
+      datePicked.getMonth() == dateToday.getMonth()
+    );
   };
 }

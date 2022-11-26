@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate {
     //? Pendiente a cambios
     checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
         if (this.isAuthenticated) {
-            const userRole = this.currentUser.user.role;
+            const userRole = this.currentUser.Perfil.descripcion;
             //* Esto viene de route, se valida en las rutas
             if (route.data['roles'].length && !route.data['roles'].includes(userRole)) {
                 this.router.navigate(['/usuario/login'], {
