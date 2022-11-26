@@ -4,6 +4,8 @@
   (ngSubmit)="(isCreate ? crearPedido : actualizarPedido)"
   data-aos="zoom-in"
 >
+  <!-- ! Campos ocultos -->
+  <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <mat-card-header>
       <mat-card-title>{{ titleForm }} Pedido</mat-card-title>
@@ -33,9 +35,12 @@
           </mat-form-field>
         </div>
         <div class="row">
-          <div class="col"></div>
+          <div class="col">
+            
+          </div>
         </div>
       </div>
+      <input type="hidden" formControlName="detalles" />
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit">Submit</button>

@@ -68,8 +68,8 @@ async function main() {
             apellido1: "Mora",
             apellido2: "Quesada",
             correo: "cristhianmora@hotmail.com",
-            username: "christian_mora",
-            clave: "25f9e794323b453885f5181f1b624d0b",
+            username: "christianMora",
+            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
             //? Clave sin hash: 123456789
             telefono: "74601503",
             direccion: "Turrialba, cartago",
@@ -88,8 +88,8 @@ async function main() {
             apellido1: "Molina",
             apellido2: "Arroyo",
             correo: "mariaarroyo@gmail.com",
-            username: "maria_molina",
-            clave: "25f9e794323b453885f5181f1b624d0b",
+            username: "mariaMolina",
+            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
             //? Clave sin hash: 123456789
             telefono: "74670781",
             direccion: "Santa Barbara, Heredia",
@@ -108,8 +108,8 @@ async function main() {
             apellido1: "Alfaro",
             apellido2: "Ruíz",
             correo: "belenalfaro@gmail.com",
-            username: "belen_alfaro",
-            clave: "25f9e794323b453885f5181f1b624d0b",
+            username: "belenAlfaro",
+            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
             //? Clave sin hash: 123456789
             telefono: "68036014",
             direccion: "La Rivera, Heredia",
@@ -127,8 +127,8 @@ async function main() {
             apellido1: "Flores",
             apellido2: "Paniagua",
             correo: "garyflores@gmail.com",
-            username: "gary_flores",
-            clave: "25f9e794323b453885f5181f1b624d0b",
+            username: "garyFlores",
+            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
             //? Clave sin hash: 123456789
             telefono: "10596839",
             direccion: "Naranjo, Alajuela",

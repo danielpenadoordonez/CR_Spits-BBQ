@@ -91,48 +91,50 @@ module.exports.createUser = async (request, response, next) => {
       direccion: user.direccion,
       idPerfil: user.idPerfil,
       reservaciones: {
-        connect: user.reservaciones
+        connect: user.reservaciones,
       },
       facturas: {
-        connect: user.facturas
+        connect: user.facturas,
       },
       pedidos: {
-        connect: user.pedidos
+        connect: user.pedidos,
       },
       encargos: {
-        connect: user.encargos
+        connect: user.encargos,
       },
       sucursales: {
-        connect: user.sucursales
+        connect: user.sucursales,
       },
     },
   });
   response.status(200).json({
     status: true,
     message: `Usuario ${user.username} registrado`,
-    data: newUser
+    data: newUser,
   });
-}
+};
 
 module.exports.login = async (request, response, next) => {
   let userInfo = request.body;
-  //Buscar usuario por username
+  //* Buscar usuario por username
+
   const user = await prismaClient.usuario.findUnique({
-    where: {
-      username: userInfo.username
-    },
+    where: { username: userInfo.username },
   });
-  if(!user){
+  if (!user) {
     response.status(401).send({
       success: false,
       message: `Usuario ${userInfo.username} no registrado`,
     });
   }
-  //Revisar que la contraseña este correcta
-  if(userService.isPasswordCorrect(userInfo.clave, user.clave)){
-    //Si el usuario es correcto se crea el token con el payload, secret key y tiempo de expiracion
-    const payload = { username : user.username, idPerfil: user.idPerfil}
-    //Aqui se crea el token
+
+  console.log(`clave API: ${userInfo.clave} \nClave Prisma ${user.clave}`);
+
+  //* Revisar que la contraseña este correcta
+  if (userService.isPasswordCorrect(userInfo.clave, user.clave)) {
+    //* Si el usuario es correcto se crea el token con el payload, secret key y tiempo de expiracion
+    const payload = { username: user.username, idPerfil: user.idPerfil };
+    //* Aqui se crea el token
     const token = jwt.sign(payload, process.env.SECRET_KEY, {
       expiresIn: process.env.JWT_EXPIRE,
     });
@@ -144,14 +146,13 @@ module.exports.login = async (request, response, next) => {
         token,
       },
     });
-  }
-  else{
+  } else {
     response.status(401).send({
       success: false,
-      message: "Contraseña Incorrecta, por favor intente de nuevo"
+      message: "Contraseña Incorrecta, por favor intente de nuevo",
     });
   }
-}
+};
 
 /*
  *  PUT APIs
@@ -161,18 +162,18 @@ module.exports.updateUser = async (request, response, next) => {
   let userId = String(request.params.id);
 
   const oldUser = await prismaClient.usuario.findUnique({
-    where: { id : userId},
+    where: { id: userId },
     include: {
       sucursales: {
         select: {
-          id: true
+          id: true,
         },
       },
     },
   });
 
   const updatedUser = await prismaClient.usuario.update({
-    where: { id: userId},
+    where: { id: userId },
     data: {
       nombre: user.nombre,
       apellido1: user.apellido1,
@@ -185,16 +186,16 @@ module.exports.updateUser = async (request, response, next) => {
       sucursales: {
         disconnect: oldUser.sucursales,
         connect: user.sucursales,
-      }
+      },
     },
   });
 
   response.status(200).json({
     status: true,
     message: `Usuario ${user.username} actualizado`,
-    data: updatedUser
+    data: updatedUser,
   });
-}
+};
 
 module.exports.updatePassword = async (request, response, next) => {
   userId = String(request.params.id);
@@ -206,27 +207,26 @@ module.exports.updatePassword = async (request, response, next) => {
   const user = await prismaClient.usuario.findUnique({
     where: { id: userId },
   });
-  
+
   //Si el usuario ingresa su password actual correcto entonces lo puede modificar
-  if(userService.isPasswordCorrect(currentPassword, user.clave)){
+  if (userService.isPasswordCorrect(currentPassword, user.clave)) {
     //Se encripta el password nuevo
     let hashedPassword = userService.generateEncryptedPassword(newPassword);
     const updatedUser = await prismaClient.usuario.update({
-      where: { id: userId},
+      where: { id: userId },
       data: {
-        clave: hashedPassword
+        clave: hashedPassword,
       },
     });
     response.status(200).json({
       status: true,
       message: `Password para ${user.username} actualizado`,
-      data: updatedUser
+      data: updatedUser,
     });
-  }
-  else{
+  } else {
     response.status(401).json({
       success: false,
       message: `Password incorrecto`,
     });
   }
-}
+};

@@ -29,6 +29,7 @@ export class PedidosFormComponent {
   /*
   * FORMATO JSON - PEDIDO
 ! CUIDADO CON LA FECHA Y SU FORMATO, SINO ENVIAR POR DEFAULT (HOY)
+        * "id" : 1 (autoincrement)
         * "nombre": "CRSB-01-12",
         * "precio": 15000,
         * "fecha": "2022-11-22", -- Puede usar default
@@ -72,6 +73,7 @@ export class PedidosFormComponent {
               id: this.pedidoInfo.id,
               nombre: this.pedidoInfo.nombre,
               estado: this.pedidoInfo.estado,
+              fecha: this.pedidoInfo.fecha,
               idEstado: this.pedidoInfo.idEstado,
               idCliente: this.pedidoInfo.idCliente,
               idMesero: this.pedidoInfo.idMesero,
@@ -93,23 +95,23 @@ export class PedidosFormComponent {
   formularioReactive() {
     //? [null, Validators.required]
     this.pedidosForm = this.fb.group({
-      id: null, //* No se puede editar
+      id: null, //* No se puede editar - autoincrement
       nombre: null, //* Viene del backend automático
-      precio: null, //* Este campo se autocácula con base en los detalles
+      precio: null, //* Este campo se autocácula con base en los detalles - se envía nulo - [DEFAULT]
       fecha: [
         null,
         Validators.compose([
           Validators.required,
           Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/), //? Formato fecha MM/dd/yyyy
-        ]),
+        ]), //* [DEFAULT]
       ],
-      idEstado: [null, Validators.required],
-      idCliente: [null, Validators.required], //* Se elige de un combo box
-      idMesero: null, //* Se asigna por el servicio
-      idSucursal: null, //* Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
-      idMesa: null, //* Se elige en el inicio
-      idTipoPedido: [null, Validators.required], //? Se auto hace, si es un cliente es online, sino es presencial
-      detalles: null,
+      idEstado: [null, Validators.required], //* Se elige el primer estado 1 - [DEFAULT]
+      idCliente: [null, Validators.required], //? Se elige de un combo box - A no ser que sea cliente
+      idMesero: null, //? Se asigna por el servicio
+      idSucursal: null, //? Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
+      idMesa: null, //? Se elige en el inicio - [OPCIONAL - ONLINE]
+      idTipoPedido: [null, Validators.required], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
+      detalles: null //* No va acá
     });
   }
 
@@ -161,9 +163,15 @@ export class PedidosFormComponent {
     return this.pedidosForm.controls[control].hasError(error);
   };
 
-  crearPedido() {}
+  crearPedido() {
 
-  actualizarPedido() {}
+
+  }
+
+  actualizarPedido() {
+
+
+  }
 
   onReset() {
     //* Resetear
