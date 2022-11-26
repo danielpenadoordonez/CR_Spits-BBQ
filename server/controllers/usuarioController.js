@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const jwt = require("jsonwebtoken");
 
 const prismaClient = new PrismaClient();
 const userService = require("../services/UserService");
@@ -46,7 +47,7 @@ module.exports.getUsersByProfile = async (request, response, next) => {
 
 //* Obtener usuario por username
 module.exports.getUserByUserName = async (request, response, next) => {
-  let username = String(request.params.username);
+  let username = request.params.username;
   const user = await prismaClient.usuario.findFirst({
     where: { username: username },
     include: {
@@ -59,7 +60,7 @@ module.exports.getUserByUserName = async (request, response, next) => {
 
 //* Obtener usuario por correo
 module.exports.getUserByEmail = async (request, response, next) => {
-  let email = request.params.correo; //? Correo NO necesita cast a string, da error
+  let email = request.params.correo;
   const user = await prismaClient.usuario.findFirst({
     where: { correo: email },
     include: {
@@ -111,6 +112,45 @@ module.exports.createUser = async (request, response, next) => {
     message: `Usuario ${user.username} registrado`,
     data: newUser
   });
+}
+
+module.exports.login = async (request, response, next) => {
+  let userInfo = request.body;
+  //Buscar usuario por username
+  const user = await prismaClient.usuario.findUnique({
+    where: {
+      username: userInfo.username
+    },
+  });
+  if(!user){
+    response.status(401).send({
+      success: false,
+      message: `Usuario ${userInfo.username} no registrado`,
+    });
+  }
+  //Revisar que la contraseña este correcta
+  if(userService.isPasswordCorrect(userInfo.clave, user.clave)){
+    //Si el usuario es correcto se crea el token con el payload, secret key y tiempo de expiracion
+    const payload = { username : user.username, idPerfil: user.idPerfil}
+    //Aqui se crea el token
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRE,
+    });
+    response.json({
+      success: true,
+      message: "Login exitoso",
+      data: {
+        user,
+        token,
+      },
+    });
+  }
+  else{
+    response.status(401).send({
+      success: false,
+      message: "Contraseña Incorrecta, por favor intente de nuevo"
+    });
+  }
 }
 
 /*
