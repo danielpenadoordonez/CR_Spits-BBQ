@@ -19,6 +19,7 @@ export class InicioSesionComponent {
   formulario: FormGroup;
   makeSubmit: boolean = false;
   infoUsuario: any;
+
   constructor(
     public fb: FormBuilder,
     private authService: AuthenticationService,
@@ -28,26 +29,30 @@ export class InicioSesionComponent {
   ) {
     this.reactiveForm();
   }
-  // Definir el formulario con su reglas de validación
+
+  //* Definir el formulario con su reglas de validación
   reactiveForm() {
-    /*https://angular.io/guide/reactive-forms
-   https://angular.io/api/forms/Validators */
+    /* 
+    * https://angular.io/guide/reactive-forms
+   * https://angular.io/api/forms/Validators 
+   */
+
     this.formulario = this.fb.group({
-      email: [
-        null,
-        Validators.compose([Validators.required, Validators.email]),
-      ],
-      password: [null, Validators.required],
+      username: [null,
+        Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(16), Validators.pattern(/^[a-zA-Z0-9]+$/)])],
+      clave: [null,
+        Validators.compose([Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern(/[\w\[\]`!@#$%\^&*()={}:;<>+'-]*/)])]
     });
   }
+
   ngOnInit(): void {
-    //this.mensajes();
+    this.mensajes();
   }
 
   mensajes() {
     let register = false;
     let auth = true;
-    //Obtener parámetros de la URL
+    //* Obtener parámetros de la URL
     this.route.queryParams.subscribe((params) => {
       register = params['register'] === 'true' || false;
       auth = params['auth'] === 'false' || true;
@@ -70,8 +75,26 @@ export class InicioSesionComponent {
   onReset() {
     this.formulario.reset();
   }
-  submitForm() {}
-  /* Manejar errores de formulario en Angular */
+
+  submitForm() {
+    this.makeSubmit = true;
+
+    //* Validación
+
+    if (this.formulario.invalid) {
+      return;
+    }
+
+    console.log(this.formulario.value);
+
+    this.authService
+      .loginUser(this.formulario.value)
+      .subscribe((respuesta: any) => {
+        this.router.navigate(['/']);
+      });
+  }
+
+  //* Manejar errores de formulario en Angular 
 
   public errorHandling = (control: string, error: string) => {
     return (

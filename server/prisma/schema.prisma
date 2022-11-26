@@ -26,7 +26,7 @@ model Usuario {
   apellido1     String
   apellido2     String
   correo        String //* Email
-  username      String
+  username      String @unique
   clave         String //* Contraseña, no sé si usará MD5
   telefono      String
   direccion     String? //* Opcional
@@ -38,7 +38,7 @@ model Usuario {
   idPerfil      Int
   sucursales    Sucursal[]
 
-  @@unique([correo, username, telefono])
+  @@unique([correo, telefono], name: "Constraint_Correo_Telefono")
 }
 
 //* Deshabilitado 8/11/2022
@@ -226,7 +226,7 @@ model Pedido {
   idMesa Int? //* Es totalmente opcional, ya que puede ser que sea online...
 
   TipoPedido   TipoPedido @relation(fields: [idTipoPedido], references: [id])
-  idTipoPedido Int //* Indica si es en persona o de forma remota - No opcional
+  idTipoPedido Int @default(1) //* Indica si es en persona o de forma remota - No opcional
 }
 
 model Pedido_Producto {

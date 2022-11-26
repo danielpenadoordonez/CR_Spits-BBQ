@@ -7,9 +7,9 @@ module.exports.generateNombrePedido= (idSucursal, previousNum) => {
 
 module.exports.getPreviousNumber = (pedidos) => {
     let highestNum = 0;
-    //Recorrer todas las mesas y buscar el numero mayor para retornarlo
+    //* Recorrer todas los pedidos y buscar el numero mayor para retornarlo
     const getNumber = (pedido) => {
-        highestNum = pedido.codigo.split("-")[2];
+        highestNum = pedido.nombre.split("-")[2];
     }
     pedidos.forEach(getNumber);
     return highestNum;

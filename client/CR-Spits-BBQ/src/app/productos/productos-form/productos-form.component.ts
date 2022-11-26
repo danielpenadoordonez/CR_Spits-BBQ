@@ -78,19 +78,19 @@ export class ProductosFormComponent {
     this.productosForm = this.fb.group({
       id: null, //* No válida - input hidden
       nombre: [null, Validators.compose([
-        Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$/) //? Solo letras - Español
+        Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern(/^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$/) //? Solo letras - Español
       ])],
       descripcion: [null, Validators.compose([
-        Validators.required, Validators.minLength(5), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Acepta números igualmente
+        Validators.required, Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Acepta números igualmente
       ])],
       ingredientes: [null, Validators.compose([
-        Validators.minLength(5), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Es opcional, valida en caso de que tenga algo...
+        Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Es opcional, valida en caso de que tenga algo...
       ])],
       precio: [null, Validators.compose([
         Validators.required, Validators.min(100), Validators.max(100000), Validators.pattern(/^[0-9]*$/) //? Sólo números enteros [decimal, pero no tiene sentido los decimales acá]
       ])],
       imagen: [null, Validators.compose([
-        Validators.required, Validators.minLength(25), Validators.pattern(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*\.[a-zA-Z]{3})$/) //? pattern especial para urls
+        Validators.required, Validators.minLength(25), Validators.maxLength(256), Validators.pattern(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*\.[a-zA-Z]{3})$/) //? pattern especial para urls
       ])],
       estado: [null, Validators.required], //? radio buttons - habilitado - deshabilitado, usar Validators.requiredTrue para checkboxes, mas no para radio
       idCategoria: [null, Validators.required], //* Sucursal [only one] - válida que elija uno

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 import { SecurityService } from 'src/app/share/security.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class HeaderComponent implements OnInit {
 
   isAuthenticated: boolean;
 
-  constructor(public securityService: SecurityService, private router: Router) {
+  constructor(public securityService: SecurityService, private authService: AuthenticationService, private router: Router) {
 
   }
 
@@ -20,10 +21,15 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  Loguear(): void {
+  login(): void {
     this.securityService.isAuthenticated = true;
     this.isAuthenticated = this.securityService.isAuthenticated;
     this.router.navigate(['./users/login']);
+  }
+
+  logout() : void{
+      this.authService.logout();
+      this.router.navigate(['users/login']);
   }
 
   onScroll() {

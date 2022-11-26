@@ -117,12 +117,12 @@ module.exports.getPedidosByState = async (request, response, next) => {
 module.exports.registerPedido = async (request, response, next) => {
   let pedido = request.body;
 
-  //Se obtienen todos los pedidos de la sucusal
+  //* Se obtienen todos los pedidos de la sucusal
   const allPedidos = await prismaClient.pedido.findMany({
     where: { idSucursal: pedido.idSucursal },
   });
 
-  //Generar un nuevo codigo de pedido
+  //* Generar un nuevo codigo de pedido
   let previousNum = pedidoService.getPreviousNumber(allPedidos);
   let nombrePedido = pedidoService.generateNombrePedido(pedido.idSucursal, previousNum);
   
