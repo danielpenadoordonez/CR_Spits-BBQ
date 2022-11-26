@@ -26,7 +26,7 @@ module.exports.verifyToken = async (request, response, next) => {
     }
 }
 
-module.exports.grantRole = function(roles){
+module.exports.grantRole = function(perfiles){
     return async (request, response, next) => {
         try{
             const bearerHeader = request.headers["authorization"];
@@ -42,7 +42,7 @@ module.exports.grantRole = function(roles){
             }
             if(token){
                 const verify = jwt.verify(token, process.env.JWT_EXPIRE);
-                if(roles.length && !roles.includes(verify.role.toUpperCase())){
+                if(perfiles.length && !perfiles.includes(verify.role.toUpperCase())){
                     return response.status(401).json({
                         success: false,
                         message: "Acceso no autorizado"
