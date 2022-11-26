@@ -2,16 +2,18 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/share/authentication.service';
-import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
-import { sociaLoginData } from './social-login'
+import {
+  NotificacionService,
+  TipoMessage,
+} from 'src/app/share/notification.service';
+import { sociaLoginData } from './social-login';
 
 @Component({
   selector: 'app-inicio-sesion',
   templateUrl: './inicio-sesion.component.html',
-  styleUrls: ['./inicio-sesion.component.css']
+  styleUrls: ['./inicio-sesion.component.css'],
 })
 export class InicioSesionComponent {
-
   socialLoginData = sociaLoginData;
   hide = true;
   formulario: FormGroup;
@@ -31,9 +33,10 @@ export class InicioSesionComponent {
     /*https://angular.io/guide/reactive-forms
    https://angular.io/api/forms/Validators */
     this.formulario = this.fb.group({
-      email: [null, Validators.compose([
-        Validators.required, Validators.email
-      ])],
+      email: [
+        null,
+        Validators.compose([Validators.required, Validators.email]),
+      ],
       password: [null, Validators.required],
     });
   }
@@ -63,14 +66,11 @@ export class InicioSesionComponent {
         );
       }
     });
-
   }
   onReset() {
     this.formulario.reset();
   }
-  submitForm() {
-
-  }
+  submitForm() {}
   /* Manejar errores de formulario en Angular */
 
   public errorHandling = (control: string, error: string) => {
