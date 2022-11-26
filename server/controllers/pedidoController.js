@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 
 const prismaClient = new PrismaClient();
+const pedidoService = require("../services/PedidoService");
 
 /*
  *GET APIs
@@ -115,10 +116,20 @@ module.exports.getPedidosByState = async (request, response, next) => {
  */
 module.exports.registerPedido = async (request, response, next) => {
   let pedido = request.body;
+
+  //Se obtienen todos los pedidos de la sucusal
+  const allPedidos = await prismaClient.pedido.findMany({
+    where: { idSucursal: pedido.idSucursal },
+  });
+
+  //Generar un nuevo codigo de pedido
+  let previousNum = pedidoService.getPreviousNumber(allPedidos);
+  let nombrePedido = pedidoService.generateNombrePedido(pedido.idSucursal, previousNum);
+  
   const newPedido = await prismaClient.pedido.create({
     data: {
       //* NO VA EL ID, ES UN AUTOINCREMENT
-      nombre: pedido.nombre, //? EL NOMBRE UNIQUE, OJO CON ESA REGLA [CONSTRAINT]
+      nombre: nombrePedido, 
       fecha: pedido.fecha !== undefined ? new Date(pedido.fecha) : pedido.fecha, //! LO MÁS NORMAL ES QUE VENGA VACÍO, YA QUE LA FECHA POR DEFAULT SE COLOCA ESE DÍA
       precio: pedido.precio,
       idEstado: pedido.idEstado,
