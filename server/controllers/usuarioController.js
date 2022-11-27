@@ -80,7 +80,7 @@ module.exports.createUser = async (request, response, next) => {
   let hashData = userService.generateEncryptedPassword(user.clave); //diccionario con el salt usado para encriptar y el hash
   let salt = hashData.salt;
   let hashedPassword = hashData.passwordHash;
-  
+
   const newUser = await prismaClient.usuario.create({
     data: {
       id: user.id,
@@ -132,7 +132,14 @@ module.exports.login = async (request, response, next) => {
     });
   }
 
-  console.log(`Contraseña Enviada: ${userInfo.clave} \nContraseña Prisma ${user.clave}`);
+  //* Protección adicional - a veces pasa...
+  if (userInfo.clave === undefined) {
+    response.status(401).send({
+      success: false,
+      message: `Por favor, ingrese una contraseña válida`,
+    });
+  }
+  //console.log(`Contraseña Enviada: ${userInfo.clave} \nContraseña Prisma ${user.clave} \nSalt: ${user.salt}`);
 
   //* Revisar que la contraseña este correcta
   if (userService.isPasswordCorrect(userInfo.clave, user.clave, user.salt)) {

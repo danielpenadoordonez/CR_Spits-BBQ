@@ -69,8 +69,9 @@ async function main() {
             apellido2: "Quesada",
             correo: "cristhianmora@hotmail.com",
             username: "christianMora",
-            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
+            clave: "$2b$10$i8P5PTnTX80.8NZsM.DwXe0nV1p3MeoKsgo54zDSiqZHSDC0V2lKW",
             //? Clave sin hash: 123456789
+            salt: "$2b$10$i8P5PTnTX80.8NZsM.DwXe",
             telefono: "74601503",
             direccion: "Turrialba, cartago",
             idPerfil: 2, //? Mesero - Sucursal 2
@@ -89,8 +90,9 @@ async function main() {
             apellido2: "Arroyo",
             correo: "mariaarroyo@gmail.com",
             username: "mariaMolina",
-            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
+            clave: "$2b$10$i8P5PTnTX80.8NZsM.DwXe0nV1p3MeoKsgo54zDSiqZHSDC0V2lKW",
             //? Clave sin hash: 123456789
+            salt: "$2b$10$i8P5PTnTX80.8NZsM.DwXe",
             telefono: "74670781",
             direccion: "Santa Barbara, Heredia",
             idPerfil: 2, //? Mesero - Sucursal 1
@@ -109,8 +111,9 @@ async function main() {
             apellido2: "Ruíz",
             correo: "belenalfaro@gmail.com",
             username: "belenAlfaro",
-            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
+            clave: "$2b$10$i8P5PTnTX80.8NZsM.DwXe0nV1p3MeoKsgo54zDSiqZHSDC0V2lKW",
             //? Clave sin hash: 123456789
+            salt: "$2b$10$i8P5PTnTX80.8NZsM.DwXe",
             telefono: "68036014",
             direccion: "La Rivera, Heredia",
             idPerfil: 2, //? Mesero - Sucursal 3
@@ -128,8 +131,9 @@ async function main() {
             apellido2: "Paniagua",
             correo: "garyflores@gmail.com",
             username: "garyFlores",
-            clave: "$2a$12$/.XhEhM9.j4YDzzx1P.AG.oQ4q.HGlmPpeFc/1fHXGD22kqXgdYAi",
+            clave: "$2b$10$i8P5PTnTX80.8NZsM.DwXe0nV1p3MeoKsgo54zDSiqZHSDC0V2lKW",
             //? Clave sin hash: 123456789
+            salt: "$2b$10$i8P5PTnTX80.8NZsM.DwXe",
             telefono: "10596839",
             direccion: "Naranjo, Alajuela",
             idPerfil: 2, //? Mesero - Sucursal 4
