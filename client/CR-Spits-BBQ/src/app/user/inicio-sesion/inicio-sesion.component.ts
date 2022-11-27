@@ -90,7 +90,7 @@ export class InicioSesionComponent {
     this.authService
       .loginUser(this.formulario.value)
       .subscribe((respuesta: any) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       });
   }
 

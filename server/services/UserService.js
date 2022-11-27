@@ -8,8 +8,8 @@ module.exports.generateEncryptedPassword = password => {
 }
 
 module.exports.isPasswordCorrect = (enteredPassword, savedPassword, salt) => {
-    //return bcrypt.compare(enteredPassword, savedPassword);
+    //* return bcrypt.compare(enteredPassword, savedPassword);
     enteredPassword = bcrypt.hashSync(enteredPassword, salt);
-    //console.log(`Hash Ingresado ${enteredPassword} - Hash Guardado ${savedPassword}`)
+    //* console.log(`Hash Ingresado ${enteredPassword} - Hash Guardado ${savedPassword}`)
     return enteredPassword == savedPassword;
 }
