@@ -77,7 +77,10 @@ module.exports.getUserByEmail = async (request, response, next) => {
 module.exports.createUser = async (request, response, next) => {
   let user = request.body;
   //Se encripta el password
-  let hashedPassword = userService.generateEncryptedPassword(user.clave);
+  let hashData = userService.generateEncryptedPassword(user.clave); //diccionario con el salt usado para encriptar y el hash
+  let salt = hashData.salt;
+  let hashedPassword = hashData.passwordHash;
+  
   const newUser = await prismaClient.usuario.create({
     data: {
       id: user.id,
@@ -87,6 +90,7 @@ module.exports.createUser = async (request, response, next) => {
       correo: user.correo,
       username: user.username,
       clave: hashedPassword,
+      salt: salt,
       telefono: user.telefono,
       direccion: user.direccion,
       idPerfil: user.idPerfil,
@@ -128,10 +132,10 @@ module.exports.login = async (request, response, next) => {
     });
   }
 
-  console.log(`clave API: ${userInfo.clave} \nClave Prisma ${user.clave}`);
+  console.log(`Contraseña Enviada: ${userInfo.clave} \nContraseña Prisma ${user.clave}`);
 
   //* Revisar que la contraseña este correcta
-  if (userService.isPasswordCorrect(userInfo.clave, user.clave)) {
+  if (userService.isPasswordCorrect(userInfo.clave, user.clave, user.salt)) {
     //* Si el usuario es correcto se crea el token con el payload, secret key y tiempo de expiracion
     const payload = { username: user.username, idPerfil: user.idPerfil };
     //* Aqui se crea el token
@@ -209,7 +213,7 @@ module.exports.updatePassword = async (request, response, next) => {
   });
 
   //Si el usuario ingresa su password actual correcto entonces lo puede modificar
-  if (userService.isPasswordCorrect(currentPassword, user.clave)) {
+  if (userService.isPasswordCorrect(currentPassword, user.clave, user.salt)) {
     //Se encripta el password nuevo
     let hashedPassword = userService.generateEncryptedPassword(newPassword);
     const updatedUser = await prismaClient.usuario.update({

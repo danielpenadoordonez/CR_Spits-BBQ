@@ -28,6 +28,7 @@ model Usuario {
   correo        String //* Email
   username      String @unique
   clave         String //* Contraseña, no sé si usará MD5
+  salt          String //Se necesita para validar cada Login
   telefono      String
   direccion     String? //* Opcional
   reservaciones Reservacion[]
