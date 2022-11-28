@@ -5,8 +5,8 @@ import { PedidosFormComponent } from './pedidos-form/pedidos-form.component';
 
 const routes: Routes = [
   { path: 'pedidos', component: GestionPedidosComponent },
-  { path: 'pedidos/create', component: PedidosFormComponent },
-  { path: 'pedidos/update/:id', component: PedidosFormComponent }
+  //{ path: 'pedidos/create', component: PedidosFormComponent },
+  //{ path: 'pedidos/update/:id', component: PedidosFormComponent }
 ];
 
 @NgModule({

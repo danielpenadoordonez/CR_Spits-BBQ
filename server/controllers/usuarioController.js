@@ -124,6 +124,10 @@ module.exports.login = async (request, response, next) => {
 
   const user = await prismaClient.usuario.findUnique({
     where: { username: userInfo.username },
+    include: {
+      Perfil: true,
+      sucursales: true
+    }
   });
   if (!user) {
     response.status(401).send({

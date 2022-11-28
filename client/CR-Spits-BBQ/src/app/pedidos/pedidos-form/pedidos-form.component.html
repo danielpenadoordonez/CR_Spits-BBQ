@@ -1,42 +1,61 @@
-<form
-  [formGroup]="pedidosForm"
-  novalidate
-  (ngSubmit)="(isCreate ? crearPedido : actualizarPedido)"
-  data-aos="zoom-in"
->
-  <!-- ! Campos ocultos -->
+<form [formGroup]="pedidosForm" novalidate (ngSubmit)="(isCreate ? crearPedido : actualizarPedido)" data-aos="zoom-in">
   <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
-    <mat-card-header>
+    <div class="pedido-detail flexbox">
+      <div class="pedido-detail-table flexbox" *ngIf="mesa" data-aos="zoom-in" data-aos-duration0="1200">
+        <div class="pedido-detail-table-content" >
+          <img class="table-icon" [src]="mesa.EstadoMesa.descripcion == 'Disponible'? 
+                                    'https://img.icons8.com/ios-filled/150/C8C0B5/table-top-view.png'
+                                    : mesa.EstadoMesa.descripcion == 'Reservada'? 
+                                    'https://img.icons8.com/ios-filled/150/024F8B/table-top-view.png'
+                                    : 'https://img.icons8.com/ios-filled/150/C70000/table-top-view.png'" />
+          <div class="table-diners-information flexbox">
+            <i class="fa-solid fa-user diners"></i>
+            <p class="diners-quantity">X{{mesa.capacidad}}</p>
+          </div>
+        </div>
+        <h2 class="pedido-detail-table-code">{{mesa.codigo}}</h2>
+      </div>
+      <div class="pedido-detail-cliente flexbox" *ngIf="cliente" data-aos="zoom-in" data-aos-duration0="1200">
+        <div class="user-logo">
+          <mat-icon class="user-icon">account_circle</mat-icon>
+        </div>
+        <div class="user-information">
+          <h3 class="user-name">{{getUserFullName()}}</h3>
+        </div>
+      </div>
+      <div class="pedido-select-cliente flexbox" data-aos="zoom-in" data-aos-duration0="1200" *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">
+        <h3>Selecciona un cliente</h3>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Cliente</mat-label>
+          <input type="text" placeholder="Pick one" aria-label="Cliente" matInput [formControl]="inputFiltro"
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClientName">
+            <mat-option *ngFor="let cliente of filteredOptions | async" [value]="cliente">
+              {{cliente.nombre}} {{cliente.apellido1}} {{cliente.apellido2}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- <mat-card-header>
       <mat-card-title>{{ titleForm }} Pedido</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input
-              matInput
-              #fechaPedido
-              [matDatepickerFilter]="dateFilter"
-              [matDatepicker]="picker"
-              formControlName="fecha"
-              title="Fecha del pedido"
-              required="true"
-              pattern="^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$"
-              autocomplete="false"
-              placeholder="11/24/2022"
-            />
+            <input matInput #fechaPedido [matDatepickerFilter]="dateFilter" [matDatepicker]="picker"
+              formControlName="fecha" title="Fecha del pedido" required="true"
+              pattern="^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$" autocomplete="false" placeholder="11/24/2022" />
             <mat-hint>mm/dd/yyyy</mat-hint>
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="row">
           <div class="col">
-            
+
           </div>
         </div>
       </div>
@@ -44,7 +63,6 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit">Submit</button>
-    </mat-card-actions>
+    </mat-card-actions> -->
   </mat-card>
 </form>
-<h1 style="height: 100px">hola</h1>

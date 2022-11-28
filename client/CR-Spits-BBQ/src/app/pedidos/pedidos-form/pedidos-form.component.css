@@ -1,3 +1,64 @@
+.pedido-detail{
+  flex-wrap: wrap;
+}
+
+.pedido-detail-table, .pedido-detail-cliente, .pedido-select-cliente{
+  position: relative;
+  background-color: #171717;
+  border-radius: .5rem;
+  padding: 1rem 3rem;
+  margin: .75rem;
+  text-align: center;
+  height: 250px;
+  width: fit-content
+}
+
+.pedido-detail-table{
+  flex-direction: column;
+}
+
+.pedido-detail-table-content{
+  position: relative;
+}
+
+.table-icon{
+  height: 150px;
+}
+
+.user-logo .user-icon{
+  color: white;
+  font-size: 4rem;
+  margin: 0 .5rem;
+}
+
+.table-diners-information {
+  top: 46.5% !important;
+  transform: scale(.8);
+}
+
+.pedido-select-cliente{
+  flex-direction: column;
+  text-align: center;
+  margin: 0 3rem;
+}
+
+.pedido-select-cliente h2{
+  margin: .5rem 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* default styles */
 .full-width {
   width: 100%;
 }
@@ -5,8 +66,10 @@
 .shipping-card {
   min-width: 120px;
   margin: 20px auto;
+  background: #000;
+  border-radius: 1rem;
+  color: white !important;
 }
-
 .mat-radio-button {
   display: block;
   margin: 5px 0;
@@ -24,4 +87,12 @@
 
 .col:last-child {
   margin-right: 0;
+}
+
+
+
+@media screen and (min-width: 992px) {
+  .pedido-select-cliente{
+    width: 600px;
+  }
 }
