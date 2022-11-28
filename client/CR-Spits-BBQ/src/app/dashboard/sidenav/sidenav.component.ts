@@ -5,6 +5,7 @@ import { GenericService } from 'src/app/share/generic.service';
 import { SecurityService } from 'src/app/share/security.service';
 import { navbarData } from './nav-data';
 import { Scroll } from '../../../assets/ts/scrollreveal';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -25,10 +26,11 @@ export class SidenavComponent implements OnInit {
   navData = navbarData;
 
   //usuario conectado
-  user: any;
+  isAuthenticated: boolean;
+  currentUser: any;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private userService: SecurityService,
+  constructor(private authService: AuthenticationService,
     private router: Router,
     private gService: GenericService) { }
 
@@ -41,9 +43,9 @@ export class SidenavComponent implements OnInit {
     this.validateSidenavScreenWidth();
     // Si el ancho de pantalla es menor o igual a 768px cierre el sidenav
     if (this.screenWidth <= 768) {
-        this.closeCollapsed();
-        this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
-    }else{
+      this.closeCollapsed();
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
+    } else {
       // Si el ancho de pantalla es mayor a 768px solo emita los parametros al hacer resize
       this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
     }
@@ -54,10 +56,13 @@ export class SidenavComponent implements OnInit {
     // llama al metodo resize para validar de primera 
     // instancia como mostrar el contenido el body y el sidenav
     this.onResize();
-    // este método se tiene que cambiar más adelante
-    this.user = this.userService.getUserLogged('208320565').subscribe((data: any) => {
-      this.user = data;
-    });
+    //Subscripción a la información del usuario actual
+    this.authService.currentUser.subscribe((x) => (this.currentUser = x));
+    //Subscripción al booleano que indica si esta autenticado
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
+
   }
 
   ngAfterViewInit() {
@@ -103,18 +108,18 @@ export class SidenavComponent implements OnInit {
     this.closeeNavItem();
   }
 
-    // Cuando el ancho de la pantalla sea igual o menor a 576px
-    // va a quitar el sidenav cada vez que se click a un link del
-    // sidenav
-  closeSideNavCollapsed(){
-    if(this.screenWidth <= 576){
+  // Cuando el ancho de la pantalla sea igual o menor a 576px
+  // va a quitar el sidenav cada vez que se click a un link del
+  // sidenav
+  closeSideNavCollapsed() {
+    if (this.screenWidth <= 576) {
       this.closeCollapsed();
     }
   }
 
   // Muestra el menu lateral. Aplica solamente
   // cuando el ancho de la pantalla sea igual o menor a 576px
-  openMenu(){
+  openMenu() {
     this.sidenavHidden = false;
     this.collapsed = true;
     this.toggleNavItem();
@@ -122,6 +127,7 @@ export class SidenavComponent implements OnInit {
 
   // Cierra sesión del usuario actual
   Logout() {
+    this.authService.logout();
     this.router.navigate(['/']);
   }
 
@@ -131,7 +137,12 @@ export class SidenavComponent implements OnInit {
   }
 
   // Cuando el ancho de la pantalla sea igual o menor a 576px oculta el sidenav 
-  validateSidenavScreenWidth(){
+  validateSidenavScreenWidth() {
     this.screenWidth <= 576 ? this.sidenavHidden = true : this.sidenavHidden = false;
+  }
+
+  // retorna el nombre y primer apellido del usuario conectado
+  getUserFullName(): String{
+    return `${this.currentUser.user.nombre} ${this.currentUser.user.apellido1}`;
   }
 }

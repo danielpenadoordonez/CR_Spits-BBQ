@@ -5,7 +5,7 @@ import { RegistroComponent } from './registro/registro.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 
 const routes: Routes = [
-  { path: 'users', component: UsuarioComponent },
+  { path: 'users',component: UsuarioComponent },
   { path: 'users/login', component: InicioSesionComponent },
   { path: 'users/registrar', component: RegistroComponent }
 ];

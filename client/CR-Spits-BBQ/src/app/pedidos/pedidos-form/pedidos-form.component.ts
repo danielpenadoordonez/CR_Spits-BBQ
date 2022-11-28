@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GenericService } from 'src/app/share/generic.service';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificacionService } from 'src/app/share/notification.service';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 
 @Component({
   selector: 'app-pedidos-form',
   templateUrl: './pedidos-form.component.html',
-  styleUrls: ['./pedidos-form.component.css'],
+  styleUrls: ['./pedidos-form.component.css', './../../mesas/gestion-mesas/gestion-mesas.component.css'],
 })
 export class PedidosFormComponent {
   titleForm: string = 'Crear';
@@ -24,7 +25,14 @@ export class PedidosFormComponent {
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
 
-  CurrentUser = null; //* Obtener de la suscripción
+  isAuthenticated: boolean;
+  currentUser = null; //* Obtener de la suscripción
+
+  cliente: any; // Cliente del pedido
+  mesa: any; // Mesa obtenida por medio del queryParams
+
+  inputFiltro = new FormControl('');
+  filteredOptions: Observable<any[]>;
 
   /*
   * FORMATO JSON - PEDIDO
@@ -48,7 +56,9 @@ export class PedidosFormComponent {
     private gService: GenericService,
     private router: Router,
     private activeRouter: ActivatedRoute,
-    private notification: NotificacionService
+    private notification: NotificacionService,
+    private route: ActivatedRoute,
+    private authService: AuthenticationService
   ) {
     this.formularioReactive();
     this.listaClientes();
@@ -59,37 +69,20 @@ export class PedidosFormComponent {
 
   //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
   ngOnInit(): void {
-    this.activeRouter.params.subscribe((params: Params) => {
-      this.idPedido = params['id']; //? Recibe el id [int]
-      if (this.idPedido !== undefined) {
-        this.isCreate = false; //* No... es actualizar
-        this.titleForm = 'Actualizar';
-        this.gService
-          .get('pedidos', this.idPedido) //? Trae por medio del id númerico [int]
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((data: any) => {
-            this.pedidoInfo = data;
-            this.pedidosForm.setValue({
-              id: this.pedidoInfo.id,
-              nombre: this.pedidoInfo.nombre,
-              estado: this.pedidoInfo.estado,
-              fecha: this.pedidoInfo.fecha,
-              idEstado: this.pedidoInfo.idEstado,
-              idCliente: this.pedidoInfo.idCliente,
-              idMesero: this.pedidoInfo.idMesero,
-              idSucursal: this.pedidoInfo.idSucursal,
-              idMesa: this.pedidoInfo.idMesa,
-              idTipoPedido: this.pedidoInfo.idTipoPedido,
-              detalles: null, //* No se mapea
-            });
-          });
-      } else {
-        //! CASO DE QUE ENTRE ADMIN O QUE ENTRE MESERO
-        //! Puede elegir fecha, cliente (ambos), tipo de pedido, estado del pedido (mesero va por default)
-      }
-    });
+    this.getCurrentUser();
+    this.getMesaDetail();
+    this.isCreateOrUpdate();
   }
 
+  //filtra nombre completo en mat-autocomplete
+  private _filter(value: any): any[] {
+    console.log(value);
+    const filterValue = value.toLowerCase();
+
+    return this.clientsList.filter(clients => clients.nombre.toLowerCase().includes(filterValue) 
+                                              ||  clients.apellido1.toLowerCase().includes(filterValue)
+                                              ||  clients.apellido2.toLowerCase().includes(filterValue));
+  }
   //! Nombre del pedido se generá en el back, hacen falta los estados, perfiles, autentificación
 
   formularioReactive() {
@@ -123,6 +116,10 @@ export class PedidosFormComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.clientsList = data;
+        this.filteredOptions = this.inputFiltro.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value || '')),
+        );
       });
   }
 
@@ -163,6 +160,85 @@ export class PedidosFormComponent {
     return this.pedidosForm.controls[control].hasError(error);
   };
 
+
+  getMesaDetail() {
+    this.route.queryParams.subscribe(params => {
+      let idMesa = params['id'] || null;
+      if (idMesa != null) {
+        this.gService
+          .get('mesas/', idMesa)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.mesa = data;
+          });
+      }
+    })
+  }
+
+  isCreateOrUpdate() {
+    this.activeRouter.params.subscribe((params: Params) => {
+      this.idPedido = params['id']; //? Recibe el id [int]
+      if (this.idPedido !== undefined) {
+        this.isCreate = false; //* No... es actualizar
+        this.titleForm = 'Actualizar';
+        this.gService
+          .get('pedidos', this.idPedido) //? Trae por medio del id númerico [int]
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.pedidoInfo = data;
+            this.pedidosForm.setValue({
+              id: this.pedidoInfo.id,
+              nombre: this.pedidoInfo.nombre,
+              estado: this.pedidoInfo.estado,
+              fecha: this.pedidoInfo.fecha,
+              idEstado: this.pedidoInfo.idEstado,
+              idCliente: this.pedidoInfo.idCliente,
+              idMesero: this.pedidoInfo.idMesero,
+              idSucursal: this.pedidoInfo.idSucursal,
+              idMesa: this.pedidoInfo.idMesa,
+              idTipoPedido: this.pedidoInfo.idTipoPedido,
+              detalles: null, //* No se mapea
+            });
+          });
+      } else {
+        //! CASO DE QUE ENTRE ADMIN O QUE ENTRE MESERO
+        //! Puede elegir fecha, cliente (ambos), tipo de pedido, estado del pedido (mesero va por default)
+      }
+    });
+  }
+
+  // get Current User
+  getCurrentUser() {
+    //Subscripción a la información del usuario actual
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+      // si el usuario que registra la orden es el mismo cliente se asigna automaticamente como cliente
+      if (this.currentUser.user.Perfil.descripcion == 'Cliente') {
+        this.cliente = x.user;
+      }else{
+        // si no liste clientes
+        this.listaClientes();
+      }
+    });
+    //Subscripción al booleano que indica si esta autenticado
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
+  }
+
+  // Retorna el nombre completo del usuario cliente actual escogido
+  getUserFullName(): String {
+    return `${this.cliente.nombre} ${this.cliente.apellido1} ${this.cliente.apellido2}`;
+  }
+
+  // Retorna el nombre completo del cliente seleccionado para mostrarlo en mat-autocomplete
+  displayClientName(cliente: any){
+    return cliente? `${cliente.nombre} ${cliente.apellido1} ${cliente.apellido2}` : '';
+  }
+
+
+ 
+
   crearPedido() {
 
 
@@ -190,13 +266,14 @@ export class PedidosFormComponent {
     this.destroy$.unsubscribe();
   }
 
+
+
   //? Filtro de fecha - que no sea menor y que no se pase de 1 semana
   dateFilter = (d: Date | null): boolean => {
     const datePicked = d || new Date();
     let dateToday = new Date();
-
     return (
-      datePicked.getDate() >= dateToday.getDate() - 1 &&
+      datePicked.getDate() >= dateToday.getDate() &&
       datePicked.getDate() < dateToday.getDate() + 7 &&
       datePicked.getMonth() == dateToday.getMonth()
     );

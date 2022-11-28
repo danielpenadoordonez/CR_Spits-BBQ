@@ -1,4 +1,15 @@
+.mesero-sucursal-title{
+    text-align: center;
+    font-size: 2.5rem;
+    padding-bottom: .75rem;
+}
 
+.fire-line{
+    box-shadow: 0 0 15px #FE0202, 0 0 15px #FE0202, 0 0 15px #FE0202;
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: .75rem;
+}
 
 .sucursal-selected {
     text-align: center;
