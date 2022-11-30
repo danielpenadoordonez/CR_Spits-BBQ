@@ -133,7 +133,7 @@ module.exports.login = async (request, response, next) => {
   }
 
   //* Protección adicional - a veces pasa...
-  if (userInfo.clave === undefined) {
+  if (userInfo.clave === undefined || userInfo.clave == null) {
     response.status(401).send({
       success: false,
       message: `Por favor, ingrese una contraseña válida`,
