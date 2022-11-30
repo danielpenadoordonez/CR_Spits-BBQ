@@ -96,6 +96,10 @@ body {
     display: flex !important;
 }
 
+.full-width{
+    width: 100%;
+}
+
 .block{
     display: block !important;
 }

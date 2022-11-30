@@ -1,4 +1,8 @@
 
+  <div class="mesero-sucursal" *ngIf="(currentUser && currentUser.user.sucursales.length != 0)">
+    <h1 class="mesero-sucursal-title">{{currentUser.user.sucursales[0].nombre}}</h1>
+    <hr class="fire-line">
+  </div>
   <div class="tips-information flexbox" data-aos="zoom-in">
     <div class="tip-content flexbox">
       <img class="table-icon" src="https://img.icons8.com/ios-filled/75/C8C0B5/table-top-view.png" />
@@ -14,7 +18,7 @@
     </div>
   </div>
   <div class="flexbox filter-container" data-aos="zoom-in">
-    <mat-form-field appearance="fill" class="filter">
+    <mat-form-field appearance="fill" class="filter" *ngIf="(currentUser.user.Perfil.descripcion != 'Mesero')">
       <mat-label>Sucursales</mat-label>
       <mat-select>
         <mat-option (click)="filterMesasSucursales(0)" aria-selected="true" value="Todas">
@@ -85,6 +89,10 @@
               <div class="table-configuration-container flexbox">
                 <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle">info</mat-icon>
                 <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar">edit</mat-icon>
+                <mat-icon class="sidenav-link-icon settings"  (click) = 'pedidoMesaAction(row.id)'
+                 [title]="row.EstadoMesa.descripcion == 'Disponible'? 'Crear comanda' : 'Ver detalle orden'">
+                  {{row.EstadoMesa.descripcion == 'Disponible'? 'post_add' : 'preview'}}
+                </mat-icon>
               </div>
             </div>
           </div>

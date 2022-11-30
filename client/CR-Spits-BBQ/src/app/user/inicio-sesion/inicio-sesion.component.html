@@ -1,13 +1,8 @@
 <div class="background-pattern"></div>
 <div class="login flexbox">
   <div class="login-container flexbox">
-    <form
-      [formGroup]="formulario"
-      (ngSubmit)="submitForm()"
-      novalidate
-      data-aos="fade-down-right"
-      data-aos-duration="750"
-    >
+    <form [formGroup]="formulario" (ngSubmit)="submitForm()" novalidate data-aos="fade-down-right"
+      data-aos-duration="750">
       <mat-card class="shipping-card">
         <mat-card-header>
           <mat-card-title class="login-title">¡Iniciar Sesión!</mat-card-title>
@@ -17,19 +12,9 @@
             <div class="col">
               <mat-form-field class="full-width" hideRequiredMarker>
                 <mat-label class="label">Nombre de usuario</mat-label>
-                <input
-                  matInput
-                  #nombreUsuario
-                  type="text"
-                  pattern="^[a-zA-Z0-9]+$"
-                  minlength="5"
-                  maxlength="16"
-                  required="true"
-                  autocomplete="true"
-                  title="Ingrese su nombre de usuario"
-                  placeholder="nombre usuario"
-                  formControlName="username"
-                />
+                <input matInput #nombreUsuario type="text" pattern="^[a-zA-Z0-9]+$" minlength="5" maxlength="16"
+                  required="true" autocomplete="true" title="Ingrese su nombre de usuario" placeholder="nombre usuario"
+                  formControlName="username" />
                 <mat-hint>{{ nombreUsuario.value.length }} / 16</mat-hint>
                 <mat-error *ngIf="errorHandling('username', 'required')">
                   El nombre de usuario es <strong>requerido</strong>
@@ -44,29 +29,14 @@
             <div class="col">
               <mat-form-field class="full-width" hideRequiredMarker>
                 <mat-label class="label">Contraseña</mat-label>
-                <input
-                  matInput
-                  #password
-                  [type]="hide ? 'password' : 'text'"
-                  pattern="[\w\[\]`!@#$%\^&*()={}:;<>+'-]*"
-                  minlength="8"
-                  maxlength="16"
-                  required="true"
-                  autocomplete="true"
-                  placeholder="Contraseña usuario"
-                  title="Ingrese su contraseña"
-                  formControlName="clave"
-                />
+                <input matInput #password [type]="hide ? 'password' : 'text'" pattern="[\w\[\]`!@#$%\^&*()={}:;<>+'-]*"
+                  minlength="8" maxlength="16" required="true" autocomplete="true" placeholder="Contraseña usuario"
+                  title="Ingrese su contraseña" formControlName="clave" />
                 <mat-hint>{{ password.value.length }} / 16</mat-hint>
-                <button
-                  matSuffix
-                  (click)="hide = !hide"
-                  [attr.aria-label]="'Hide password'"
-                  [attr.aria-pressed]="hide"
-                >
+                <button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" type="button">
                   <mat-icon class="hide-icon">{{
                     hide ? "visibility_off" : "visibility"
-                  }}</mat-icon>
+                    }}</mat-icon>
                 </button>
                 <mat-error *ngIf="errorHandling('clave', 'required')">
                   La contraseña es <strong>requerida</strong>
@@ -81,26 +51,15 @@
         <div class="forgot-password-helper">¿Olvidaste tu contraseña?</div>
       </mat-card>
     </form>
-    <div
-      class="other-options flexbox"
-      data-aos="zoom-in"
-      data-aos-duration="750"
-    >
+    <div class="other-options flexbox" data-aos="zoom-in" data-aos-duration="750">
       <hr class="line" />
       <span class="or">O</span>
       <hr class="line" />
     </div>
-    <div
-      class="social-login-container flexbox"
-      *ngIf="socialLoginData"
-      data-aos="fade-down-left"
-      data-aos-duration="750"
-    >
-      <div
-        class="socia-login-item flexbox"
-        *ngFor="let item of socialLoginData"
-        [ngStyle]="{ 'background-color': item.background, color: item.color }"
-      >
+    <div class="social-login-container flexbox" *ngIf="socialLoginData" data-aos="fade-down-left"
+      data-aos-duration="750">
+      <div class="socia-login-item flexbox" *ngFor="let item of socialLoginData"
+        [ngStyle]="{ 'background-color': item.background, color: item.color }">
         <img [src]="item.icon" alt="social-login" class="social-login-img" />
         <p class="social-login-description">
           Iniciar sesión con {{ item.label }}

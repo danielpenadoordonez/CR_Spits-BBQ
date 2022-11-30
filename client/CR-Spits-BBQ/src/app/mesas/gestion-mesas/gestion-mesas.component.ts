@@ -9,6 +9,7 @@ import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
 import { filter, map } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 
 @Component({
   selector: 'app-gestion-mesas',
@@ -30,6 +31,11 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     estado: -1,
     disponibilidad: -1
   }
+
+  //usuario conectado
+  isAuthenticated: boolean;
+  currentUser: any;
+
   //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -37,12 +43,11 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   constructor(private gService: GenericService, private dialog: MatDialog,
     private route: ActivatedRoute, private router: Router,
-    private notification: NotificacionService, private changeDetectorRefs: ChangeDetectorRef) { }
+    private notification: NotificacionService, private changeDetectorRefs: ChangeDetectorRef,
+    private authService: AuthenticationService) { }
 
   ngOnInit() {
-    this.listaSucursales();
-    this.listaDisponibilidades();
-    this.listaMesas();
+    this.getCurrentUser();
   }
 
   ngAfterViewInit(): void {
@@ -50,6 +55,27 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     document.querySelectorAll('#mesas-table thead')[0].classList.add('grid-table-head');
   }
 
+
+  // get Current User
+  getCurrentUser() {
+    //Subscripción a la información del usuario actual
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+      //Load data by user information and role
+      this.loadMesasData(x);
+    });
+    //Subscripción al booleano que indica si esta autenticado
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
+  }
+
+  loadMesasData(userData: any) {
+    userData.user.Perfil.descripcion != 'Mesero' ?
+      this.listaMesas() : this.listarMesasBySucursal(this.currentUser.user.sucursales[0].id);
+    this.listaSucursales();
+    this.listaDisponibilidades();
+  }
 
   // Funcion que muestra una notifcacion de acuerdo con los parametros de la URL
   // validateCRUDNotifiaction() {
@@ -98,9 +124,15 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   }
 
   listaMesasToFilter() {
-    return this.gService
-      .list('mesas/all')
-      .pipe(takeUntil(this.destroy$));
+    if (this.currentUser.user.Perfil.descripcion != 'Mesero') {
+      return this.gService
+        .list('mesas/all')
+        .pipe(takeUntil(this.destroy$));
+    } else {
+      return this.gService
+        .get('mesas/sucursal', this.currentUser.user.sucursales[0].id)
+        .pipe(takeUntil(this.destroy$));
+    }
   }
 
   listarMesasBySucursal(filter: number) {
@@ -153,20 +185,20 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       return;
     }
 
-    this.listaMesasToFilter().subscribe((data:any) => {
-      if(this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
+    this.listaMesasToFilter().subscribe((data: any) => {
+      if (this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
         data = data.filter(item => item.idSucursal == this.filtros.sucursal);
-      
-      if(this.filtros.estado != null && this.filtros.estado != -1)
+
+      if (this.filtros.estado != null && this.filtros.estado != -1)
         data = data.filter(item => item.estado == this.filtros.estado);
 
-      if(this.filtros.disponibilidad != 0 && this.filtros.disponibilidad != -1)
+      if (this.filtros.disponibilidad != 0 && this.filtros.disponibilidad != -1)
         data = data.filter(item => item.idDisponibilidad == this.filtros.disponibilidad);
 
       this.datos = data
       this.dataSource = new MatTableDataSource(this.datos);
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;  
+      this.dataSource.paginator = this.paginator;
     })
   }
   //* Llamada en el front (click)="detalleMesa(item.id) - No sé si quiere trabajarlo por id o código
@@ -179,5 +211,19 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       id: id,
     };
     this.dialog.open(MesaDetailComponent, dialogConfig);
+  }
+
+  pedidoMesaAction(id: number) {
+    this.gService
+      .get('mesas/', id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        if (data.EstadoMesa.descripcion == 'Disponible') {
+          this.router.navigate(['pedidos/create'], {
+            queryParams: { id: data.id, codigo: data.codigo },
+            relativeTo: this.route,
+          });
+        }
+      });
   }
 }

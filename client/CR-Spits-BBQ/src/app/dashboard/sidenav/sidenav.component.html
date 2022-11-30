@@ -19,14 +19,14 @@
             </li>
         </ul>
         <div class="sidenav-user-container">
-            <div class="sidenav-user" *ngIf="user">
+            <div class="sidenav-user" *ngIf="currentUser">
                 <ul class="sidenav-nav">
                     <li class="sidenav-nav-item">
-                        <div class="user-information" (click)="toggleCollapsed()">
+                        <div class="user-information" (click)="toggleCollapsed()" title="Usuario conectado">
                             <mat-icon class="sidenav-link-icon account-icon">account_circle</mat-icon>
                             <div class="sidenav-user-name sidenav-link-text">
-                                {{user.nombre}} {{user.apellido1}} <br>
-                                <p class="user-profile">{{user.Perfil.descripcion}}</p>
+                                {{getUserFullName()}} <br>
+                                <p class="user-profile">{{currentUser.user.Perfil.descripcion}}</p>
                             </div>
                         </div>
                     </li>
