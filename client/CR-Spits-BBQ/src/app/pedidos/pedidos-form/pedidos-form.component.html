@@ -1,15 +1,15 @@
 <!-- <div class="cart-btn"> -->
-  <button
+<button
   class="cart-btn"
-    mat-icon-button
-    matBadgeColor="accent"
-    [matBadge]="qtyItems"
-    [routerLinkActive]="'mat-raised-button'"
-    aria-label="Cantidad"
-    (click)="toggleCartData()"
-  >
-    <mat-icon class="cart-icon">shopping_cart</mat-icon>
-  </button>
+  mat-icon-button
+  matBadgeColor="accent"
+  [matBadge]="qtyItems"
+  [routerLinkActive]="'mat-raised-button'"
+  aria-label="Cantidad"
+  (click)="toggleCartData()"
+>
+  <mat-icon class="cart-icon">shopping_cart</mat-icon>
+</button>
 <!-- </div> -->
 <div class="cart-data">
   <mat-icon class="cart-close-icon" (click)="toggleCartData()">close</mat-icon>
@@ -20,21 +20,24 @@
     *ngFor="let item of cartData"
   >
     <div class="cart-item flexbox">
-      <p class="cart-item-description">{{item.product.nombre}}</p>
-      <p class="cart-item-qty">X{{item.cantidad}}</p>
-      <img
-        [src]="item.product.imagen"
-        alt=""
-        class="cart-item-img"
-      />
+      <p class="cart-item-description">{{ item.product.nombre }}</p>
+      <p class="cart-item-qty">X{{ item.cantidad }}</p>
+      <img [src]="item.product.imagen" alt="" class="cart-item-img" />
       <div class="cart-item-actions flexbox">
         <mat-icon class="cart-actions-icon">remove_shopping_cart</mat-icon>
         <mat-icon class="cart-actions-icon">note_add</mat-icon>
       </div>
-      <input type="text" placeholder="Agregar nota" class="add-notes" (input)="addNote(item.idItem, $event)" />
+      <input
+        type="text"
+        placeholder="Agregar nota"
+        class="add-notes"
+        (input)="addNote(item.idItem, $event)"
+      />
     </div>
-    <div class="cart-total" *ngIf="(totalOrder != 0)">
-      <p class="total">Total: {{totalOrder | currency: 'CRC':'symbol-narrow'}}</p>
+    <div class="cart-total" *ngIf="totalOrder != 0">
+      <p class="total">
+        Total: {{ totalOrder | currency : "CRC" : "symbol-narrow" }}
+      </p>
     </div>
   </div>
 </div>
@@ -108,6 +111,7 @@
             [formControl]="inputFiltro"
             [matAutocomplete]="auto"
             [required]="true"
+            style="color: rgba(255, 255, 255, 0.719)"
           />
           <mat-autocomplete
             #auto="matAutocomplete"
@@ -124,7 +128,18 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <input type="hidden" formControlName="idTipoPedido" />
+        <mat-form-field class="full-width" *ngIf="!isCreate">
+          <input
+            matInput
+            placeholder="Nombre completo del cliente"
+            required="false"
+            autocomplete="false"
+            formControlName="cliente"
+            title="Nombre del producto"
+            [readonly]="!isCreate"
+            style="color: rgba(255, 255, 255, 0.719)"
+          />
+        </mat-form-field>
         <mat-form-field
           *ngIf="
             (typeOrdersList && currentUser.user.idPerfil == 1) || !isCreate
@@ -159,6 +174,9 @@
       <input type="hidden" formControlName="precio" />
       <input type="hidden" formControlName="fecha" />
       <input type="hidden" formControlName="idEstado" />
+      <input type="hidden" formControlName="idMesero" />
+      <input type="hidden" formControlName="idSucursal" />
+      <input type="hidden" formControlName="idMesa" />
       <input type="hidden" formControlName="idCliente" />
       <input type="hidden" formControlName="detalles" />
     </div>
@@ -209,7 +227,10 @@
                   <p class="product-name">{{ row.nombre }}</p>
                 </div>
                 <div class="producto-action">
-                  <mat-icon class="actions" (click)="addToCart(row.id)" *ngIf="isCreate || isCarritoLoaded"
+                  <mat-icon
+                    class="actions"
+                    (click)="addToCart(row.id)"
+                    *ngIf="isCreate || isCarritoLoaded"
                     >shopping_cart</mat-icon
                   >
                 </div>
@@ -268,10 +289,11 @@
     >
       <mat-button-toggle
         class="button flexbox"
-        *ngIf="isCreate? true : pedidoInfo.estado != 6"
+        *ngIf="isCreate"
         mat-raesed-button
         type="submit"
         title="Generar la orden"
+        (click)="isCreate ? crearPedido() : actualizarPedido()"
       >
         <p>Aceptar orden</p>
         <mat-icon class="actions">done</mat-icon>

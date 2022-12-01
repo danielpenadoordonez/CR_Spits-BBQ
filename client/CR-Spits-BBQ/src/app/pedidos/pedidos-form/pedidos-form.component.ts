@@ -36,9 +36,9 @@ export class PedidosFormComponent {
   pedidosForm: FormGroup; //* El nombre del formulario [CUIDADO]
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
-  isCarritoLoaded : boolean = false;//* Sirve para saber si cargó o no el carrito
+  isCarritoLoaded: boolean = false;//* Sirve para saber si cargó o no el carrito
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
-
+  dataSourceCarrito: any = null;
   productData: any;//lista productos
   cartData: any;
   totalOrder: any;
@@ -103,9 +103,9 @@ export class PedidosFormComponent {
       let codigoMesa = params['codigoMesa'] || null;
       if (pedido != null) { //* Significa que es update
         //* Sirve para ver el preview...
-        this.isCreateOrUpdate();
-        this.isCreate = false;
+        this.isCreateOrUpdate(); //* Cambia a false el isCreate
         this.asignarCarritoUpdate(codigoMesa);
+        this.getMesaDetail();
       } else { //* Create
         this.getMesaDetail();
         this.isCarritoLoaded = true;
@@ -153,29 +153,6 @@ export class PedidosFormComponent {
       || clients.apellido2.toLowerCase().includes(filterValue));
   }
 
-
-  //* agregar al carrito
-  addToCart(id: number) {
-    this.cartService.idPedido = 50; //* Luego se hará obteniendo esto de forma auto
-    this.gService
-      .get('productos', id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data: any) => {
-        //* Agregar el producto seleccionado usando la API
-        this.cartService.addToCart(data);
-        //* Notificar al usuario
-        this.notification.mensaje(
-          'Pedido',
-          `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
-          TipoMessage.success
-        );
-      });
-  }
-
-
-
-
-
   formularioReactive() {
     //? [null, Validators.required]
     this.pedidosForm = this.fb.group({
@@ -203,9 +180,9 @@ export class PedidosFormComponent {
 
   //* agregar al carrito
   addToCart(id: number) {
-    if (this.isCreate && this.cartService.idMesa == "" || this.cartService.idMesa != this.mesa.codigo) {
+    if (this.isCreate && this.cartService.idMesa == "" || this.cartService.idMesa) {
       this.cartService.idMesa = this.mesa.codigo;
-      console.log(this.mesa.codigo)
+      console.log(`Código de mesa ${this.mesa.codigo}`)
     }
 
     this.gService
@@ -221,6 +198,14 @@ export class PedidosFormComponent {
           TipoMessage.success
         );
       });
+  }
+
+  toggleCartData() {
+    document.querySelector('.cart-data').classList.toggle('show-card-data');
+  }
+
+  addNote(idItem: any, event: any) {
+
   }
 
   //* Obtiene la próxima orden
@@ -304,6 +289,14 @@ export class PedidosFormComponent {
             this.mesa = data;
           });
       }
+      if (codigoMesa != null) {
+        this.gService
+          .get('mesas/codigo', codigoMesa)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.mesa = data;
+          });
+      }
     })
   }
 
@@ -365,9 +358,15 @@ export class PedidosFormComponent {
     });
   }
 
-  asignarCarritoUpdate(codigoMesa : string): void {
+  asignarCarritoUpdate(codigoMesa: string): void {
     this.cartService.idMesa = codigoMesa;
+    this.cartService.refrescarCarrito();
     this.isCarritoLoaded = true;
+    this.cartService.currentDataCart$.subscribe(data => {
+      this.dataSourceCarrito = new MatTableDataSource(data);
+      console.log(data);
+      console.log(this.cartService.idMesa);
+    })
   }
 
   //* get Current User
@@ -402,6 +401,7 @@ export class PedidosFormComponent {
   crearPedido() {
     //* Establecer submit verdadero 
     //* Es necesario insertar las líneas de detalle igualmente
+    console.log('crear');
     this.submitted = true;
 
     //* Parcheamos values restantes - no del form
