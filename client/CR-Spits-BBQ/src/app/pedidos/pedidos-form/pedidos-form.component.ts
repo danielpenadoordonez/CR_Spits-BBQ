@@ -38,6 +38,9 @@ export class PedidosFormComponent {
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
 
   productData: any;//lista productos
+  cartData: any;
+  totalOrder: any;
+  qtyItems: any;
   //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -159,11 +162,25 @@ export class PedidosFormComponent {
           `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
           TipoMessage.success
         );
+        this.cartService.countItems.subscribe((value)=>{
+          this.qtyItems=value;
+        });
+        this.cartData = this.cartService.getItems;
+        this.totalOrder = this.cartService.getTotalConImpuestos();
       });
   }
 
 
+  //mostrar el side del cart con los productos
+  toggleCartData(){
+    document.querySelector('.cart-data').classList.toggle('show-card-data');
+  }
 
+
+  addNote(idItem: number, evento: any){
+
+    
+  }
 
 
   formularioReactive() {
