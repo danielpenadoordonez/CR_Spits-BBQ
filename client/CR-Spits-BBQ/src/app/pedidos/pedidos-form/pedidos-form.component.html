@@ -20,9 +20,9 @@
     *ngFor="let item of cartData"
   >
     <div class="cart-item flexbox">
+      <img [src]="item.product.imagen" alt="" class="cart-item-img" />
       <p class="cart-item-description">{{ item.product.nombre }}</p>
       <p class="cart-item-qty">X{{ item.cantidad }}</p>
-      <img [src]="item.product.imagen" alt="" class="cart-item-img" />
       <div class="cart-item-actions flexbox">
         <mat-icon class="cart-actions-icon">remove_shopping_cart</mat-icon>
         <mat-icon class="cart-actions-icon">note_add</mat-icon>
@@ -34,11 +34,11 @@
         (input)="addNote(item.idItem, $event)"
       />
     </div>
-    <div class="cart-total" *ngIf="totalOrder != 0">
-      <p class="total">
-        Total: {{ totalOrder | currency : "CRC" : "symbol-narrow" }}
-      </p>
-    </div>
+  </div>
+  <div class="cart-total" *ngIf="(totalOrder != 0)">
+    <p class="total">
+      Total: {{ totalOrder | currency : "CRC" : "symbol-narrow" }}
+    </p>
   </div>
 </div>
 
