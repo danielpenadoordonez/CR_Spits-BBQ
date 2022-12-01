@@ -1,17 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GenericService } from 'src/app/share/generic.service';
 import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 import { AuthenticationService } from 'src/app/share/authentication.service';
+import { LoadScriptsService } from 'src/app/share/load-scripts.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-pedidos-form',
   templateUrl: './pedidos-form.component.html',
-  styleUrls: ['./pedidos-form.component.css', './../../mesas/gestion-mesas/gestion-mesas.component.css'],
+  styleUrls: [
+    './pedidos-form.component.css',
+    './../../mesas/gestion-mesas/gestion-mesas.component.css',
+    './../../productos/gestion-producto/gestion-producto.component.css'
+  ],
 })
 export class PedidosFormComponent {
+  scripts = ['swiper-bundle.min.js'];
+
   titleForm: string = 'Crear';
   destroy$: Subject<boolean> = new Subject<boolean>();
   clientsList: any; //* Lista de clientes
@@ -25,6 +35,13 @@ export class PedidosFormComponent {
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
+
+  productData: any;//lista productos
+  //data table
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  dataSource = new MatTableDataSource<any>();
+  displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
 
   isAuthenticated: boolean;
   currentUser = null; //* Obtener de la suscripción
@@ -60,7 +77,8 @@ export class PedidosFormComponent {
     private activeRouter: ActivatedRoute,
     private notification: NotificacionService,
     private route: ActivatedRoute,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private scriptService: LoadScriptsService
   ) {
     this.getCurrentUser();
     this.formularioReactive();
@@ -81,11 +99,37 @@ export class PedidosFormComponent {
         console.log('is not update')
         this.getMesaDetail();
       }
+      this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
     })
 
     if (this.currentUser.user.idPerfil == 3) { //* Se settea que es online
       this.isPedidoPresencial = false;
     }
+    this.getProductData();
+  }
+
+  ngAfterViewInit(): void {
+    this.setTableStyles();
+  }
+
+  setTableStyles(){
+    (document.querySelector('#pedido-product-table tbody') as HTMLElement).classList.add('grid-table-body');
+    (document.querySelector('#pedido-product-table thead') as HTMLElement).classList.add('grid-table-head');
+  }
+
+
+  filtrarProducto(evento){
+    let filtro = evento.target.value;
+    this.gService
+      .list('productos/all-hability')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        data = data.filter(producto => producto.nombre.toLowerCase().includes(filtro.toLowerCase()));
+        this.productData = data;
+        this.dataSource = new MatTableDataSource(this.productData);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
   }
 
   //* filtra nombre completo en mat-autocomplete
@@ -96,6 +140,14 @@ export class PedidosFormComponent {
     return this.clientsList.filter(clients => clients.nombre.toLowerCase().includes(filterValue)
       || clients.apellido1.toLowerCase().includes(filterValue)
       || clients.apellido2.toLowerCase().includes(filterValue));
+  }
+
+
+  //agregar al carrito
+  addToCart(id:number){
+
+
+    
   }
 
 
@@ -191,6 +243,19 @@ export class PedidosFormComponent {
     })
   }
 
+  getProductData() {
+    this.gService
+      .list('productos/all-hability')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        console.log(data);
+        this.productData = data;
+        this.dataSource = new MatTableDataSource(this.productData);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      });
+  }
+
   //* Cambia el tipo dependiendo de la modalidad que se escoja
   asignarTipoPedido(inputTipoPedido: any) {
     this.isPedidoPresencial = inputTipoPedido.value == 1;
@@ -205,7 +270,7 @@ export class PedidosFormComponent {
     console.log(this.pedidosForm.value)
   }
 
-  isCreateOrUpdate() : void {
+  isCreateOrUpdate(): void {
     this.activeRouter.queryParams.subscribe((params: Params) => {
       this.idPedido = params['idPedido']; //? Recibe el id [int]
       console.log(this.idPedido);
@@ -351,3 +416,4 @@ export class PedidosFormComponent {
     );
   };
 }
+

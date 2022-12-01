@@ -46,17 +46,39 @@
   margin: .5rem 0;
 }
 
+.actions-group{
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
 
+.actions-group .button{
+  background-color: #000;
+  color: #fff;
+  margin: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
 
+.actions-group .button span{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.actions-group .button:nth-child(1){
+  background-color: #00E154;
+}
 
+.actions-group .button:nth-child(2){
+  background-color: #fff;
+  color: #000;
+}
 
-
-
-
-
-
-
+.actions-group .button:nth-child(3){
+  background-color: #FE0202;
+  color: #fff;
+}
 
 /* default styles */
 .full-width {
@@ -68,28 +90,53 @@
   margin: 20px auto;
   background: #000;
   border-radius: 1rem;
-  color: white !important;
 }
 .mat-radio-button {
   display: block;
   margin: 5px 0;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
+.product-filter-container{
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
 }
 
-.col {
-  flex: 1;
-  margin-right: 20px;
+.product-filter{
+  background: #171717;
+  border-radius: .5rem;
+  padding: 1rem;
+  color: #fff;
+  width: 250px;
+  margin: 0 auto;
+  margin: 1.5rem 0;
 }
 
-.col:last-child {
-  margin-right: 0;
+.filter-seatch{
+  position: absolute;
+  color: #fff;
+  right: .5rem;
 }
 
+.producto-action{
+  position: relative;
+}
 
+.producto-action .actions{
+  font-size: 2.5rem;
+  box-shadow: inset 0 0 15px #000;
+  background-color: rgba(0, 225, 84, .6);
+  padding: .5rem;
+  cursor: pointer;
+  margin: 0 auto;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+  transition: .35s;
+}
+
+.producto-action .actions:hover{
+  transform: scale(1.05);
+}
 
 @media screen and (min-width: 992px) {
   .pedido-select-cliente{

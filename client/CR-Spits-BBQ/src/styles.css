@@ -481,3 +481,13 @@ tr.mat-row{
 .login-container .mat-form-field-label{
     transform: translateY(-1.85rem) scale(.85) perspective(100px) translateZ(.001px) !important;
 }
+
+
+
+/* pedido buttons */
+
+.pedido-actions .mat-button-toggle-label-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
