@@ -141,7 +141,6 @@ module.exports.registerPedido = async (request, response, next) => {
       idSucursal: pedido.idSucursal,
       idMesa: pedido.idMesa,
       idTipoPedido: pedido.idTipoPedido,
-      //* Revisar esto, los detalles los debería insertar el carrito
       detalles: {
         createMany: {
           data: pedido.detalles,
@@ -165,3 +164,18 @@ module.exports.registerPedido = async (request, response, next) => {
     data: newPedido,
   });
 };
+
+/*
+ * POST APIs
+ */
+module.exports.updatePedido = async (request, response, next) => {
+  let idPedido = request.params.id;
+  let orden = request.body;
+  const pedido = await prismaClient.pedido.update({
+    where: { id: idPedido},
+    data: {
+      idEstado: orden.idEstado
+    },
+  });
+  return response.json(pedido);
+}
