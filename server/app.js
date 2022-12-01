@@ -20,6 +20,7 @@ const tipoPagoRouter = require("./routes/tipoPagoRoutes");
 const pedidoRouter = require("./routes/pedidoRoutes");
 const detallesPedidos = require("./routes/detallesPedidosRoutes"); 
 const estadoPedidoRouter = require("./routes/estadoPedidoRoutes");
+const tipoPedidoRouter = require("./routes/tipoPedido")
 
 //* Acceder a la configuracion del archivo .env
 dotEnv.config();
@@ -52,6 +53,7 @@ app.use("/categ-prods/", categoriaProductoRouter);
 app.use("/productos/", productRouter);
 app.use("/tipos-de-pago/", tipoPagoRouter);
 app.use("/pedidos/", pedidoRouter);
+app.use("/tipo-pedidos/", tipoPedidoRouter);
 app.use("/detalles-pedido/", detallesPedidos);
 app.use("/estado-pedidos/", estadoPedidoRouter);
 

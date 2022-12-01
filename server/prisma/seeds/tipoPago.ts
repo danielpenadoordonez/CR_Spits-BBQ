@@ -7,7 +7,7 @@ export const tiposPago = [
     },
     {
         id: 2,
-        descripcion: 'Tarjeta de crédito/débito'
+        descripcion: 'Tarjeta de crédito'
     },
     {
         id: 3, //* Tipo Sinpe, apple pay, etcétera...

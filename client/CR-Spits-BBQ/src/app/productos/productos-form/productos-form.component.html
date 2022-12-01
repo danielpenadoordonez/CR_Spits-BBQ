@@ -223,13 +223,13 @@
       name="fontStyle"
       aria-label="Font Style"
     >
-      <button mat-raesed-button type="submit" title="Guardar">
+      <button mat-raesed-button type="submit" title="Guardar producto">
         <mat-icon class="actions">save</mat-icon>
       </button>
-      <mat-button-toggle *ngIf="isCreate" (click)="onReset()" title="Limpiar">
+      <mat-button-toggle *ngIf="isCreate" (click)="onReset()" title="Limpiar datos">
         <mat-icon class="actions">cleaning_services</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle (click)="onBack()" title="Cancelar">
+      <mat-button-toggle (click)="onBack()" title="Cancelar acción">
         <mat-icon class="actions">cancel</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>

@@ -88,10 +88,10 @@
               </p>
               <div class="table-configuration-container flexbox">
                 <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle">info</mat-icon>
-                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar">edit</mat-icon>
-                <mat-icon class="sidenav-link-icon settings"  (click) = 'pedidoMesaAction(row.id)'
-                 [title]="row.EstadoMesa.descripcion == 'Disponible'? 'Crear comanda' : 'Ver detalle orden'">
-                  {{row.EstadoMesa.descripcion == 'Disponible'? 'post_add' : 'preview'}}
+                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar" *ngIf="currentUser.user.idPerfil != 3">edit</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad == 1 ? pedidoMesaAction(row.id) : detalleOrdenAction(row.id)"
+                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle orden'">
+                  {{row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'post_add' : 'preview'}}
                 </mat-icon>
               </div>
             </div>

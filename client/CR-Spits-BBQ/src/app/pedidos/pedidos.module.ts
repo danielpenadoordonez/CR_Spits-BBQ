@@ -14,6 +14,7 @@ import { PedidosFormComponent } from './pedidos-form/pedidos-form.component';
 import { MatInputModule } from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
@@ -32,7 +33,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     CommonModule,
     PedidosRoutingModule,
 
- // Angular material 
+ //* Angular material 
     MatDialogModule,
     MatIconModule,
     MatTableModule,
@@ -43,12 +44,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatInputModule,
     MatDatepickerModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
     MatAutocompleteModule,
     MatSelectModule,
- //   MatMomentDateModule,
+ //*   MatMomentDateModule,
     MatNativeDateModule,
     ReactiveFormsModule,
   ],

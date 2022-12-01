@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { SecurityService } from 'src/app/share/security.service';
 
@@ -14,8 +14,7 @@ export class HeaderComponent implements OnInit {
   currentUser: any;
 
   constructor(private authService: AuthenticationService,
-    private router: Router) {
-
+    private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -30,6 +29,13 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('scroll', this.onScroll);
   }
 
+  cambiarRuta() {
+      this.router.navigate(['pedidos/update', ""], {
+        queryParams: { idPedido: "5" }, 
+        relativeTo: this.route,
+      });
+  }
+
   login(): void {
     this.router.navigate(['./users/login']);
   }
@@ -39,7 +45,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['users/login']);
   }
 
-  getUserFullName(): String{
+  getUserFullName(): String {
     return `${this.currentUser.user.nombre} ${this.currentUser.user.apellido1} ${this.currentUser.user.apellido2}`;
   }
 
