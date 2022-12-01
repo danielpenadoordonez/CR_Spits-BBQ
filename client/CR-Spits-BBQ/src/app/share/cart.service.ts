@@ -18,13 +18,13 @@ export class CartService {
   private cart = new BehaviorSubject<ItemCart[]>(null); //* Definimos nuestro BehaviorSubject, este debe tener un valor inicial siempre
   public currentDataCart$ = this.cart.asObservable(); //* Tenemos un observable con el valor actual del BehaviorSubject
   public qtyItems = new Subject<number>();
-  public idPedido: number = 0;
+  public idMesa: string = "";
 
 
   constructor() {
     //* Obtener los datos de la variable orden guardada en el localStorage
     this.cart = new BehaviorSubject<any>(
-      JSON.parse(localStorage.getItem('pedido_' + this.idPedido))
+      JSON.parse(localStorage.getItem('pedido_' + this.idMesa))
     );
 
     //* Establecer un observable para los datos del carrito
@@ -33,7 +33,7 @@ export class CartService {
 
   //* Guardamos el id del pedido para cual gestionamos
   saveCart(): void {
-    localStorage.setItem(`pedido_${this.idPedido}`, JSON.stringify(this.cart.getValue()));
+    localStorage.setItem(`pedido_${this.idMesa}`, JSON.stringify(this.cart.getValue()));
     //* Luego sino lo insertamos en la tabla correspondiente de la db
   }
 

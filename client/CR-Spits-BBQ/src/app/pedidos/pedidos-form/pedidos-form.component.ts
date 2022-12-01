@@ -27,6 +27,7 @@ export class PedidosFormComponent {
   destroy$: Subject<boolean> = new Subject<boolean>();
   clientsList: any; //* Lista de clientes
   sucursalesList: any; //* lista de sucursales
+  listaOrdenes: any; //* Lista de pedidos
   statesList: any; //* Lista de estados de pedido
   typeOrdersList: any; //* Lista tipos de órdenes (presencial & online)
   pedidoInfo: any; //? información del producto a actualizar [UPDATE]
@@ -35,10 +36,11 @@ export class PedidosFormComponent {
   pedidosForm: FormGroup; //* El nombre del formulario [CUIDADO]
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
+  isCarritoLoaded : boolean = false;//* Sirve para saber si cargó o no el carrito
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
 
-  productData: any;//lista productos
-  //data table
+  productData: any;//* lista productos
+  //* data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
@@ -88,17 +90,22 @@ export class PedidosFormComponent {
     //! this.listaSucursales();
     //! this.listaOrderStates(); - Arreglar luego
     this.listaTiposOrden();
+    this.listaPedidos();
   }
 
   //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       let pedido = params['idPedido'] || null; //* No voy a borrar esto, pues nunca se sabe
+      let codigoMesa = params['codigoMesa'] || null;
       if (pedido != null) { //* Significa que es update
         //* Sirve para ver el preview...
         this.isCreateOrUpdate();
+        this.isCreate = false;
+        this.asignarCarritoUpdate(codigoMesa);
       } else { //* Create
         this.getMesaDetail();
+        this.isCarritoLoaded = true;
       }
       this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
     })
@@ -143,10 +150,38 @@ export class PedidosFormComponent {
       || clients.apellido2.toLowerCase().includes(filterValue));
   }
 
+  formularioReactive() {
+    //? [null, Validators.required]
+    this.pedidosForm = this.fb.group({
+      id: null, //* No se puede editar - autoincrement
+      nombre: null, //* Viene del backend automático
+      precio: null, //* Este campo se autocácula con base en los detalles - se envía nulo - [DEFAULT]
+      fecha: [ //? Vigila si es admin y de feria edita
+        null,
+        Validators.compose([
+          Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/) //? Formato fecha MM/dd/yyyy
+        ]), //* [DEFAULT]
+      ],
+      idEstado: null, //* Se elige el primer estado 1 - [DEFAULT]
+      idCliente: [null, Validators.compose([
+        Validators.required, Validators.minLength(9), Validators.maxLength(100), Validators.pattern(/^[0-9]*$/)
+      ])], //? Se elige de un combo box - A no ser que sea cliente
+      idMesero: null, //? Se asigna por el servicio
+      idSucursal: null, //? Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
+      idMesa: null, //? Se elige en el inicio - [OPCIONAL - ONLINE]
+      idTipoPedido: [null, this.currentUser.user.idPerfil == 1 ? Validators.required : null], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
+      detalles: null, //* Cambiar cuando se añada el carro
+      cliente: null
+    });
+  }
 
   //* agregar al carrito
   addToCart(id: number) {
-    this.cartService.idPedido = 50; //* Luego se hará obteniendo esto de forma auto
+    if (this.isCreate && this.cartService.idMesa == "" || this.cartService.idMesa != this.mesa.codigo) {
+      this.cartService.idMesa = this.mesa.codigo;
+      console.log(this.mesa.codigo)
+    }
+
     this.gService
       .get('productos', id)
       .pipe(takeUntil(this.destroy$))
@@ -162,34 +197,21 @@ export class PedidosFormComponent {
       });
   }
 
+  //* Obtiene la próxima orden
+  nextIdOrder() {
+    let max: number = this.listaOrdenes.length || null;
+    console.log(`new car ${++max}`)
+    return max;
+  }
 
-
-
-
-  formularioReactive() {
-    //? [null, Validators.required]
-    this.pedidosForm = this.fb.group({
-      id: null, //* No se puede editar - autoincrement
-      nombre: null, //* Viene del backend automático
-      precio: null, //* Este campo se autocácula con base en los detalles - se envía nulo - [DEFAULT]
-      fecha: [ //? Vigila si es admin y de feria edita
-        null,
-        Validators.compose([
-          Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/), //? Formato fecha MM/dd/yyyy
-          this.currentUser.user.idPerfil == 1 && !this.isCreate ? Validators.required : null
-        ]), //* [DEFAULT]
-      ],
-      idEstado: null, //* Se elige el primer estado 1 - [DEFAULT]
-      idCliente: [null, Validators.compose([
-        Validators.required, Validators.minLength(9), Validators.maxLength(100), Validators.pattern(/^[0-9]*$/)
-      ])], //? Se elige de un combo box - A no ser que sea cliente
-      idMesero: null, //? Se asigna por el servicio
-      idSucursal: null, //? Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
-      idMesa: null, //? Se elige en el inicio - [OPCIONAL - ONLINE]
-      idTipoPedido: [null, this.currentUser.user.idPerfil == 1 ? Validators.required : null], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
-      detalles: null, //* Cambiar cuando se añada el carro
-      cliente: null
-    });
+  listaPedidos() {
+    this.listaOrdenes = null;
+    this.gService
+      .list('pedidos')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.listaOrdenes = data;
+      });
   }
 
   //* Elegir al cliente? [unique]
@@ -264,7 +286,7 @@ export class PedidosFormComponent {
       .list('productos/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        console.log(data);
+        //console.log(data);
         this.productData = data;
         this.dataSource = new MatTableDataSource(this.productData);
         this.dataSource.sort = this.sort;
@@ -310,11 +332,16 @@ export class PedidosFormComponent {
               idTipoPedido: this.pedidoInfo.idTipoPedido,
               detalles: null, //* No se mapea
               //* Nombre del cliente compuesto
-              cliente: `${this.pedidoInfo.Cliente.nombre} ${this.pedidoInfo.Cliente.apellido1} ${this.pedidoInfo.Cliente.apellido2 != undefined ? this.pedidoInfo.Cliente.apellido2 : ""}`
+              cliente: `${this.pedidoInfo.Cliente.nombre} ${this.pedidoInfo.Cliente.apellido1} ${this.pedidoInfo.Cliente.apellido2 != undefined ? this.pedidoInfo.Cliente.apellido2 : ""}`,
             });
           });
       }
     });
+  }
+
+  asignarCarritoUpdate(codigoMesa : string): void {
+    this.cartService.idMesa = codigoMesa;
+    this.isCarritoLoaded = true;
   }
 
   //* get Current User

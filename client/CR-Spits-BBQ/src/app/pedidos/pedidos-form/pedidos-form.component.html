@@ -183,7 +183,7 @@
                   <p class="product-name">{{ row.nombre }}</p>
                 </div>
                 <div class="producto-action">
-                  <mat-icon class="actions" (click)="addToCart(row.id)" *ngIf="isCreate? true : pedidoInfo.estado != 6"
+                  <mat-icon class="actions" (click)="addToCart(row.id)" *ngIf="isCreate || isCarritoLoaded"
                     >shopping_cart</mat-icon
                   >
                 </div>
@@ -242,7 +242,6 @@
     >
       <mat-button-toggle
         class="button flexbox"
-        *ngIf="isCreate? true : pedidoInfo.estado != 6"
         mat-raesed-button
         type="submit"
         title="Generar la orden"
