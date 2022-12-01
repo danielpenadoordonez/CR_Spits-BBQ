@@ -41,8 +41,12 @@ module.exports.grantRole = function(perfiles){
                 });
             }
             if(token){
-                const verify = jwt.verify(token, process.env.JWT_EXPIRE);
-                if(perfiles.length && !perfiles.includes(verify.role.toUpperCase())){
+                //Verifica al usuario
+                const verify = jwt.verify(token, process.env.SECRET_KEY);
+                const perfilVerified = await prismaClient.perfil.findFirst({
+                    where: { id : verify.idPerfil}
+                });
+                if(perfiles.length && !perfiles.includes(perfilVerified.descripcion)){
                     return response.status(401).json({
                         success: false,
                         message: "Acceso no autorizado"

@@ -3,10 +3,11 @@ const router = express.Router();
 
 //* Controller de Mesa con la logica y las acciones del API
 const mesaController = require("../controllers/mesaController");
+const auth = require("../middleware/auth");
 
 //* Rutas del API para Mesa
 router.get("/", mesaController.getAllMesas);
-router.post("/", mesaController.createTable);
+router.post("/", auth.grantRole(["Administrador", "Mesero"]), mesaController.createTable);
 router.get("/all", mesaController.getAllMesas);
 router.get("/all-hability", mesaController.getAllHabilityMesas);
 router.get("/:id", mesaController.getMesaById);
@@ -14,6 +15,6 @@ router.get("/codigo/:codigo", mesaController.getMesaByCode);
 router.get("/sucursal/:idSucursal", mesaController.getMesasBySucursal);
 router.get("/disponibilidad/:idDisponibilidad", mesaController.getMesasByDisponibilidad);
 router.get("/sucursal-disponibilidad/:idSucursal/:idDisponibilidad", mesaController.getMesasBySucursalandDisp);
-router.put("/:codigo", mesaController.updateTable);
+router.put("/:codigo", auth.grantRole(["Administrador", "Mesero"]), mesaController.updateTable);
 
 module.exports = router;
