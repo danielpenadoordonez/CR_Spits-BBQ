@@ -121,7 +121,7 @@
   margin: .75rem;
   text-align: center;
   height: 250px;
-  width: fit-content
+  width: fit-content;
 }
 
 .pedido-detail-table{

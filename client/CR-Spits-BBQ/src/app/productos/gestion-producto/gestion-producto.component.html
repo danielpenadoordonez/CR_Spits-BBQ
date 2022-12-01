@@ -57,7 +57,7 @@
                 </div>
                 <div class="actions">
                     <mat-icon class="settings" (click)="detalleProducto(row.id)">info</mat-icon>
-                    <mat-icon class="settings" (click)="actualizarProducto(row.id)" title="Editar" *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">edit</mat-icon>
+                    <mat-icon class="settings" (click)="actualizarProducto(row.id)" title="Editar" *ngIf="currentUser.user.Perfil.descripcion != 'Cliente' && currentUser.user.Perfil.descripcion != 'Mesero'">edit</mat-icon>
                 </div>
             </div>
         </td>

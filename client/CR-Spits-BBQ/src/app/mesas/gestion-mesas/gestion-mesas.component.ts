@@ -217,7 +217,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     let ultimoPedido = mesa.pedidos[mesa.pedidos.length - 1].id; //* último pedido de dicha mesa
     //* console.log(ultimoPedido);
     this.router.navigate(['pedidos/update', ""], {
-      queryParams: { idPedido: ultimoPedido },
+      queryParams: { idPedido: ultimoPedido, codigoMesa: mesa.codigo },
       relativeTo: this.route,
     });
   }

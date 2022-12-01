@@ -90,8 +90,8 @@
                 <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle" *ngIf="currentUser.user.idPerfil != 3">info</mat-icon>
                 <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar" *ngIf="currentUser.user.idPerfil != 3 && currentUser.user.idPerfil != 2">edit</mat-icon>
                 <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad == 1 ? pedidoMesaAction(row.id) : detalleOrdenAction(row)"
-                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle orden'" *ngIf="currentUser.user.idPerfil != 3">
-                  {{row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'post_add' : 'preview'}}
+                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle orden'" *ngIf="currentUser.user.idPerfil != 3 && row.estado">
+                  {{row.EstadoMesa.descripcion == 'Disponible' && row.estado  ? 'post_add' : 'preview'}}
                 </mat-icon>
               </div>
             </div>
