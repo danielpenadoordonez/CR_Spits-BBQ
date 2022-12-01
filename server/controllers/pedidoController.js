@@ -124,12 +124,15 @@ module.exports.registerPedido = async (request, response, next) => {
 
   //* Generar un nuevo codigo de pedido
   let previousNum = pedidoService.getPreviousNumber(allPedidos);
-  let nombrePedido = pedidoService.generateNombrePedido(pedido.idSucursal, previousNum);
-  
+  let nombrePedido = pedidoService.generateNombrePedido(
+    pedido.idSucursal,
+    previousNum
+  );
+
   const newPedido = await prismaClient.pedido.create({
     data: {
       //* NO VA EL ID, ES UN AUTOINCREMENT
-      nombre: nombrePedido, 
+      nombre: nombrePedido,
       fecha: pedido.fecha !== undefined ? new Date(pedido.fecha) : pedido.fecha, //! LO MÁS NORMAL ES QUE VENGA VACÍO, YA QUE LA FECHA POR DEFAULT SE COLOCA ESE DÍA
       precio: pedido.precio,
       idEstado: pedido.idEstado,
@@ -146,6 +149,16 @@ module.exports.registerPedido = async (request, response, next) => {
       },
     },
   });
+
+  if (pedido.idTipoPedido != 2) { //* Cuando sea diferente de online
+    const mesaActualizada = await prismaClient.mesa.update({
+      where: { id: pedido.idMesa },
+      data: {
+        idDisponibilidad: 3, //* Setea ocupada
+      },
+    });
+  }
+
   response.status(200).json({
     status: true,
     message: `Pedido ${pedido.nombre} registrado`,

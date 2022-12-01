@@ -54,13 +54,13 @@ export class InicioSesionComponent {
     let auth = true;
     //* Obtener parámetros de la URL
     this.route.queryParams.subscribe((params) => {
-      register = params['register'] === 'true' || false;
-      auth = params['auth'] === 'false' || true;
+      register = params['register'] === 'no' || false;
+      auth = params['auth'] === 'no' || true;
       if (register) {
         this.notificacion.mensaje(
           'Usuario',
-          'Registro satisfactorio! Especifique su credenciales para ingresar',
-          TipoMessage.success
+          'Registro insatisfactorio! Especifique su credenciales para ingresar',
+          TipoMessage.error
         );
       }
       if (auth) {

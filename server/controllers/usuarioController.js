@@ -27,6 +27,7 @@ module.exports.getUserById = async (request, response, next) => {
       reservaciones: true,
       pedidos: true,
       Perfil: true,
+      sucursales: true
     },
   });
   response.json(user);

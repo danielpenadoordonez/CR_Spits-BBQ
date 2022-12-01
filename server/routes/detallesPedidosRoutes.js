@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const detallesPedidoController = require("../controllers/detallesPedidosRoutes");
+const detallesPedidoController = require("../controllers/detallesPedidosController");
 
 //* Sirve para obtener los detalles de un pedido
 

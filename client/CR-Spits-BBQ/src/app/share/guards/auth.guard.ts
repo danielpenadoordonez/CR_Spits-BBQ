@@ -38,21 +38,22 @@ export class AuthGuard implements CanActivate {
     //? Pendiente a cambios
     checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
         if (this.isAuthenticated) {
-            const userRole = this.currentUser.Perfil.descripcion;
+            const userRole = this.currentUser.user.Perfil.descripcion;
             //* Esto viene de route, se valida en las rutas
+            //* Se logeó pero no cumple el rol
             if (route.data['roles'].length && !route.data['roles'].includes(userRole)) {
-                this.router.navigate(['/usuario/login'], {
+                this.router.navigate(['/dashboard/main'], {
                     //? Parametro para mostrar mensaje en login - PUEDE CAMBIAR
-                    queryParams: { auth: 'no' }
+                    queryParams: { auth: 'no'}
                 });
                 return false;
             }
             return true;
         }
 
-        //* Redirigimos
+        //* Redirigimos - no se ha logeado
         this.router.navigate(['/users/login'], {
-            queryParams: { auth: 'no' }
+            queryParams: { auth: 'no', register: 'no' }
         });
         return false;
     }

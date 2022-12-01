@@ -213,14 +213,18 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     this.dialog.open(MesaDetailComponent, dialogConfig);
   }
 
-  pedidoMesaAction(id: number) {
+  detalleOrdenAction(idMesa: number){
+    //* Lo contrario de mesa action
+  }
+
+  pedidoMesaAction(idMesa: number) {
     this.gService
-      .get('mesas/', id)
+      .get('mesas/', idMesa)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         if (data.EstadoMesa.descripcion == 'Disponible') {
           this.router.navigate(['pedidos/create'], {
-            queryParams: { id: data.id, codigo: data.codigo },
+            queryParams: { idMesa: data.id, codigoMesa: data.codigo },
             relativeTo: this.route,
           });
         }
