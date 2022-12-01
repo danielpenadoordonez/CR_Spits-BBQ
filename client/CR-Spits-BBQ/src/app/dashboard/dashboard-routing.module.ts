@@ -96,6 +96,14 @@ const routes: Routes = [
           roles: ['Administrador', 'Mesero', 'Cliente'],
         }
       },
+      {
+        path: 'mesas/pedidos/update/:id',
+        canActivate: [AuthGuard],
+        component: PedidosFormComponent,
+        data: {
+          roles: ['Administrador', 'Mesero', 'Cliente'],
+        }
+      },
     ]
   },
 ];

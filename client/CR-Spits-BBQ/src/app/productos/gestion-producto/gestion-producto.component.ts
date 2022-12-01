@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 import { ProductoDetailComponent } from '../producto-detail/producto-detail.component';
@@ -22,8 +23,10 @@ export class GestionProductoComponent implements AfterViewInit {
   categoriaList: any // Lista categorias de productos
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
+  currentUser: any; //* Usuario logeado
+  isAuthenticated: boolean; //* ¿Está autentificado?
 
-  //data table
+  //* data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
@@ -36,7 +39,12 @@ export class GestionProductoComponent implements AfterViewInit {
 
   constructor(private gService: GenericService, private dialog: MatDialog,
     private route: ActivatedRoute, private router: Router,
-    private notification: NotificacionService) { }
+    private notification: NotificacionService,
+    private authService: AuthenticationService) { }
+
+  ngOnInit() {
+    this.getCurrentUser(); //* Cargamos el usuario
+  }
 
   ngAfterViewInit(): void {
     this.listaSucursales();
@@ -47,8 +55,10 @@ export class GestionProductoComponent implements AfterViewInit {
   }
 
   listaProductos() {
+    let hileraFiltradora = this.currentUser.user.idPerfil == 2 ? `productos/sucursal/${this.currentUser.user.sucursales[0].id}` : 
+    this.currentUser.user.idPerfil == 3 ? "productos/all-hability" : "productos";
     this.gService
-      .list('productos/all-hability')
+      .list(hileraFiltradora)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);
@@ -117,20 +127,20 @@ export class GestionProductoComponent implements AfterViewInit {
       return;
     }
 
-    this.listaProductosToFilter().subscribe((data:any) => {
-      if(this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
+    this.listaProductosToFilter().subscribe((data: any) => {
+      if (this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
         data = data.filter(item => item.sucursales.some(sucursal => sucursal.id == this.filtros.sucursal));
-      
-      if(this.filtros.estado != null && this.filtros.estado != -1)
+
+      if (this.filtros.estado != null && this.filtros.estado != -1)
         data = data.filter(item => item.estado == this.filtros.estado);
 
-      if(this.filtros.categoria != 0 && this.filtros.categoria != -1)
+      if (this.filtros.categoria != 0 && this.filtros.categoria != -1)
         data = data.filter(item => item.idCategoria == this.filtros.categoria);
 
       this.datos = data
       this.dataSource = new MatTableDataSource(this.datos);
       this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;  
+      this.dataSource.paginator = this.paginator;
     })
   }
 
@@ -152,6 +162,17 @@ export class GestionProductoComponent implements AfterViewInit {
       id: id,
     };
     this.dialog.open(ProductoDetailComponent, dialogConfig);
+  }
+
+  getCurrentUser() {
+    //* Subscripción a la información del usuario actual
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+    });
+    //* Subscripción al booleano que indica si esta autenticado
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
   }
 
 }

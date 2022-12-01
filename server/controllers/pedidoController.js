@@ -160,14 +160,12 @@ module.exports.registerPedido = async (request, response, next) => {
 
   response.status(200).json({
     status: true,
-    message: `Pedido ${pedido.nombre} registrado`,
+    message: `Pedido ${nombrePedido} registrado`,
     data: newPedido,
   });
 };
 
-/*
- * POST APIs
- */
+
 module.exports.updatePedido = async (request, response, next) => {
   let idPedido = request.params.id;
   let orden = request.body;

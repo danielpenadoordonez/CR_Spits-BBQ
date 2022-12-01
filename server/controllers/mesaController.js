@@ -14,7 +14,8 @@ module.exports.getAllMesas = async (request, response, next) => {
     orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       Sucursal: true,
-      EstadoMesa: true
+      EstadoMesa: true,
+      pedidos: true,
     },
   });
 
@@ -28,7 +29,8 @@ module.exports.getAllHabilityMesas = async (request, response, next) => {
     orderBy: [{ id: "asc" }, { idSucursal: "asc" }],
     include: {
       Sucursal: true,
-      EstadoMesa: true
+      EstadoMesa: true,
+      pedidos: true,
     },
   });
 
@@ -43,7 +45,8 @@ module.exports.getMesaById = async (request, response, next) => {
     include: {
       reservaciones: true,
       Sucursal: true,
-      EstadoMesa: true
+      EstadoMesa: true,
+      pedidos: true,
     },
   });
 
@@ -58,7 +61,8 @@ module.exports.getMesaByCode = async (request, response, next) => {
     include: {
       reservaciones: true,
       Sucursal: true,
-      EstadoMesa: true
+      EstadoMesa: true,
+      pedidos: true
     },
   });
 
@@ -84,13 +88,14 @@ module.exports.getMesasBySucursal = async (request, response, next) => {
   let sucursal = parseInt(request.params.idSucursal);
   const mesas = await prismaClient.mesa.findMany({
     where: { idSucursal: sucursal },
-    orderBy:{
-      id: 'asc' //* Orden claro que sí
+    orderBy: {
+      id: "asc", //* Orden claro que sí
     },
     include: {
       reservaciones: true,
       Sucursal: true,
       EstadoMesa: true,
+      pedidos: true
     },
   });
   response.json(mesas);
