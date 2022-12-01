@@ -56,15 +56,15 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   }
 
 
-  // get Current User
+  //* get Current User
   getCurrentUser() {
-    //Subscripción a la información del usuario actual
+    //* Subscripción a la información del usuario actual
     this.authService.currentUser.subscribe((x) => {
       this.currentUser = x;
-      //Load data by user information and role
+      //* Load data by user information and role
       this.loadMesasData(x);
     });
-    //Subscripción al booleano que indica si esta autenticado
+    //* Subscripción al booleano que indica si esta autenticado
     this.authService.isAuthenticated.subscribe(
       (valor) => (this.isAuthenticated = valor)
     );
@@ -213,8 +213,13 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     this.dialog.open(MesaDetailComponent, dialogConfig);
   }
 
-  detalleOrdenAction(idMesa: number){
-    //* Lo contrario de mesa action
+  detalleOrdenAction(mesa: any) {
+    let ultimoPedido = mesa.pedidos[mesa.pedidos.length - 1].id; //* último pedido de dicha mesa
+    //* console.log(ultimoPedido);
+    this.router.navigate(['pedidos/update', ""], {
+      queryParams: { idPedido: ultimoPedido },
+      relativeTo: this.route,
+    });
   }
 
   pedidoMesaAction(idMesa: number) {

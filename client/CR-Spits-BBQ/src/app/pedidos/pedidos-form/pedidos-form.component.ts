@@ -9,6 +9,7 @@ import { LoadScriptsService } from 'src/app/share/load-scripts.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { CartService } from 'src/app/share/cart.service';
 
 @Component({
   selector: 'app-pedidos-form',
@@ -41,7 +42,7 @@ export class PedidosFormComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
-  displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
+  displayedColumns = ['producto'];
 
   isAuthenticated: boolean;
   currentUser = null; //* Obtener de la suscripción
@@ -78,12 +79,13 @@ export class PedidosFormComponent {
     private notification: NotificacionService,
     private route: ActivatedRoute,
     private authService: AuthenticationService,
-    private scriptService: LoadScriptsService
+    private scriptService: LoadScriptsService,
+    private cartService: CartService
   ) {
     this.getCurrentUser();
     this.formularioReactive();
-    this.listaClientes();
-    this.listaSucursales();
+    //! this.listaClientes(); se inhabilitan debido a que solo tienen uso con update
+    //! this.listaSucursales();
     //! this.listaOrderStates(); - Arreglar luego
     this.listaTiposOrden();
   }
@@ -91,12 +93,11 @@ export class PedidosFormComponent {
   //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      let pedido = params['idPedido'] || null;
+      let pedido = params['idPedido'] || null; //* No voy a borrar esto, pues nunca se sabe
       if (pedido != null) { //* Significa que es update
-        console.log('is update ' + pedido)
+        //* Sirve para ver el preview...
         this.isCreateOrUpdate();
       } else { //* Create
-        console.log('is not update')
         this.getMesaDetail();
       }
       this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
@@ -112,13 +113,13 @@ export class PedidosFormComponent {
     this.setTableStyles();
   }
 
-  setTableStyles(){
+  setTableStyles() {
     (document.querySelector('#pedido-product-table tbody') as HTMLElement).classList.add('grid-table-body');
     (document.querySelector('#pedido-product-table thead') as HTMLElement).classList.add('grid-table-head');
   }
 
 
-  filtrarProducto(evento){
+  filtrarProducto(evento) {
     let filtro = evento.target.value;
     this.gService
       .list('productos/all-hability')
@@ -143,12 +144,26 @@ export class PedidosFormComponent {
   }
 
 
-  //agregar al carrito
-  addToCart(id:number){
-
-
-    
+  //* agregar al carrito
+  addToCart(id: number) {
+    this.cartService.idPedido = 50; //* Luego se hará obteniendo esto de forma auto
+    this.gService
+      .get('productos', id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        //* Agregar el producto seleccionado usando la API
+        this.cartService.addToCart(data);
+        //* Notificar al usuario
+        this.notification.mensaje(
+          'Pedido',
+          `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
+          TipoMessage.success
+        );
+      });
   }
+
+
+
 
 
   formularioReactive() {
@@ -172,7 +187,8 @@ export class PedidosFormComponent {
       idSucursal: null, //? Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
       idMesa: null, //? Se elige en el inicio - [OPCIONAL - ONLINE]
       idTipoPedido: [null, this.currentUser.user.idPerfil == 1 ? Validators.required : null], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
-      detalles: null //* No va acá
+      detalles: null, //* Cambiar cuando se añada el carro
+      cliente: null
     });
   }
 
@@ -266,7 +282,6 @@ export class PedidosFormComponent {
   asignarCliente(inputCliente: any) {
     this.clienteSeleccionado = inputCliente;
     this.pedidosForm.patchValue({ idCliente: this.clienteSeleccionado.id }); //* Únicamente en caso de ser presencial
-    //console.log(this.clienteSeleccionado);
     console.log(this.pedidosForm.value)
   }
 
@@ -294,6 +309,8 @@ export class PedidosFormComponent {
               idMesa: this.pedidoInfo.idMesa,
               idTipoPedido: this.pedidoInfo.idTipoPedido,
               detalles: null, //* No se mapea
+              //* Nombre del cliente compuesto
+              cliente: `${this.pedidoInfo.Cliente.nombre} ${this.pedidoInfo.Cliente.apellido1} ${this.pedidoInfo.Cliente.apellido2 != undefined ? this.pedidoInfo.Cliente.apellido2 : ""}`
             });
           });
       }
@@ -331,6 +348,7 @@ export class PedidosFormComponent {
 
   crearPedido() {
     //* Establecer submit verdadero 
+    //* Es necesario insertar las líneas de detalle igualmente
     this.submitted = true;
 
     //* Parcheamos values restantes - no del form
@@ -381,6 +399,7 @@ export class PedidosFormComponent {
   }
 
   actualizarPedido() {
+    //* La idea de esto es las líneas detalle.. solamente
     console.log("hola update");
 
   }

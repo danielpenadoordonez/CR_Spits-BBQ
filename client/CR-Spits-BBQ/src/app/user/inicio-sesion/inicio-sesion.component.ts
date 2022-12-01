@@ -55,7 +55,7 @@ export class InicioSesionComponent {
     //* Obtener parámetros de la URL
     this.route.queryParams.subscribe((params) => {
       register = params['register'] === 'no' || false;
-      auth = params['auth'] === 'no' || true;
+      auth = params['auth'] === 'no' || false;
       if (register) {
         this.notificacion.mensaje(
           'Usuario',

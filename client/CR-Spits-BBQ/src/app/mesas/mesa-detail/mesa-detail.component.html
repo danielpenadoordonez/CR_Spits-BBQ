@@ -27,6 +27,7 @@
           [ngClass]="datos.EstadoMesa.descripcion == 'Disponible'? 'bg-available' : datos.EstadoMesa.descripcion == 'Reservada'? 'bg-reserved': 'bg-unavailable'">
           {{datos.EstadoMesa.descripcion}}
         </p>
+        <p class="dialog-mesa-sucursal">{{datos.estado ? "🛈 Habilitada" : "⚠ Deshabilitada"}}</p>
       </div>
     </mat-dialog-content>
   </div>

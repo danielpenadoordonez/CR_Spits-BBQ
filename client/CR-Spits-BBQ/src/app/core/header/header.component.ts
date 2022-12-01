@@ -29,13 +29,6 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  cambiarRuta() {
-      this.router.navigate(['pedidos/update', ""], {
-        queryParams: { idPedido: "5" }, 
-        relativeTo: this.route,
-      });
-  }
-
   login(): void {
     this.router.navigate(['./users/login']);
   }

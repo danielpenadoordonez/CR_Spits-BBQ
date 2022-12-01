@@ -13,7 +13,7 @@ const routes: Routes = [
     },
   },
   //{ path: 'pedidos/create', component: PedidosFormComponent },
-  { path: 'pedidos/update/:id', component: PedidosFormComponent }
+  //{ path: 'pedidos/update/:id', component: PedidosFormComponent }
 ];
 
 @NgModule({

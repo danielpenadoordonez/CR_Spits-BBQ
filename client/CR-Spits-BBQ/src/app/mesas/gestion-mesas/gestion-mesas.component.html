@@ -56,8 +56,8 @@
     </mat-form-field>
     <mat-icon class="filter-icon" (click)="aplicarFiltro()" title="Filtrar">filter_alt</mat-icon>
   </div>
-  <div class="add-table flexbox" data-aos="zoom-in">
-    <mat-icon class="add-table-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
+  <div class="add-table flexbox" data-aos="zoom-in" *ngIf="currentUser.user.idPerfil != 3 && currentUser.user.idPerfil != 2">
+  <mat-icon class="add-table-icon" [routerLink]="['./create']" routerLinkActive="router-link-active" title="Agregar nueva mesa">add</mat-icon>
   </div>
   <div class="mat-elevation-z8 grid-table-container" id="mesas-table" *ngIf="dataSource" onload="setReveal()">
     <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
@@ -87,10 +87,10 @@
                 {{row.EstadoMesa.descripcion}}
               </p>
               <div class="table-configuration-container flexbox">
-                <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle">info</mat-icon>
-                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar" *ngIf="currentUser.user.idPerfil != 3">edit</mat-icon>
-                <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad == 1 ? pedidoMesaAction(row.id) : detalleOrdenAction(row.id)"
-                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle orden'">
+                <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle" *ngIf="currentUser.user.idPerfil != 3">info</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar" *ngIf="currentUser.user.idPerfil != 3 && currentUser.user.idPerfil != 2">edit</mat-icon>
+                <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad == 1 ? pedidoMesaAction(row.id) : detalleOrdenAction(row)"
+                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle orden'" *ngIf="currentUser.user.idPerfil != 3">
                   {{row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'post_add' : 'preview'}}
                 </mat-icon>
               </div>
