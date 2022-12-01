@@ -197,6 +197,11 @@ export class PedidosFormComponent {
           `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
           TipoMessage.success
         );
+        this.cartService.countItems.subscribe((value)=>{
+          this.qtyItems=value;
+        });
+        this.cartData = this.cartService.getItems;
+        this.totalOrder = this.cartService.getTotalConImpuestos();
       });
   }
 
