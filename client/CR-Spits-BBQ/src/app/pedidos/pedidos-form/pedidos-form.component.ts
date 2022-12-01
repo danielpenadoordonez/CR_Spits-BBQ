@@ -39,8 +39,11 @@ export class PedidosFormComponent {
   isCarritoLoaded : boolean = false;//* Sirve para saber si cargó o no el carrito
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
 
-  productData: any;//* lista productos
-  //* data table
+  productData: any;//lista productos
+  cartData: any;
+  totalOrder: any;
+  qtyItems: any;
+  //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
@@ -149,6 +152,29 @@ export class PedidosFormComponent {
       || clients.apellido1.toLowerCase().includes(filterValue)
       || clients.apellido2.toLowerCase().includes(filterValue));
   }
+
+
+  //* agregar al carrito
+  addToCart(id: number) {
+    this.cartService.idPedido = 50; //* Luego se hará obteniendo esto de forma auto
+    this.gService
+      .get('productos', id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        //* Agregar el producto seleccionado usando la API
+        this.cartService.addToCart(data);
+        //* Notificar al usuario
+        this.notification.mensaje(
+          'Pedido',
+          `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
+          TipoMessage.success
+        );
+      });
+  }
+
+
+
+
 
   formularioReactive() {
     //? [null, Validators.required]

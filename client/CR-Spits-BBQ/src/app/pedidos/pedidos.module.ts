@@ -22,7 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 // import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-
+import {MatBadgeModule} from '@angular/material/badge';
 @NgModule({
   declarations: [
     GestionPedidosComponent,
@@ -50,6 +50,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatCardModule,
     MatAutocompleteModule,
     MatSelectModule,
+    MatBadgeModule,
  //*   MatMomentDateModule,
     MatNativeDateModule,
     ReactiveFormsModule,
