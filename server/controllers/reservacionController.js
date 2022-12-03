@@ -10,9 +10,9 @@ const prismaClient = new PrismaClient();
 module.exports.getAllReservations = async (request, response, next) => {
   const reservations = await prismaClient.reservacion.findMany({
     include: {
-      mesas: true,
       Sucursal: true,
       Usuario: true,
+      Mesa : true
     },
     orderBy: {
       id: "desc"
@@ -28,9 +28,9 @@ module.exports.getReservationById = async (request, response, next) => {
   const reservation = await prismaClient.reservacion.findFirst({
     where: { id: idReservacion },
     include: {
-      mesas: true,
       Sucursal: true,
       Usuario: true,
+      Mesa : true
     },
   });
   response.json(reservation);
@@ -42,9 +42,9 @@ module.exports.getReservationsBySucursal = async (request, response, next) => {
   const reservations = await prismaClient.reservacion.findMany({
     where: { idSucursal: sucursal },
     include: {
-      mesas: true,
       Sucursal: true,
       Usuario: true,
+      Mesa : true
     },
     orderBy: {
       id: "desc"
@@ -59,7 +59,7 @@ module.exports.getReservationsByUser = async (request, response, next) => {
   const reservations = await prismaClient.reservacion.findMany({
     where: { idUsuario: usuario },
     include: {
-      mesas: true,
+      Mesa: true,
       Sucursal: true,
     },
     orderBy: {
@@ -76,13 +76,11 @@ module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
   const newReservation = await prismaClient.reservacion.create({
     data: {
-      fecha_hora: reservation.fecha_hora,
+      fecha_hora: reservation.fecha_hora !== undefined ? new Date(reservation.fecha_hora) : reservation.fecha_hora,
       cantidad: reservation.cantidad,
       idSucursal: reservation.idSucursal,
       idUsuario: reservation.idUsuario,
-      mesas: {
-        connect: reservation.mesas,
-      },
+      idMesa: reservation.idMesa
     },
   });
   response.json(newReservation);

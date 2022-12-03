@@ -20,7 +20,7 @@ export class GestionProductoComponent implements AfterViewInit {
 
   datos: any;
   sucursalesList: any //* Sucursales para filtro
-  categoriaList: any // Lista categorias de productos
+  categoriaList: any //* Lista categorias de productos
   destroy$: Subject<boolean> = new Subject<boolean>();
   displayedColumns = ['producto']; //* La categoría es más para ordenarlo que otra cosa 
   currentUser: any; //* Usuario logeado

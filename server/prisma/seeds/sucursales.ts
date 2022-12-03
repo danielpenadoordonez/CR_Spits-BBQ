@@ -30,5 +30,3 @@ export const sucursales = [
         capacidad : 30
     }
 ];
-
-//* Nota: hacer más clientes y meseros

@@ -24,22 +24,22 @@ model Usuario {
   id            String               @id //* Corresponde  a la cédula
   nombre        String
   apellido1     String
-  apellido2     String
-  correo        String //* Email
-  username      String @unique
+  apellido2     String?              @default("")
+  correo        String               @unique //* Email - No se repite
+  username      String               @unique //* Nombre de usuario - No se repite
   clave         String //* Contraseña, no sé si usará MD5
   salt          String //* Se necesita para validar cada Login
   telefono      String
-  direccion     String? //* Opcional
+  direccion     String?              @default("") //* Opcional - sino queda vacía... [Empty]
   reservaciones Reservacion[]
   facturas      Factura_Encabezado[]
   pedidos       Pedido[]             @relation("Pedidos") //* Por parte del cliente
   encargos      Pedido[]             @relation("Encargos") //* Por parte del mesero
   Perfil        Perfil               @relation(fields: [idPerfil], references: [id])
-  idPerfil      Int
+  idPerfil      Int                  @default(3) //* Cliente por default...
   sucursales    Sucursal[]
 
-  @@unique([correo, telefono], name: "Constraint_Correo_Telefono")
+  //@@unique([correo, telefono], name: "Constraint_Correo_Telefono"), ya no 3/12/2022
 }
 
 //* Deshabilitado 8/11/2022
@@ -91,11 +91,12 @@ model Reservacion {
   id         Int      @id @default(autoincrement())
   fecha_hora DateTime @default(now())
   cantidad   Int
-  mesas      Mesa[]
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])
   idSucursal Int
   Usuario    Usuario  @relation(fields: [idUsuario], references: [id])
   idUsuario  String //* (representa al cliente o quien lo cree)
+  Mesa       Mesa     @relation(fields: [idMesa], references: [id]) //* Una reservación solo tiene una mesa 1:N
+  idMesa     Int
 }
 
 //* Deshabilitado 16/11/2022
@@ -159,6 +160,7 @@ model Factura_Encabezado {
   idTipoTarjeta  Int? //* Opcional [PUEDE SER EFECTIVO]
   fecha          DateTime                    @default(now())
   estado         Boolean                     @default(false) //* Cancelada / pendiente
+  direccion String //? Para la entrega, por si acaso lo hago opcional 
   detalles       Factura_Detalle[]
   tipoPagos      FacturaEncabezadoTipoPago[] //* Corresponde a la relación N:M con tipo de pago
 
@@ -212,7 +214,7 @@ model Pedido {
   fecha        DateTime          @default(now())
   detalles     Pedido_Producto[]
   EstadoPedido EstadoPedido      @relation(fields: [idEstado], references: [id])
-  idEstado     Int @default(1) //? Default inicial para mesero
+  idEstado     Int               @default(1) //? Default inicial para mesero
 
   Cliente   Usuario @relation(name: "Pedidos", fields: [idCliente], references: [id])
   idCliente String
@@ -227,7 +229,7 @@ model Pedido {
   idMesa Int? //* Es totalmente opcional, ya que puede ser que sea online...
 
   TipoPedido   TipoPedido @relation(fields: [idTipoPedido], references: [id])
-  idTipoPedido Int @default(1) //* Indica si es en persona o de forma remota - No opcional
+  idTipoPedido Int        @default(1) //* Indica si es en persona o de forma remota - No opcional
 }
 
 model Pedido_Producto {
