@@ -138,7 +138,8 @@ export class RegistroComponent {
     if (this.currentUser !== undefined && this.isAuthenticated && this.formRegister.value.idPerfil != 3 && this.currentUser.idPerfil == 1) { //* Que no sea usuario
       //! Validaciones dependiendo de a qué perfil registre
       if (this.formRegister.value.idPerfil == 1) { //* Admin
-
+        //* Recuerde hacer el patch format si seleccionan varias 
+        //* multiple
       }
     } else {
       //* Registra alguien sin logearse
@@ -185,6 +186,11 @@ export class RegistroComponent {
   isValidationEmail(email: string): boolean {
     let validation: boolean = true;
     return validation;
+  }
+
+  //* Mesero solo se asigna a una sucursal, pero admin puede tener varias
+  toggleMultipleSucursales(): void {
+    //! [multiple]
   }
 
   //* Maneno de errores de forma visual
