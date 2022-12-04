@@ -59,7 +59,71 @@ async function main() {
         data: users
     });
 
-    //? Meseros - Debido a su tabla intermedia
+    //? Meseros y admins - Debido a su tabla intermedia, clientes usan el users seeds
+
+    await prismaClient.usuario.create({
+        data: {
+            //* 1
+            id: "118200576",
+            nombre: "Daniel",
+            apellido1: "Penado",
+            apellido2: "Ordóñez",
+            correo: "penadodan02@gmail.com",
+            username: "danielpenado",
+            clave: "$2b$10$0cadEyo5sb.G596V2T1IreNir2S.sQ/NqmFjrIeK6YrykVM1JSBwa",
+            salt: "$2b$10$0cadEyo5sb.G596V2T1Ire",
+            //? Clave sin hash: Linux&Python
+            telefono: "83121660",
+            direccion: "Atenas, Alajuela",
+            idPerfil: 1, //! Admin
+            sucursales: {
+                connect: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] //? Asignado a todas las sucursales
+            }
+        }
+    });
+
+    await prismaClient.usuario.create({
+        data: {
+            //* 2
+            id: "118010156",
+            nombre: "Isaac",
+            apellido1: "Barquero",
+            apellido2: "Lizano",
+            correo: "isaacbarquero22@gmail.com",
+            username: "isaacbarliz",
+            clave: "$2b$10$cyuD3edUd9Xz2EjGJn/wK.rlO1IuUe5UNou10fxbSRdqlkV03SVme",
+            //? Clave sin hash: front-end-css
+            salt: "$2b$10$cyuD3edUd9Xz2EjGJn/wK.",
+            telefono: "64645793",
+            direccion: "Alajuela",
+            idPerfil: 1, //! Admin
+            sucursales: {
+                connect: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] //? Asignado a todas las sucursales
+            }
+        }
+    });
+
+    await prismaClient.usuario.create({
+        data: {
+            //* 3
+            id: "208320565",
+            nombre: "Mario",
+            apellido1: "Ballestero",
+            apellido2: "Campos",
+            correo: "maritoxd1@gmail.com",
+            username: "marito",
+            clave: "$2b$10$gdPlpT6yklob2C1gGLNg1ekwJpKS989NzwQDEIeFlvS9kvdataV4i",
+            //? Clave sin hash: maritocrspitsbbq
+            salt: "$2b$10$gdPlpT6yklob2C1gGLNg1e",
+            telefono: "83140136",
+            direccion: "Grecia, Alajuela",
+            idPerfil: 1, //! Admin
+            sucursales: {
+                connect: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }] //? Asignado a todas las sucursales
+            }
+        }
+    });
+
 
     await prismaClient.usuario.create({
         data: {

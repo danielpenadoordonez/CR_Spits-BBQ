@@ -21,6 +21,8 @@ export class RegistroComponent {
   destroy$: Subject<boolean> = new Subject<boolean>();
   currentUser: any; //* Corresponde al usuario que esta usando esto
   isAuthenticated: boolean; //* Es para saber si está o no autentificado
+  isMultipleSucursal: boolean = false; //* Sirve para manejar si se trabaja una (mesero) o varias sucursales (admin)
+  profileRegister: number = 3; //* Por default se usa cliente 
 
   constructor(
     public fb: FormBuilder,
@@ -30,6 +32,19 @@ export class RegistroComponent {
     private notification: NotificacionService
   ) {
     this.reactiveForm();
+  }
+
+  ngOnInit() {
+    this.getCurrentUser(); //* Cargamos el usuario al inicio
+  }
+
+  getCurrentUser() {
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+    });
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
+    );
   }
 
   //* Formato JSON - Register user
@@ -50,20 +65,23 @@ export class RegistroComponent {
   reactiveForm(): void {
     this.formRegister = this.fb.group({
       id: [null, Validators.compose([ //* Cédula
-        Validators.required
+        Validators.required, Validators.minLength(9), Validators.maxLength(12), Validators.pattern(/^[0-9]*$/) //? Solo acepta números, no acepta espacios
+        //? 9 cédula residencial y hasta 12 la extranjera...
       ])],
       nombre: [null, Validators.compose([ //* Obligatorio
-        Validators.required
+        Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[A-Za-zÑñáéíóúüÁÉÍÓÚÜ\\-\\\s]+$/) //* Solo letras, espacios y acentos en español
+        //* En caso de que alguien tenga un nombre exajerado
       ])],
       apellido1: [null, Validators.compose([ //* No opcional
-        Validators.required
+        Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-zÑñáéíóúüÁÉÍÓÚÜ\\-\\]+$/) //* Solo letras, SIN espacios y acentos en español
       ])],
-      apellido2: [null, Validators.compose([ //? Opcional
-
+      apellido2: [null, Validators.compose([ //? Opcional - Sin required, pero si escriben se valida esto...
+        Validators.minLength(3), Validators.maxLength(20), Validators.pattern(/^[A-Za-zÑñáéíóúüÁÉÍÓÚÜ\\-\\]+$/) //* Solo letras, SIN espacios y acentos en español
       ])],
       //? CAMPO UNIQUE -- CUIDADO
       correo: [null, Validators.compose([ //* Obligatorio, sigue formato de email común y corriente
-        Validators.required, Validators.email
+        Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(256), Validators.pattern(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+        //? Según Google el mínimo es 3 y el máximo 320, pero prefiero evitar problemas
       ])],
       //? CAMPO UNIQUE -- CUIDADO
       username: [null, Validators.compose([ //* Se tiene que seguir el patrón y reglas para el mismo [obligatorio]
@@ -73,30 +91,15 @@ export class RegistroComponent {
         Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern(/[\w\[\]`!@#$%\^&*()={}:;<>+'-]*/)
       ])],
       telefono: [null, Validators.compose([ //* Obligatorio 
-        Validators.required
+        Validators.required, Validators.minLength(1), Validators.maxLength(2), Validators.pattern(/^[5-9]\d{3}-?\d{4}$/)
       ])],
-      direccion: [null, Validators.compose([ //? Opcional solo para el personal
-
+      direccion: [null, Validators.compose([ //? Opcional, solo para el personal
+        Validators.minLength(5), Validators.maxLength(150), Validators.pattern(/^([a-zA-z0-9ÑñáéíóúüÁÉÍÓÚÜ/\\''(),-\s]{2,150})$/), this.isAuthenticated ? this.currentUser.user.idPerfil == 1 && this.profileRegister != 3 ? Validators.required : null : null //* Que esté verificasdo y registre a un admin o mesero
       ])],
-      idPerfil: [null, Validators.compose([ //? Opcional solo si lo registra un admin
-
-      ])],
-      sucursales: [null, Validators.required] //? Una lista de selección unique
+      idPerfil: [null, this.isAuthenticated ? this.currentUser.user.idPerfil == 1 && this.profileRegister != 3 ? Validators.required : '' : null], //? Opcional solo si lo registra un admin,
+      sucursales: [null, this.isAuthenticated ? this.currentUser.user.idPerfil == 1 && this.profileRegister != 3 ? Validators.required : '' : null] //? Una lista de selección multiple o unique depende
     });
     this.getPerfiles();
-  }
-
-  ngOnInit() {
-    this.getCurrentUser(); //* Cargamos el usuario
-  }
-
-  getCurrentUser() {
-    this.authService.currentUser.subscribe((x) => {
-      this.currentUser = x;
-    });
-    this.authService.isAuthenticated.subscribe(
-      (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
-    );
   }
 
   submitForm() {
@@ -135,14 +138,26 @@ export class RegistroComponent {
 
     //! Validaciones en caso de que registre un admin o bien alguien sin log
     console.log("Perfil:" + this.formRegister.value.idPerfil)
-    if (this.currentUser !== undefined && this.isAuthenticated && this.formRegister.value.idPerfil != 3 && this.currentUser.idPerfil == 1) { //* Que no sea usuario
+    if (this.isAuthenticated && this.profileRegister != 3) { //* Que no sea usuario
       //! Validaciones dependiendo de a qué perfil registre
-      if (this.formRegister.value.idPerfil == 1) { //* Admin
-        //* Recuerde hacer el patch format si seleccionan varias 
-        //* multiple
+      if (this.currentUser.user.idPerfil == 1) { //* Admin logeado
+        switch (this.profileRegister) {
+          //? Recuerde hacer el patch format ya sea cliente o mesero lo que se registre
+          case 1: //* Admin
+            break;
+          case 2: //* Mesero
+
+            break;
+          default:
+            this.notification.mensaje("Registro",
+              "⚠ Parece que ha ocurrido un error desconocido, \n 🛈 favor reportar a la administración lo más antes posible",
+              TipoMessage.warning);
+            return;
+        }
       }
     } else {
-      //* Registra alguien sin logearse
+      //* Registra alguien sin logearse o cliente
+      //? falta perfil y dirección con undefined
       this.formRegister.patchValue({ sucursales: [] });
     }
 
@@ -189,8 +204,11 @@ export class RegistroComponent {
   }
 
   //* Mesero solo se asigna a una sucursal, pero admin puede tener varias
-  toggleMultipleSucursales(): void {
-    //! [multiple]
+  toggleUserProfile(dataEvent: any): void {
+    //? obtener la data del $event de tipo de perfil que elija, por default tiene un valor de 3..., pero puede cambiar
+    console.log(dataEvent.value);
+    this.profileRegister = dataEvent.value; //? igualmente sirve para saber cuando ocultar o no las cosas a cliente con el ngIf
+    this.isMultipleSucursal = this.profileRegister != 3; //? Controla el [multiple]
   }
 
   //* Maneno de errores de forma visual

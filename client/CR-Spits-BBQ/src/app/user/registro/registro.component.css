@@ -25,3 +25,36 @@
 .col:last-child {
   margin-right: 0;
 }
+p {
+  font-family: Lato;
+}
+
+.country-selector{
+  opacity:1 !important;
+  bottom:8px !important;
+}
+
+input:not(.country-search){
+  bottom: 3px;
+  left: 10px;
+}
+
+.country-list-button{
+  font-size: 0.8rem!important;
+}
+
+.mat-menu-content:not(:empty){
+  max-height:250px;
+}
+ 
+.mat-form-field{
+    width: 300px;
+}
+
+.m-t-10{
+  margin-top:10px;
+}
+
+.error{
+  color:red;
+}

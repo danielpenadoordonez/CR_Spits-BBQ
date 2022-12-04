@@ -19,7 +19,7 @@
               #nombreProducto
               minlength="3"
               maxlength="40"
-              pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+              pattern="^[A-Za-zÑñáéíóúüÁÉÍÓÚÜ\\-\\\s]+$"
               placeholder="Nombre del producto"
               required="true"
               formControlName="nombre"
@@ -43,7 +43,7 @@
               #descripcionProducto
               minlength="5"
               maxlength="100"
-              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              pattern="^[A-Za-z0-9ÑñáéíóúüÁÉÍÓÚÜ,\\-\\\s]+$"
               required="true"
               placeholder="Descripción del producto"
               formControlName="descripcion"
@@ -69,7 +69,7 @@
               #ingredientesProducto
               minlength="5"
               maxlength="100"
-              pattern="^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$"
+              pattern="^[A-Za-z0-9ÑñáéíóúüÁÉÍÓÚÜ,\\-\\\s]+$"
               placeholder="Ingredientes del producto"
               required="false"
               formControlName="ingredientes"
