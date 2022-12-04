@@ -9,7 +9,7 @@ const auth = require("../middleware/auth");
 router.get("/", auth.grantRole(["Administrador"]), usuarioController.getAllUsers);
 router.post("/register", usuarioController.createUser);
 router.post("/login", usuarioController.login);
-router.get("/all", auth.grantRole(["Administrador"]), usuarioController.getAllUsers);
+router.get("/all", usuarioController.getAllUsers);
 router.get("/:id", usuarioController.getUserById);
 router.put("/:id", usuarioController.updateUser);
 router.put("/pass/:id", usuarioController.updatePassword);
