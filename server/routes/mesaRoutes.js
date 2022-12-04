@@ -6,10 +6,10 @@ const mesaController = require("../controllers/mesaController");
 const auth = require("../middleware/auth");
 
 //* Rutas del API para Mesa
-router.get("/", mesaController.getAllMesas);
+router.get("/", auth.grantRole(["Administrador"]), mesaController.getAllMesas);
 router.post("/", auth.grantRole(["Administrador", "Mesero"]), mesaController.createTable);
-router.get("/all", mesaController.getAllMesas);
-router.get("/all-hability", mesaController.getAllHabilityMesas);
+router.get("/all", auth.grantRole(["Administrador"]), mesaController.getAllMesas);
+router.get("/all-hability", auth.grantRole(["Administrador"]), mesaController.getAllHabilityMesas);
 router.get("/:id", mesaController.getMesaById);
 router.get("/codigo/:codigo", mesaController.getMesaByCode);
 router.get("/sucursal/:idSucursal", mesaController.getMesasBySucursal);
