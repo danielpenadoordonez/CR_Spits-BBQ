@@ -34,7 +34,6 @@ export class ProductosFormComponent {
       * "idCategoria": 5,
       * "sucursales" : 
       *   [{"id" : 1}, {"id" : 2}, {"id" : 3}]     
-}
   */
 
   constructor(private fb: FormBuilder, private gService: GenericService,

@@ -95,18 +95,6 @@ module.exports.createUser = async (request, response, next) => {
       telefono: user.telefono,
       direccion: user.direccion,
       idPerfil: user.idPerfil,
-      reservaciones: {
-        connect: user.reservaciones,
-      },
-      facturas: {
-        connect: user.facturas,
-      },
-      pedidos: {
-        connect: user.pedidos,
-      },
-      encargos: {
-        connect: user.encargos,
-      },
       sucursales: {
         connect: user.sucursales,
       },
@@ -115,7 +103,7 @@ module.exports.createUser = async (request, response, next) => {
   response.status(200).json({
     status: true,
     message: `Usuario ${user.username} registrado`,
-    data: newUser,
+    data: newUser
   });
 };
 
@@ -144,7 +132,8 @@ module.exports.login = async (request, response, next) => {
       message: `Por favor, ingrese una contraseña válida`,
     });
   }
-  //console.log(`Contraseña Enviada: ${userInfo.clave} \nContraseña Prisma ${user.clave} \nSalt: ${user.salt}`);
+
+  //* console.log(`Contraseña Enviada: ${userInfo.clave} \nContraseña Prisma ${user.clave} \nSalt: ${user.salt}`);
 
   //* Revisar que la contraseña este correcta
   if (userService.isPasswordCorrect(userInfo.clave, user.clave, user.salt)) {

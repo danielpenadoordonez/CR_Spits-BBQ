@@ -226,7 +226,11 @@
       <button mat-raesed-button type="submit" title="Guardar producto">
         <mat-icon class="actions">save</mat-icon>
       </button>
-      <mat-button-toggle *ngIf="isCreate" (click)="onReset()" title="Limpiar datos">
+      <mat-button-toggle
+        *ngIf="isCreate"
+        (click)="onReset()"
+        title="Limpiar datos"
+      >
         <mat-icon class="actions">cleaning_services</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle (click)="onBack()" title="Cancelar acción">
