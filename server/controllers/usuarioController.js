@@ -203,10 +203,10 @@ module.exports.updateUser = async (request, response, next) => {
 };
 
 module.exports.updatePassword = async (request, response, next) => {
-  userId = String(request.params.id);
-  data = request.body;
-  currentPassword = data.currentPassword;
-  newPassword = data.newPassword;
+  let userId = String(request.params.id);
+  let data = request.body;
+  let currentPassword = data.currentPassword;
+  let newPassword = data.newPassword;
 
   //Se obtiene el usuario para el que se desea modificar el password
   const user = await prismaClient.usuario.findUnique({
@@ -216,11 +216,14 @@ module.exports.updatePassword = async (request, response, next) => {
   //Si el usuario ingresa su password actual correcto entonces lo puede modificar
   if (userService.isPasswordCorrect(currentPassword, user.clave, user.salt)) {
     //Se encripta el password nuevo
-    let hashedPassword = userService.generateEncryptedPassword(newPassword);
+    let hashData = userService.generateEncryptedPassword(newPassword);
+    let salt = hashData.salt;
+    let hashedPassword = hashData.passwordHash;
     const updatedUser = await prismaClient.usuario.update({
       where: { id: userId },
       data: {
         clave: hashedPassword,
+        salt: salt
       },
     });
     response.status(200).json({
