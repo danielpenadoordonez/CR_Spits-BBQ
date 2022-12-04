@@ -22,13 +22,14 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     UserRoutingModule,
+    //* Extras
     MatInputModule,
-    MatButtonModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatButtonModule
   ]
 })
 export class UserModule { }

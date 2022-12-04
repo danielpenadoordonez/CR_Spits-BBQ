@@ -9,7 +9,7 @@
     "strict": false, // Recuerden quitar el modo estricto - false
     "noImplicitAny": false,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": true, //* Sirve para obtener data en tiempo real, ojo
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
