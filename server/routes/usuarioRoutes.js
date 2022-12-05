@@ -13,7 +13,7 @@ router.get("/all", usuarioController.getAllUsers);
 router.get("/:id", usuarioController.getUserById);
 router.put("/:id", usuarioController.updateUser);
 router.put("/pass/:id", usuarioController.updatePassword);
-router.get("/perfil/:idPerfil", auth.grantRole(["Administrador"]), usuarioController.getUsersByProfile);
+router.get("/perfil/:idPerfil", auth.grantRole(["Administrador", "Mesero"]), usuarioController.getUsersByProfile);
 router.get("/username/:username", usuarioController.getUserByUserName);
 router.get("/email/:email", usuarioController.getUserByEmail);
 

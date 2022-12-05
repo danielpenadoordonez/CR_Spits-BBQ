@@ -12,11 +12,9 @@ module.exports.getAllReservations = async (request, response, next) => {
     include: {
       Sucursal: true,
       Usuario: true,
-      Mesa : true
+      Mesa: true,
     },
-    orderBy: {
-      id: "desc"
-    },
+    orderBy: [{ id: "desc" }, { codigo: "desc" }],
   });
   response.json(reservations);
 };
@@ -30,7 +28,7 @@ module.exports.getReservationById = async (request, response, next) => {
     include: {
       Sucursal: true,
       Usuario: true,
-      Mesa : true
+      Mesa: true,
     },
   });
   response.json(reservation);
@@ -44,11 +42,9 @@ module.exports.getReservationsBySucursal = async (request, response, next) => {
     include: {
       Sucursal: true,
       Usuario: true,
-      Mesa : true
+      Mesa: true,
     },
-    orderBy: {
-      id: "desc"
-    },
+    orderBy: [{ id: "desc" }, { codigo: "desc" }],
   });
   response.json(reservations);
 };
@@ -62,9 +58,7 @@ module.exports.getReservationsByUser = async (request, response, next) => {
       Mesa: true,
       Sucursal: true,
     },
-    orderBy: {
-      id: "desc"
-    },
+    orderBy: [{ id: "desc" }, { codigo: "desc" }],
   });
   response.json(reservations);
 };
@@ -76,11 +70,15 @@ module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
   const newReservation = await prismaClient.reservacion.create({
     data: {
-      fecha_hora: reservation.fecha_hora !== undefined ? new Date(reservation.fecha_hora) : reservation.fecha_hora,
+      codigo: reservation.codigo, 
+      fecha_hora:
+        reservation.fecha_hora !== undefined
+          ? new Date(reservation.fecha_hora)
+          : reservation.fecha_hora,
       cantidad: reservation.cantidad,
       idSucursal: reservation.idSucursal,
       idUsuario: reservation.idUsuario,
-      idMesa: reservation.idMesa
+      idMesa: reservation.idMesa,
     },
   });
   response.json(newReservation);
@@ -92,31 +90,14 @@ module.exports.createReservation = async (request, response, next) => {
 module.exports.updateReservation = async (request, response, next) => {
   let reservation = request.body;
   let reservationId = parseInt(request.params.id);
-  //* let userId= request.params.idUsuario;
-  //* let sucursalId = request.params.idSucursal;
-
-  const oldReservation = await prismaClient.reservacion.findUnique({
-    where: { id: reservationId },
-    include: {
-      mesas: {
-        select: {
-          id: true,
-        },
-      },
-    },
-  });
 
   const updatedReservation = await prismaClient.reservacion.update({
     where: { id: reservationId },
     data: {
+      //* Solo estos campos se actualizan
       fecha_hora: reservation.fecha_hora,
       cantidad: reservation.cantidad,
-      idSucursal: reservation.idSucursal,
       idUsuario: reservation.idUsuario,
-      mesas: {
-        disconnect: oldReservation.mesas,
-        connect: reservation.mesas,
-      },
     },
   });
   response.json(updatedReservation);

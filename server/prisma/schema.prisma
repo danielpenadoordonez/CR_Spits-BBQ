@@ -89,6 +89,7 @@ model DisponibilidadMesa {
 
 model Reservacion {
   id         Int      @id @default(autoincrement())
+  codigo String @unique //* Código diferenciador pá
   fecha_hora DateTime @default(now())
   cantidad   Int
   Sucursal   Sucursal @relation(fields: [idSucursal], references: [id])

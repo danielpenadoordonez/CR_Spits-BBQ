@@ -30,18 +30,16 @@ module.exports.getDetallesByPedidoId = async (request, response, next) => {
  *  POST APIs
  */
 
+//* Crea varios detalles...
 module.exports.createDetail = async (request, response, next) => {
-  let detail = request.body;
-  const newDetail = await prismaClient.pedido_Producto.create({
-    data: {
-      idPedido: detail.idPedido,
-      idProducto: detail.idProducto,
-      cantidad: detail.cantidad,
-      notas: detail.notas
-    }
+  let details = request.body;
+  const newDetails = await prismaClient.pedido_Producto.createMany({
+    data: details, //* Tiene que venir con el formato - en el postman
+    skipDuplicates: true, //* Evita los duplicados
   });
-  response.json(newDetail);
-}
+
+  response.json(newDetails); //* Retorna la cantidad de archivos creados...
+};
 
 /*
  *  PUT APIs
@@ -51,11 +49,11 @@ module.exports.updateDetail = async (request, response, next) => {
   let idPedido = parseInt(request.params.idPedido);
   let idProducto = parseInt(request.params.idProducto);
   const updatedDetail = await prismaClient.pedido_Producto.update({
-    where: {idPedido: idPedido, idProducto: idProducto},
+    where: { idPedido: idPedido, idProducto: idProducto },
     data: {
       cantidad: detail.cantidad,
-      notas: detail.notas
-    }
+      notas: detail.notas,
+    },
   });
   response.json(updatedDetail);
-}
+};

@@ -42,7 +42,6 @@ export class RegistroComponent {
 
   ngOnInit() {
     this.getCurrentUser(); //* Cargamos el usuario al inicio
-    console.log(this.currentUser)
   }
 
   getCurrentUser() {
@@ -139,8 +138,8 @@ export class RegistroComponent {
     //* Asignamos o limpiamos validadores y valores
     if (this.profileRegister != 3) {
       this.formRegister.get('direccion').setValidators(this.direccionValidators);
-      this.formRegister.get('sucursales').setValidators(Validators.required);
-      this.formRegister.get('apellido2').setValidators(Validators.required);
+      this.formRegister.get('sucursales').addValidators(Validators.required);
+      this.formRegister.get('apellido2').addValidators(Validators.required);
     } else {
       this.formRegister.get('direccion').clearValidators();
       this.formRegister.get('sucursales').clearValidators();

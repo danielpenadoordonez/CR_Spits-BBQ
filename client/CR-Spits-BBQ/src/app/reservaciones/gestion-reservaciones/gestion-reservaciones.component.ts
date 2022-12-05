@@ -18,7 +18,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>(); //* Establecemos la fuente de data //- , 'acciones'
-  displayedColumns = ['id', 'sucursal', 'usuario', 'cedula', 'cantidad', 'fecha_hora', 'acciones']; //* Mesas no van aquí
+  displayedColumns = ['id', 'codigo', 'sucursal', 'usuario', 'cedula', 'cantidad', 'fecha_hora', 'acciones']; //* Mesas no van aquí
 
   constructor(private router: Router,
     private route: ActivatedRoute, private gService: GenericService) {
