@@ -9,7 +9,7 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
+  styleUrls: ['./../inicio-sesion/inicio-sesion.component.css', './registro.component.css']
 })
 export class RegistroComponent {
   //* Registro de usuario by MarioBC
@@ -17,11 +17,14 @@ export class RegistroComponent {
   hide2 = true; //* Clave 2
   usuario: any;
   perfiles: any; //* Corresponden a los perfiles del usuario sea Administrador, Mesero o Cliente
+
   sucursales: any; //* Corresponden a la lista de sucursales a las que se puede asignar el mesero (1) y administrador varias
   formRegister: FormGroup;
   makeSubmit: boolean = false; //* Indica si se subió o no
   destroy$: Subject<boolean> = new Subject<boolean>();
   currentUser: any; //* Corresponde al usuario que esta usando esto
+
+  isSecondSection: boolean;
   isAuthenticated: boolean = false; //* Es para saber si está o no autentificado
   isMultipleSucursal: boolean = false; //* Sirve para manejar si se trabaja una (mesero) o varias sucursales (admin)
   isPasswordsValid: boolean = false; //* Maneja adecuadamente si las contraseñas están bien o no
@@ -114,6 +117,22 @@ export class RegistroComponent {
       this.matchValidator(this.formRegister.get('clave'), this.formRegister.get('clave2'))
     );
 
+
+  ngOnInit() {
+    this.getCurrentUser(); //* Cargamos el usuario
+    this.getPerfiles(); // lsita de perfiles
+    this.listaSucursales(); // lista sucursales
+  }
+
+  getCurrentUser() {
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+    });
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
+    );
+    console.log(this.currentUser);
+    
     //* Carga de APIs
     this.getPerfiles();
     this.cargarDatosUsuarios();
@@ -242,6 +261,16 @@ export class RegistroComponent {
         //? console.log(this.perfiles);
       });
   }
+  listaSucursales() {
+    this.sucursales = null;
+    this.gService
+      .list('sucursales') //* ruta para llamar esa API, viene del generic service, Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.sucursales = data;
+      });
+  }
+
 
   //* Cargar la lista de sucursales
   getSucursales() {
@@ -329,4 +358,9 @@ export class RegistroComponent {
     );
   };
 
+  nextStage(){
+    document.querySelector('.first-register-section').classList.toggle('show-first-section');
+    document.querySelector('.second-register-section').classList.toggle('show-second-section');
+    this.isSecondSection = !this.isSecondSection;
+  }
 }
