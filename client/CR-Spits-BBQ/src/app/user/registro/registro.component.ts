@@ -9,19 +9,20 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
+  styleUrls: ['./../inicio-sesion/inicio-sesion.component.css', './registro.component.css']
 })
 export class RegistroComponent {
   //* Registro de usuario by MarioBC
   hide = true;
   usuario: any;
   perfiles: any; //* Corresponden a los perfiles del usuario sea Administrador, Mesero o Cliente
+  sucursales: any // corresponde a la sucursal que irá un mesero
   formRegister: FormGroup;
   makeSubmit: boolean = false; //* Indica si se subió o no
   destroy$: Subject<boolean> = new Subject<boolean>();
   currentUser: any; //* Corresponde al usuario que esta usando esto
   isAuthenticated: boolean; //* Es para saber si está o no autentificado
-
+  isSecondSection: boolean;
   constructor(
     public fb: FormBuilder,
     private router: Router,
@@ -59,7 +60,7 @@ export class RegistroComponent {
         Validators.required
       ])],
       apellido2: [null, Validators.compose([ //? Opcional
-
+        Validators.required
       ])],
       //? CAMPO UNIQUE -- CUIDADO
       correo: [null, Validators.compose([ //* Obligatorio, sigue formato de email común y corriente
@@ -72,6 +73,9 @@ export class RegistroComponent {
       clave: [null, Validators.compose([ //* Obligatorio, se sigue los lineamientos de contraseña
         Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern(/[\w\[\]`!@#$%\^&*()={}:;<>+'-]*/)
       ])],
+      claveConfirm: [null, Validators.compose([ //* Obligatorio, se sigue los lineamientos de contraseña
+      Validators.required, Validators.minLength(8), Validators.maxLength(16), Validators.pattern(/[\w\[\]`!@#$%\^&*()={}:;<>+'-]*/)
+    ])],
       telefono: [null, Validators.compose([ //* Obligatorio 
         Validators.required
       ])],
@@ -88,6 +92,8 @@ export class RegistroComponent {
 
   ngOnInit() {
     this.getCurrentUser(); //* Cargamos el usuario
+    this.getPerfiles(); // lsita de perfiles
+    this.listaSucursales(); // lista sucursales
   }
 
   getCurrentUser() {
@@ -97,6 +103,7 @@ export class RegistroComponent {
     this.authService.isAuthenticated.subscribe(
       (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
     );
+    console.log(this.currentUser);
   }
 
   submitForm() {
@@ -172,6 +179,16 @@ export class RegistroComponent {
         //? console.log(this.perfiles);
       });
   }
+  listaSucursales() {
+    this.sucursales = null;
+    this.gService
+      .list('sucursales') //* ruta para llamar esa API, viene del generic service, Sí sirve
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        this.sucursales = data;
+      });
+  }
+
 
   isValidationID(id: string): boolean {
     let validation: boolean = true; //* Sí pasa
@@ -202,4 +219,9 @@ export class RegistroComponent {
     );
   };
 
+  nextStage(){
+    document.querySelector('.first-register-section').classList.toggle('show-first-section');
+    document.querySelector('.second-register-section').classList.toggle('show-second-section');
+    this.isSecondSection = !this.isSecondSection;
+  }
 }

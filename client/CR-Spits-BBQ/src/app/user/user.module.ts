@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegistroComponent } from './registro/registro.component';
 import { MatIconModule } from '@angular/material/icon';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatRadioModule,
     MatCardModule,
     MatIconModule,
+    MatStepperModule,
     ReactiveFormsModule,
   ]
 })

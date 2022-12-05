@@ -1,1 +1,276 @@
+<div class="background-pattern"></div>
+<div class="login register flexbox">
+    <div class="login-container flexbox">
+        <form [formGroup]="formRegister" (ngSubmit)="submitForm()" novalidate data-aos="fade-down"
+            data-aos-duration="750">
+            <mat-card class="shipping-card">
+                <mat-card-header>
+                    <mat-card-title class="login-title">¡Registrarse!</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="register-container">
+                    <div class="first-register-section">
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #cedulaUser min="9" max="9" pattern="^[0-9]*$"
+                                        placeholder="Cédula sin guiones" required="true" formControlName="id"
+                                        title="Cédula sin guiones" type="number" autocomplete="false" />
+                                    <mat-hint align="end">{{ cedulaUser.value }} de 9</mat-hint>
+                                    <mat-error *ngIf="errorHandling('id', 'required')">
+                                        La cédula es<strong>requerida compuesta de 9 números sin guiones</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #nameUser min="9" max="9" pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+                                        placeholder="Nombre" required="true" formControlName="nombre" title="Nombre"
+                                        type="text" autocomplete="false" />
+                                    <mat-hint align="end">{{ nameUser.value }} de 9</mat-hint>
+                                    <mat-error *ngIf="errorHandling('nombre', 'required')">
+                                        El nombre es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #apellido1 min="9" max="9" pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+                                        placeholder="Primer Apellido" required="true" formControlName="nombre"
+                                        title="Primer Apellido" type="text" autocomplete="true" />
+                                    <mat-hint align="end">{{ apellido1.value }} de 9</mat-hint>
+                                    <mat-error *ngIf="errorHandling('apellido1', 'required')">
+                                        El primer apellido es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #apellido2 min="9" max="9" pattern="^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$"
+                                        placeholder="Segundo Apellido" required="true" formControlName="apellido2"
+                                        title="Segundo Apellido" type="text" autocomplete="true" />
+                                    <mat-hint align="end">{{ apellido2.value }} de 9</mat-hint>
+                                    <mat-error *ngIf="errorHandling('apellido2', 'required')">
+                                        El segundo apellido es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <mat-label class="label">Contraseña</mat-label>
+                                    <input matInput #password [type]="hide ? 'password' : 'text'"
+                                        pattern="[\w\[\]`!@#$%\^&*()={}:;<>+'-]*" minlength="8" maxlength="16"
+                                        required="true" autocomplete="true" placeholder="Contraseña usuario"
+                                        title="Ingrese su contraseña" formControlName="clave" />
+                                    <mat-hint>{{ password.value.length }} / 16</mat-hint>
+                                    <button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                        [attr.aria-pressed]="hide" type="button">
+                                        <mat-icon class="hide-icon">{{
+                                            hide ? "visibility_off" : "visibility"
+                                            }}</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="errorHandling('clave', 'required')">
+                                        La contraseña es <strong>requerida</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <mat-label class="label">Confirmar contraseña</mat-label>
+                                    <input matInput #password [type]="hide ? 'password' : 'text'"
+                                        pattern="[\w\[\]`!@#$%\^&*()={}:;<>+'-]*" minlength="8" maxlength="16"
+                                        required="true" autocomplete="true" placeholder="Contraseña usuario"
+                                        title="Ingrese su contraseña" formControlName="claveConfirm" />
+                                    <mat-hint>{{ password.value.length }} / 16</mat-hint>
+                                    <button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                        [attr.aria-pressed]="hide" type="button">
+                                        <mat-icon class="hide-icon">{{
+                                            hide ? "visibility_off" : "visibility"
+                                            }}</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="errorHandling('clave', 'required')">
+                                        La contraseña es <strong>requerida</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="second-register-section">
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #correoUser placeholder="Correo" required="true"
+                                        formControlName="correo" title="Correo" type="email" autocomplete="false" />
+                                    <mat-hint align="end">{{ correoUser.value }}</mat-hint>
+                                    <mat-error *ngIf="errorHandling('correo', 'required')">
+                                        El correo es<strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #username placeholder="Nombre de usuario" required="true"
+                                        formControlName="username" title="Nombre de usuario" type="text"
+                                        autocomplete="false" />
+                                    <mat-hint align="end">{{ username.value }}</mat-hint>
+                                    <mat-error *ngIf="errorHandling('username', 'required')">
+                                        El nombre de usuario es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #telephoneUser min="9" max="9" pattern="^[0-9]*$"
+                                        placeholder="Teléfono. (+506) XXXX XXXX - sin guiones" required="true"
+                                        formControlName="telefono" title="Teléfono sin guiones" type="number"
+                                        autocomplete="false" />
+                                    <mat-hint align="end">{{ telephoneUser.value }} de 8</mat-hint>
+                                    <mat-error *ngIf="errorHandling('telefono', 'required')">
+                                        El teléfono es<strong>requerido compuesto de 8 números sin guiones</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <input matInput #apellido2 placeholder="Dirección" required="true"
+                                        formControlName="direccion" title="Dirección" type="text" autocomplete="true" />
+                                    <mat-hint align="end">{{ apellido2.value }} de 9</mat-hint>
+                                    <mat-error *ngIf="errorHandling('id', 'required')">
+                                        El segundo apellido es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" *ngIf="(sucursales && isAuthenticated && currentUser && currentUser.user.Perfil.descripcion == 'Administrador')">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <mat-select required="true" placeholder="Sucursales disponibles"
+                                        formControlName="sucursales" title="Lista de sucursales">
+                                        <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.id">
+                                            {{ sucursal.nombre }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="errorHandling('id', 'required')">
+                                        La sucursal es<strong>requerida</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col" *ngIf="(perfiles && isAuthenticated && currentUser && currentUser.user.Perfil.descripcion == 'Administrador')">
+                                <mat-form-field class="full-width" hideRequiredMarker>
+                                    <mat-select required="true" placeholder="Pefiles disponibles"
+                                        formControlName="idPerfil" title="Lista de perfiles">
+                                        <mat-option *ngFor="let perfil of perfiles" [value]="perfil.id">
+                                            {{ perfil.descripcion }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="errorHandling('id', 'required')">
+                                        LEl perfil  es <strong>requerido</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <div class="actions">
+                    <mat-card-actions class="flexbox buttons">
+                        <button class="login-btn" type="button" (click)="nextStage()">{{isSecondSection ? 'Regresar' :
+                            'Siguiente'}}</button>
+                        <button class="login-btn" type="submit" data-aos="zoom-in"
+                            *ngIf="isSecondSection">Registrarse</button>
+                    </mat-card-actions>
+                    <div class="forgot-password-helper">
+                        Al hacer clic en registrar, confirmo que he leído y acepto:
+                        <b class="register-conditions">Términos y condiciones del sitio web de CR Spits & BBQ.</b>
+                    </div>
+                </div>
+            </mat-card>
+        </form>
+    </div>
+    <div class="go-to-register">
+        Ya tienes una cuenta? <span>Inicia sesión</span>
+    </div>
+</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="background-pattern"></div>
+<div class="login flexbox">
+    <div class="login-container flexbox">
+        <form [formGroup]="formRegister" (ngSubmit)="submitForm()" novalidate data-aos="fade-down-right"
+            data-aos-duration="750">
+            <mat-card class="shipping-card">
+                <mat-card-header>
+                    <mat-card-title class="login-title">¡Registro!</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col">
+                            <mat-stepper linear #stepper>
+                                <mat-step [stepControl]="formRegister">
+                                    <form [formGroup]="formRegister">
+                                        <ng-template matStepLabel>Fill out your name</ng-template>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Name</mat-label>
+                                            <input matInput formControlName="firstCtrl"
+                                                placeholder="Last name, First name" required>
+                                        </mat-form-field>
+                                        <div>
+                                            <button mat-button matStepperNext>Next</button>
+                                        </div>
+                                    </form>
+                                </mat-step>
+                                <mat-step [stepControl]="formRegister" >
+                                    <form [formGroup]="formRegister">
+                                        <ng-template matStepLabel>Fill out your address</ng-template>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Address</mat-label>
+                                            <input matInput formControlName="secondCtrl"
+                                                placeholder="Ex. 1 Main St, New York, NY" required>
+                                        </mat-form-field>
+                                        <div>
+                                            <button mat-button matStepperPrevious>Back</button>
+                                            <button mat-button matStepperNext>Next</button>
+                                        </div>
+                                    </form>
+                                </mat-step>
+                                <mat-step>
+                                    <ng-template matStepLabel>Done</ng-template>
+                                    <p>You are now done.</p>
+                                    <div>
+                                        <button mat-button matStepperPrevious>Back</button>
+                                        <button mat-button (click)="stepper.reset()">Reset</button>
+                                    </div>
+                                </mat-step>
+                            </mat-stepper>
+                        </div>
+                    </div>
+                </mat-card-content>
+        <div class="forgot-password-helper">¿Ya tiene una cuenta? Inicia sesión</div> 
+      </mat-card>
+    </form>
+ </div>
+    <div class="go-to-register">
+        ¿No tienes una cuenta? <span>Registrese</span>
+    </div> -->
+<!-- </div> --> -->
