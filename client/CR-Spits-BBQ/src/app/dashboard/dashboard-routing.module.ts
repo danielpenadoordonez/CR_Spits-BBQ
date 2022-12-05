@@ -6,6 +6,7 @@ import { GestionPedidosComponent } from '../pedidos/gestion-pedidos/gestion-pedi
 import { PedidosFormComponent } from '../pedidos/pedidos-form/pedidos-form.component';
 import { GestionProductoComponent } from '../productos/gestion-producto/gestion-producto.component';
 import { ProductosFormComponent } from '../productos/productos-form/productos-form.component';
+import { GestionReservacionesComponent } from '../reservaciones/gestion-reservaciones/gestion-reservaciones.component';
 import { ReservacionesFormComponent } from '../reservaciones/reservaciones-form/reservaciones-form.component';
 import { AuthGuard } from '../share/guards/auth.guard';
 import { BodyIndexComponent } from './body-index/body-index.component';
@@ -44,6 +45,14 @@ const routes: Routes = [
         path: 'comandas',
         canActivate: [AuthGuard],
         component: GestionPedidosComponent,
+        data: {
+          roles: ['Administrador', 'Mesero', 'Cliente'],
+        }
+      },
+      {
+        path: 'reservaciones',
+        canActivate: [AuthGuard],
+        component: GestionReservacionesComponent,
         data: {
           roles: ['Administrador', 'Mesero', 'Cliente'],
         }
@@ -113,6 +122,14 @@ const routes: Routes = [
           roles: ['Administrador', 'Mesero', 'Cliente'],
         }
       },
+      {
+        path: 'reservaciones/update/:id',
+        canActivate: [AuthGuard],
+        component: ReservacionesFormComponent,
+        data: {
+          roles: ['Administrador', 'Mesero'],
+        }
+      }
     ]
   },
 ];

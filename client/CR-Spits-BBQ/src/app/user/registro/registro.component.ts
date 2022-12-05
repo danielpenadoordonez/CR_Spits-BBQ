@@ -145,8 +145,7 @@ export class RegistroComponent {
       this.formRegister.get('sucursales').clearValidators();
       this.formRegister.get('apellido2').clearValidators();
       //* Cliente necesita esto sí o sí
-      this.formRegister.patchValue({ sucursales: [] });
-      this.formRegister.patchValue({ direccion: "" });
+      this.formRegister.patchValue({ sucursales: [], direccion: "" });
     }
 
     if (this.isAuthenticated) {
@@ -228,6 +227,7 @@ export class RegistroComponent {
   }
 
   onReset() {
+    this.makeSubmit = false;
     this.formRegister.reset();
   }
 
@@ -317,6 +317,12 @@ export class RegistroComponent {
     }
 
     this.isMultipleSucursal = this.profileRegister == 1; //? Controla el [multiple]
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    //* Desinscribirse
+    this.destroy$.unsubscribe();
   }
 
   //* Maneno de errores de forma visual

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
-import { NotificacionService } from 'src/app/share/notification.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 //import * as moment from 'moment';
 
 @Component({
@@ -46,7 +46,7 @@ export class ReservacionesFormComponent {
   //TODO CONSIDERACIONES:
   //? Cliente se podría obtener por el currentuser o bien en el mat-select 
   //? El código de mesa por params al igual, luego con un api se busca y saco id y sucursal 
-  //? Mesero y admin sí pueden editar la cantidad y la fecha y quizás cancelarla
+  //? Mesero y admin sí pueden editar la cantidad, la fecha, usuario y quizás cancelarla
   //? El codigo se auto genera en el backend, por lo que no será necesario, solo para mostrarlo en el update
   /* 
   * FORMATO JSON - RESERVACIÓN
@@ -99,13 +99,14 @@ export class ReservacionesFormComponent {
         Validators.required, Validators.min(1), Validators.pattern(/^[0-9]{1,2}$/) //* El max se hace una vez que se obtiene la mesa
       ])], //? Es editable
       idSucursal: null, //* No es editable, viene de la mesa
-      idUsuario: [null, null], //? Depende puede que sí [cliente], se maneja fuera
-      idMesa: null //* No es editable
+      idUsuario: null, //? Depende puede que sí [cliente], se maneja fuera
+      idMesa: null //* No es editable, pensaba que se podía hacer un diseño todo wapo, colocando la mesa como en gestión cuando se le da o sea al ladito
     });
   }
 
   //* Limpiamos
   onReset() {
+    this.submitted = false;
     this.formReservations.reset();
   }
 
@@ -122,7 +123,7 @@ export class ReservacionesFormComponent {
   }
 
   //* Cargamos la lista de sucursales
-  listaSucursales(){
+  listaSucursales() {
     this.sucursalesList = null; //* Reset
     this.gService
       .list('users/perfil/3')
@@ -183,9 +184,42 @@ export class ReservacionesFormComponent {
 
   //* Crear una reservación
   crearReservacion(): void {
-    //* Seteamos la validacion, por si acaso no se había cargado
-    this.formReservations.get('cantidad').addValidators(Validators.max(this.mesaSelected.capacidad));
 
+    //* Establecemos submit verdadero 
+    this.submitted = true;
+
+    //* Verificar validación del form
+    if (this.formReservations.invalid) {
+      this.notification.mensaje("Reservaciones",
+        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+        TipoMessage.error);
+      return;
+    }
+
+    //TODO Revisamos la data
+    console.log(this.formReservations.value);
+
+    //* Asignamos lo que falta
+    //? La sucursal, mesa o en caso de ser cliente su id...
+    if (this.currentUser.user.idPerfil == 3) { //* Cliente
+      this.formReservations.patchValue({ idUsuario: this.currentUser.user.id });
+    }
+
+    this.formReservations.patchValue({ idSucursal: this.mesaSelected.idSucursal, idMesa: this.mesaSelected.id });
+
+    //* Accion API create enviando toda la informacion del formulario
+    this.gService.create('reservaciones', this.formReservations.value)
+      .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+        this.respReservation = data;
+        //* Notificacion de la tarea realizada
+        let notificationBody = `<div class='flexbox'><p>Reservación número: ${this.respReservation.id} <br> ${this.respReservation.codigo} 
+       ha sido <b>creada</b>.</p></div>`
+        this.notification.mensaje('Reservaciones', notificationBody, TipoMessage.success);
+        //? Rederigimos
+        this.router.navigate(['/dashboard/reservaciones'], {
+          queryParams: { create: 'true' }
+        });
+      });
   }
 
   //* Actualizar una reservación
@@ -204,7 +238,7 @@ export class ReservacionesFormComponent {
   }
 
   //* Solo sirve para actualizar validaciones...
-  actualizarCantidad(){
+  actualizarCantidad() {
     if (this.isMesaLoaded && this.cantidad == 1) { //* 1 es el default y mínimo
       //* Cargamos el max y el validator
       this.cantidad = this.mesaSelected.capacidad;

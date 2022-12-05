@@ -122,27 +122,55 @@
             class="full-width"
             *ngIf="isAuthenticated ? currentUser.user.idPerfil != 3 : false"
           >
-          <!-- ? Pregunta si está autenticado, en caso de estarlo pregunta por el perfil -->
+            <!-- ? Pregunta si está autenticado, en caso de estarlo pregunta por el perfil -->
             <mat-select
               placeholder="Cliente"
               [required]="currentUser.user.idPerfil != 3"
               formControlName="idUsuario"
               title="Seleccione el cliente"
             >
-              <mat-option *ngFor="let client of clientsList" [value]="client.id">
-                {{ client.nombre }}
+              <mat-option
+                *ngFor="let client of clientsList"
+                [value]="client.id"
+              >
+                {{
+                  client.nombre +
+                    " " +
+                    client.apellido1 +
+                    " " +
+                    client.apellido2
+                }}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="errorHandling('idUsuario', 'required')">
-              El perfil del usuario es <strong>requerido</strong>
+              El cliente es <strong>requerido</strong>
             </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width" *ngIf="!isCreate">
+            <mat-select
+              placeholder="Sucursal"
+              formControlName="idSucursal"
+              title="Sucursal de la reservación"
+              [disabled]="isCreate"
+              [required]="false"
+            >
+              <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
+                {{ sucursal.nombre }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
       <div class="row">
-        <div class="col"></div>
-      </div>
-      <div class="row">
+        <div class="col">
+          <!-- ! Campos ocultos -->
+          <input type="hidden" formControlName="idMesa" />
+        </div>
         <div class="col"></div>
       </div>
     </mat-card-content>

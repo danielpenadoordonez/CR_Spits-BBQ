@@ -12,7 +12,7 @@ const userService = require("../services/UserService");
 module.exports.getAllUsers = async (request, response, next) => {
   const users = await prismaClient.usuario.findMany({
     orderBy: {
-      nombre: "asc",
+      apellido1: "asc",
     },
   });
   response.json(users);
@@ -42,6 +42,9 @@ module.exports.getUsersByProfile = async (request, response, next) => {
       reservaciones: true,
       pedidos: true,
     },
+    orderBy:{
+      apellido1 : 'asc'
+    }
   });
   response.json(users);
 };

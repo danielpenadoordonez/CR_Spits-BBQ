@@ -70,12 +70,12 @@ module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
   const newReservation = await prismaClient.reservacion.create({
     data: {
-      codigo: reservation.codigo, 
+      codigo: "test1", 
       fecha_hora:
         reservation.fecha_hora !== undefined
           ? new Date(reservation.fecha_hora)
           : reservation.fecha_hora,
-      cantidad: reservation.cantidad,
+      cantidad: parseInt(reservation.cantidad),
       idSucursal: reservation.idSucursal,
       idUsuario: reservation.idUsuario,
       idMesa: reservation.idMesa,
