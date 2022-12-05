@@ -57,7 +57,7 @@ app.use("/pedidos/", pedidoRouter);
 app.use("/tipo-pedidos/", tipoPedidoRouter);
 app.use("/detalles-pedido/", detallesPedidos);
 app.use("/estado-pedidos/", estadoPedidoRouter);
-app.use("/factura", facturaRouter);
+app.use("/factura/", facturaRouter);
 
 //* Servidor
 app.listen(port, () => {
