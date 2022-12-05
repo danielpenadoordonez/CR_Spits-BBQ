@@ -24,4 +24,14 @@ export const navbarData = [
         icon: 'list_alt',
         label: 'Comandas' 
     },
+    {
+        routerLink: 'ordenar',
+        icon: 'menu_book',
+        label: 'Ordenar' 
+    },
+    {
+        routerLink: 'reservar',
+        icon: 'auto_stories',
+        label: 'Reservación' 
+    },
 ]

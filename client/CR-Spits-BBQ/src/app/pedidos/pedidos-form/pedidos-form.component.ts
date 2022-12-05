@@ -39,9 +39,13 @@ export class PedidosFormComponent {
   isCarritoLoaded: boolean = false;//* Sirve para saber si cargó o no el carrito
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
   dataSourceCarrito: any = null;
+
+
   productData: any;//lista productos
   cartData: any;
   totalOrder: any;
+  subTotalOrder: any;
+  impuestoOrder: any;
   qtyItems: any;
   //data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -104,10 +108,11 @@ export class PedidosFormComponent {
       if (pedido != null) { //* Significa que es update
         //* Sirve para ver el preview...
         this.isCreateOrUpdate(); //* Cambia a false el isCreate
-        this.asignarCarritoUpdate(codigoMesa);
         this.getMesaDetail();
+        this.asignarCarritoUpdate(codigoMesa);
       } else { //* Create
         this.getMesaDetail();
+        this.checkIfExistOldItemsOnCreate(codigoMesa);
         this.isCarritoLoaded = true;
       }
       this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
@@ -190,27 +195,53 @@ export class PedidosFormComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         //* Agregar el producto seleccionado usando la API
-        this.cartService.addToCart(data);
+        this.cartService.addToCart(data, this.mesa.codigo);
         //* Notificar al usuario
         this.notification.mensaje(
           'Pedido',
           `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
           TipoMessage.success
         );
-        this.cartService.countItems.subscribe((value)=>{
-          this.qtyItems=value;
-        });
-        this.cartData = this.cartService.getItems;
-        this.totalOrder = this.cartService.getTotalConImpuestos();
+        this.cartData = this.cartService.getItems.filter(item => item.mesa == this.mesa.codigo);    
+        this.qtyItems = this.cartData.length;
+        this.setTotalsOrder(this.mesa.codigo)  
       });
   }
 
+  setTotalsOrder(mesa: string){
+    this.subTotalOrder = this.cartService.getTotal(mesa);
+    this.totalOrder = this.cartService.getTotalConImpuestos(mesa);
+    this.impuestoOrder = this.totalOrder - this.subTotalOrder;
+  }
+
   toggleCartData() {
-    document.querySelector('.cart-data').classList.toggle('show-card-data');
+    document.querySelector('.cart-data').classList.toggle('show-cart-data');
+    this.toggleCartDataCover();
+  }
+
+  toggleCartDataCover() {
+    document.querySelector('.cart-data-back-cover').classList.toggle('show-cart-data-back-cover');
+  }
+
+  expandTotal() {
+    let indinf = document.querySelector('.total-details');
+    indinf.classList.toggle('show-total-details');
+    document.querySelector('.expand-total-icon').classList.toggle('expand-total-icon-rotate');
   }
 
   addNote(idItem: any, event: any) {
+    let note: string = event.target.value;
+    if (this.mesa && this.mesa != null) {
+      this.cartService.addItemNote(idItem, note, this.mesa.codigo);
+    }
+  }
 
+  // Sobrecarga metodo
+  addNoteClick(idItem: any) {
+    let note: string = document.getElementById(idItem).textContent;
+    if (this.mesa && this.mesa != null) {
+      this.cartService.addItemNote(idItem, note, this.mesa.codigo);
+    }
   }
 
   //* Obtiene la próxima orden
@@ -368,10 +399,11 @@ export class PedidosFormComponent {
     this.cartService.refrescarCarrito();
     this.isCarritoLoaded = true;
     this.cartService.currentDataCart$.subscribe(data => {
-      this.dataSourceCarrito = new MatTableDataSource(data);
-      console.log(data);
-      console.log(this.cartService.idMesa);
+      data = data.filter(cartItem => cartItem.mesa == codigoMesa);
+      this.cartData = data;
     })
+    this.qtyItems = this.cartData.length;
+    this.setTotalsOrder(codigoMesa);
   }
 
   //* get Current User
@@ -460,6 +492,31 @@ export class PedidosFormComponent {
     //* La idea de esto es las líneas detalle.. solamente
     console.log("hola update");
 
+  }
+
+  // Remueve un item
+  removeItem(idItem: number) {
+    if (this.mesa && this.mesa != null) {
+      this.cartService.removeOneToOneFromCart(idItem, this.mesa.codigo);
+      this.cartData = this.cartService.getItems;
+      this.setTotalsOrder(this.mesa.codigo);
+    }
+  }
+
+  removeAllItems(idItem: number) {
+    if (this.mesa && this.mesa != null) {
+      this.cartService.removeAllItems(idItem, this.mesa.codigo);
+      this.cartData = this.cartService.getItems;
+      this.setTotalsOrder(this.mesa.codigo);
+    }
+  }
+
+  checkIfExistOldItemsOnCreate(mesa: string){
+    let listCart = this.cartService.getItems;
+    listCart = listCart.filter(item => item.mesa == mesa);
+    listCart.forEach(item => {
+      this.cartService.removeAllItems(item.idItem, mesa);
+    })
   }
 
   onReset() {
