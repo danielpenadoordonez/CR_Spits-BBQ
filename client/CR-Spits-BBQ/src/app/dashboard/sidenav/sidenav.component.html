@@ -8,11 +8,11 @@
         </button>
     </div>
     <div class="sidenav-dashboard-list">
-        <ul class="sidenav-nav">
+        <ul class="sidenav-nav nav-data">
             <li class="sidenav-nav-item" *ngFor="let item of navData">
                 <a href="#" [title]="item.label" class="sidenav-nav-link"
                  [routerLink]="[item.routerLink]" routerLinkActive="router-link-active"
-                 (click)="closeSideNavCollapsed()" >
+                 (click)="closeSideNavCollapsed($event)" >
                     <mat-icon class="sidenav-link-icon">{{item.icon}}</mat-icon>
                     <span class="sidenav-link-text">{{item.label}}</span>
                 </a>

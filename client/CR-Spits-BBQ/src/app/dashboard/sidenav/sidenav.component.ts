@@ -111,10 +111,11 @@ export class SidenavComponent implements OnInit {
   // Cuando el ancho de la pantalla sea igual o menor a 576px
   // va a quitar el sidenav cada vez que se click a un link del
   // sidenav
-  closeSideNavCollapsed() {
+  closeSideNavCollapsed(event: any) {
     if (this.screenWidth <= 576) {
       this.closeCollapsed();
     }
+    this.setActiveElementItem(event);
   }
 
   // Muestra el menu lateral. Aplica solamente
@@ -134,6 +135,14 @@ export class SidenavComponent implements OnInit {
   // Muestra los elementos del menu con un intervalo de 100ms cada uno
   setNavItemScrollReveal() {
     Scroll.reveal('.sidenav-nav-item', { interval: 100, origin: 'left' });
+  }
+
+  // set background on the active element
+  setActiveElementItem(event: any){
+    document.querySelectorAll('.nav-data .sidenav-nav-item .sidenav-nav-link').forEach(item => {
+      item.classList.remove('active-item');
+    })
+    event.target.parentNode.classList.add('active-item');
   }
 
   // Cuando el ancho de la pantalla sea igual o menor a 576px oculta el sidenav 
