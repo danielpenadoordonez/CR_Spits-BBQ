@@ -39,7 +39,7 @@
                                 <mat-icon class="mat-menu-user-icon">person</mat-icon>
                                 <span class="mat-menu-description" (click)="login()"> Iniciar Sesión </span>
                             </a>
-                            <a mat-menu-item *ngIf="!(isAuthenticated)">
+                            <a mat-menu-item *ngIf="!(isAuthenticated)" [routerLink]="['/users/registrar']" routerLinkActive="router-link-active" >
                                 <mat-icon class="mat-menu-user-icon">person_add</mat-icon>
                                 <span class="mat-menu-description"> Registrarse </span>
                             </a>
