@@ -482,6 +482,13 @@ tr.mat-row{
     transform: translateY(-1.85rem) scale(.85) perspective(100px) translateZ(.001px) !important;
 }
 
+/* MAT FORM FIELD - REGISTER COMPONENT */
+.register .mat-form-field-label{
+    height: 35px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
 
 
 /* pedido buttons */
@@ -490,4 +497,9 @@ tr.mat-row{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.pedido-state-select .mat-select-placeholder{
+    color: #fff;
+    font-weight: bold;
 }
