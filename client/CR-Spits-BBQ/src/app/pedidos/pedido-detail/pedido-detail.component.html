@@ -33,7 +33,7 @@
                 <p *ngIf="datos.idMesa !== null" class="dialogo-pedido-detalles-data-mesa">Mesa
                   {{datos.Mesa.codigo}} <br>
                 </p>
-                <div *ngIf="datos.idMesa !== null" class="flexbox dialogo-pedido-detalles-data-mesa-capacity" >
+                <div *ngIf="datos.idMesa !== null" class="flexbox dialogo-pedido-detalles-data-mesa-capacity">
                   <mat-icon class="person-icon">person</mat-icon>
                   X{{datos.Mesa.capacidad}}
                 </div>
@@ -48,6 +48,11 @@
               </div>
             </div>
           </div>
+          <mat-select required="true" placeholder="Cambiar estado pedido" title="Lista de sucursales" class="pedido-state-select">
+            <mat-option *ngFor="let estado of estadoPedido" [value]="estado.id" (click)=" onChangePedidoEstado(estado.id)">
+              {{ estado.descripcion }}
+            </mat-option>
+          </mat-select>
         </mat-tab>
         <mat-tab label="Productos" *ngIf="datos.detalles.length != 0">
           <div class="dialogo-pedido-productos">
@@ -81,6 +86,69 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </mat-tab>
+        <mat-tab label="Pagar">
+          <div class="contenedor">
+
+            <!-- Tarjeta -->
+            <section class="tarjeta" id="tarjeta">
+              <div class="delantera">
+                <div class="logo-marca" id="logo-marca">
+                  <!-- <img src="img/logos/visa.png" alt=""> -->
+                </div>
+                <img src="../../../assets/images/chip-tarjeta.png" class="chip" alt="">
+                <div class="datos">
+                  <div class="grupo" id="numero">
+                    <p class="label">Número Tarjeta</p>
+                    <input class="numero" id="numeroTarjeta" type="text" pattern="^[0-9]*$"
+                      placeholder="#### #### #### ####" max (input)="inputTarjeta($event)">
+                  </div>
+                  <div class="flexbox">
+                    <div class="grupo" id="nombre">
+                      <p class="label">Nombre Tarjeta</p>
+                      <p class="nombre">{{datos.Cliente.nombre}}
+                        {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}}</p>
+                    </div>
+
+                    <div class="grupo" id="expiracion">
+                      <p class="label">Expiracion</p>
+                      <p class="expiracion">
+                        <input class="mes" id="mesTarjeta" type="text" pattern="^[0-9]*$" placeholder="MM" max="2"
+                          (input)="inputFecha($event, 'mesTarjeta')">
+                        /
+                        <input class="year" id="annoTarjeta" type="text" pattern="^[0-9]*$" placeholder="AA" max="2"
+                          (input)="inputFecha($event, 'annoTarjeta')">
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="trasera">
+                <div class="barra-magnetica"></div>
+                <div class="datos">
+                  <div class="grupo" id="firma">
+                    <p class="label">Firma</p>
+                    <div class="firma">
+                      <p></p>
+                    </div>
+                  </div>
+                  <div class="grupo" id="ccv">
+                    <p class="label">CCV</p>
+                    <input class="ccv" id="ccvTarjeta" type="text" pattern="^[0-9]*$" placeholder="CCV" min="3" max="4"
+                      (input)="inputCCV($event)">
+                  </div>
+                </div>
+                <p class="leyenda">Esta tarjeta es intransferible, de uso personal y exclusivo del titular. Su uso queda
+                  sujeto a las condiciones y términos estipulados en el contrato.</p>
+                <a href="#" class="link-banco">www.crspitsbbq.com</a>
+              </div>
+            </section>
+          </div>
+          <div class="pay-actions flexbox">
+            <button class="pay-action" (click)="mostrarFrente()">Voltear Tarjeta</button>
+            <button class="pay-action">Pagar</button>
           </div>
         </mat-tab>
       </mat-tab-group>
