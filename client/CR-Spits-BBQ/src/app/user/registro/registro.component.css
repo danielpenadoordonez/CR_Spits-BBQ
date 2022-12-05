@@ -1,3 +1,81 @@
+.hide-icon {
+  color: #000;
+  top: -1.5rem;
+  left: -3rem;
+  z-index: 10000;
+  font-size: 1.8rem;
+}
+
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}
+
+.register-container{
+  display: flex !important;
+  align-items: center;
+  position: relative;
+}
+
+.first-register-section,
+.second-register-section{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transition: .5s;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.second-register-section{
+  left: 200%;
+}
+
+.show-second-section{
+  left: 0;
+}
+
+.show-first-section{
+  left: -200%;
+}
+
+
+.actions{
+  margin-top: 50vh;
+}
+
+
+.buttons{
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: center;
+}
+
+.buttons .login-btn{
+  margin: 1rem;
+  width: 30%;
+}
+
+
+.buttons .login-btn:nth-child(1){
+  background-color: #006EE5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .full-width {
   width: 100%;
 }
@@ -5,6 +83,7 @@
 .shipping-card {
   min-width: 120px;
   margin: 20px auto;
+  overflow: hidden;
 }
 
 .mat-radio-button {
@@ -15,6 +94,7 @@
 .row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .col {
@@ -26,4 +106,13 @@
   margin-right: 0;
 }
 
+@media screen and (max-width: 420px) {
+  .actions{
+    margin-top: 85vh;
+  }
+
+  .buttons .login-btn{
+    width: 85%;
+  }
+}
 
