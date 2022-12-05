@@ -25,7 +25,6 @@ export class AuthenticationService {
 
   //*Inyectar cliente HTTP para las solicitudes al API
 
-  //? FALTA: private cartService:CartService
   constructor(private http: HttpClient) {
     //* Obtener los datos del usuario en localStorage, si existe
     this.currentUserSubject = new BehaviorSubject<any>(
@@ -87,7 +86,8 @@ export class AuthenticationService {
       //* Eliminarlo del observable del boleano si esta autenticado
       this.authenticated.next(false);
 
-      //? Eliminar carrito
+      //? Eliminar carritos asociados
+      //? No estoy seguro si solo a cliente se le borra o mesero y admin igual
       //this.cartService.deleteCart();
       return true;
     }

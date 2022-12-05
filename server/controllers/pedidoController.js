@@ -166,6 +166,9 @@ module.exports.registerPedido = async (request, response, next) => {
 };
 
 
+/*
+* PUT APIs
+*/ 
 module.exports.updatePedido = async (request, response, next) => {
   let idPedido = request.params.id;
   let orden = request.body;

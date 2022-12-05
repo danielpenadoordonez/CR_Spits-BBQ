@@ -61,7 +61,8 @@ module.exports.getUserByUserName = async (request, response, next) => {
 
 //* Obtener usuario por correo
 module.exports.getUserByEmail = async (request, response, next) => {
-  let email = request.params.correo;
+  let email = request.params.email;
+  console.log(email)
   const user = await prismaClient.usuario.findFirst({
     where: { correo: email },
     include: {

@@ -34,6 +34,7 @@ export class ProductosFormComponent {
       * "idCategoria": 5,
       * "sucursales" : 
       *   [{"id" : 1}, {"id" : 2}, {"id" : 3}]     
+}
   */
 
   constructor(private fb: FormBuilder, private gService: GenericService,
@@ -80,10 +81,10 @@ export class ProductosFormComponent {
         Validators.required, Validators.minLength(3), Validators.maxLength(40), Validators.pattern(/^[A-Za-zÑñáéíóúÁÉÍÓÚ\\-\\\s]+$/) //? Solo letras - Español
       ])],
       descripcion: [null, Validators.compose([
-        Validators.required, Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Acepta números igualmente
+        Validators.required, Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúüÁÉÍÓÚÜ,\\-\\\s]+$/) //? Acepta números igualmente
       ])],
       ingredientes: [null, Validators.compose([
-        Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúÁÉÍÓÚ,\\-\\\s]+$/) //? Es opcional, valida en caso de que tenga algo...
+        Validators.minLength(5), Validators.maxLength(100), Validators.pattern(/^[A-Za-z0-9ÑñáéíóúüÁÉÍÓÚÜ,\\-\\\s]+$/) //? Es opcional, valida en caso de que tenga algo...
       ])],
       precio: [null, Validators.compose([
         Validators.required, Validators.min(100), Validators.max(100000), Validators.pattern(/^[0-9]*$/) //? Sólo números enteros [decimal, pero no tiene sentido los decimales acá]

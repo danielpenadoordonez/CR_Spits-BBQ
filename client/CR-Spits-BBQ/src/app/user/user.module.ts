@@ -23,14 +23,15 @@ import {MatStepperModule} from '@angular/material/stepper';
   imports: [
     CommonModule,
     UserRoutingModule,
+    //* Extras
     MatInputModule,
-    MatButtonModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
     MatIconModule,
     MatStepperModule,
     ReactiveFormsModule,
+    MatButtonModule
   ]
 })
 export class UserModule { }
