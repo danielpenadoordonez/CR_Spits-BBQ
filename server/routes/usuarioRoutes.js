@@ -6,7 +6,7 @@ const usuarioController = require("../controllers/usuarioController");
 const auth = require("../middleware/auth");
 
 //Rutas del API para usuario
-router.get("/", auth.grantRole(["Administrador"]), usuarioController.getAllUsers);
+router.get("/", auth.grantRole(["Administrador", "Mesero", "Cliente"]), usuarioController.getAllUsers); //* Lo cambio mientras Isaac arregla, solo admin
 router.post("/register", usuarioController.createUser);
 router.post("/login", usuarioController.login);
 router.get("/all", usuarioController.getAllUsers);

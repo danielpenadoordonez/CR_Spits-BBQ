@@ -126,7 +126,7 @@ export class ReservacionesFormComponent {
   listaSucursales() {
     this.sucursalesList = null; //* Reset
     this.gService
-      .list('users/perfil/3')
+      .list('sucursales')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.sucursalesList = data;
@@ -143,7 +143,7 @@ export class ReservacionesFormComponent {
     );
 
     if (this.isAuthenticated) {
-      if (this.currentUser.user.Perfil.descripcion != "Cliente") {
+      if (this.currentUser.user.idPerfil != 3) {
         this.listaClientes(); //* Si es create y sea admin o mesero, sino se cae xd
         this.formReservations.get('idUsuario').setValidators(Validators.required); //* Lo volvemos requerido
       }
@@ -184,7 +184,6 @@ export class ReservacionesFormComponent {
 
   //* Crear una reservación
   crearReservacion(): void {
-
     //* Establecemos submit verdadero 
     this.submitted = true;
 

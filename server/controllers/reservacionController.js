@@ -70,7 +70,7 @@ module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
   const newReservation = await prismaClient.reservacion.create({
     data: {
-      codigo: "test1", 
+      codigo: "test4",
       fecha_hora:
         reservation.fecha_hora !== undefined
           ? new Date(reservation.fecha_hora)
@@ -81,6 +81,15 @@ module.exports.createReservation = async (request, response, next) => {
       idMesa: reservation.idMesa,
     },
   });
+
+  //* Actualizamos el estado de la mesa
+  const mesaActualizar = await prismaClient.mesa.update({
+    where: { id: reservation.idMesa },
+    data: {
+      idDisponibilidad: 2, //* Reservada
+    },
+  });
+
   response.json(newReservation);
 };
 

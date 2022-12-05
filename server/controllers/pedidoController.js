@@ -66,6 +66,12 @@ module.exports.getPedidosByUsuario = async (request, response, next) => {
     },
     include: {
       detalles: true,
+      EstadoPedido: true,
+      Cliente: true,
+      Mesero: true,
+      Mesa: true,
+      Sucursal: true,
+      TipoPedido: true,
     },
   });
   response.json(pedidos);
@@ -197,7 +203,7 @@ module.exports.updatePedido = async (request, response, next) => {
     where: { id: idPedido },
     data: {
       idEstado: orden.idEstado,
-      precio: orden.precio //* Se actualiza igualmente...
+      precio: orden.precio, //* Se actualiza igualmente...
     },
   });
   return response.json(pedido);
