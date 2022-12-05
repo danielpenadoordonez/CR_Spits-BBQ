@@ -1,30 +1,176 @@
-<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+<form
+  [formGroup]="formReservations"
+  novalidate
+  (ngSubmit)="isCreate ? crearReservacion() : actualizarReservacion()"
+>
+  <!-- * Mae Isaac si lee esto, le recomiendo poner un cuadrito con los datos de la mesa y la sucursal arriba si se puede xfa..., la mesa se carga sola, use la variable mesaSelected -->
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>Shipping Information</mat-card-title>
+      <mat-card-title>{{ titleForm }} Reservación</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
+      <div class="row" *ngIf="!isCreate">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              type="text"
+              placeholder="Número de reservacion"
+              formControlName="id"
+              title="Número de reservacion"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                type="text"
+                placeholder="Código de reservacion"
+                formControlName="codigo"
+                title="Código de la reservacion"
+                readonly="true"
+              />
+            </mat-form-field>
+          </div>
+        </div>
       </div>
       <div class="row">
-        <div class="col"></div>
+        <div class="col">
+          <mat-form-field>
+            <input
+              matInput
+              [ngxMatDatetimePicker]="picker"
+              [min]="minDate"
+              [max]="maxDate"
+              required="true"
+              placeholder="Fecha"
+              title="Elija la fecha y la hora de la reservación (MM/dd/yyyy, hh:mm:ss)"
+              formControlName="fecha_hora"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="$any(picker)"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              #picker
+              [showSpinners]="showSpinners"
+              [stepHour]="stepHour"
+              [stepMinute]="stepMinute"
+              [stepSecond]="stepSecond"
+              [color]="color"
+            ></ngx-mat-datetime-picker>
+            <mat-error *ngIf="errorHandling('fecha_hora', 'required')">
+              La fecha y la hora son <strong>requeridas</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('fecha_hora', 'pattern')">
+              La fecha y la hora son
+              <strong>deben seguir el formato correspondiente</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('fecha_hora', 'min')">
+              Por favor, seleccione una fecha <strong>válida</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('fecha_hora', 'max')">
+              Por favor, seleccione una fecha <strong>válida</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              #cantidadPersonas
+              [min]="1"
+              [max]="cantidad"
+              pattern="^[0-9]{1,2}$"
+              type="text"
+              placeholder="Cantidad personas"
+              required="true"
+              formControlName="cantidad"
+              title="Ingrese la cantidad de personas"
+              autocomplete="true"
+              (mouseover)="actualizarCantidad()"
+            />
+            <mat-hint
+              >{{ cantidadPersonas.value == "" ? 0 : cantidadPersonas.value }} /
+              {{ cantidad }}</mat-hint
+            >
+            <mat-error *ngIf="errorHandling('cantidad', 'required')">
+              La cantidad de personas <strong>requerida</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('cantidad', 'pattern')">
+              Por favor, <strong>solo ingrese números</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('cantidad', 'min')">
+              La cantidad debe ser de al menos <strong>1 persona</strong>
+            </mat-error>
+            <mat-error *ngIf="errorHandling('cantidad', 'max')">
+              La cantidad ingresada
+              <strong
+                >excede la capacidad {{ cantidadPersonas.value }} /
+                {{ cantidad }}</strong
+              >
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
       <div class="row">
-        <div class="col"></div>
+        <div class="col">
+          <mat-form-field
+            class="full-width"
+            *ngIf="isAuthenticated ? currentUser.user.idPerfil != 3 : false"
+          >
+            <!-- ? Pregunta si está autenticado, en caso de estarlo pregunta por el perfil -->
+            <mat-select
+              placeholder="Cliente"
+              [required]="currentUser.user.idPerfil != 3"
+              formControlName="idUsuario"
+              title="Seleccione el cliente"
+            >
+              <mat-option
+                *ngFor="let client of clientsList"
+                [value]="client.id"
+              >
+                {{
+                  client.nombre +
+                    " " +
+                    client.apellido1 +
+                    " " +
+                    client.apellido2
+                }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="errorHandling('idUsuario', 'required')">
+              El cliente es <strong>requerido</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width" *ngIf="!isCreate">
+            <mat-select
+              placeholder="Sucursal"
+              formControlName="idSucursal"
+              title="Sucursal de la reservación"
+              [disabled]="isCreate"
+              [required]="false"
+            >
+              <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
+                {{ sucursal.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
       <div class="row">
-        <div class="col"></div>
-      </div>
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-      <div class="row">
-        <div class="col"></div>
-      </div>
-      <div class="row">
+        <div class="col">
+          <!-- ! Campos ocultos -->
+          <input type="hidden" formControlName="idMesa" />
+        </div>
         <div class="col"></div>
       </div>
     </mat-card-content>

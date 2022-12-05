@@ -66,6 +66,12 @@ module.exports.getPedidosByUsuario = async (request, response, next) => {
     },
     include: {
       detalles: true,
+      EstadoPedido: true,
+      Cliente: true,
+      Mesero: true,
+      Mesa: true,
+      Sucursal: true,
+      TipoPedido: true,
     },
   });
   response.json(pedidos);
@@ -93,7 +99,7 @@ module.exports.getPedidosByIdSucursal = async (request, response, next) => {
 //* Obtener pedidos por estado - Filtro
 module.exports.getPedidosByState = async (request, response, next) => {
   let estado = parseInt(request.params.idEstado);
-  const pedidos = await prismaClient.pedido.findMany({
+  const pedidos = await prismaClient.pedido.findFirst({
     where: { idEstado: estado },
     orderBy: {
       id: "asc", //* Orden claro que sí
@@ -109,6 +115,30 @@ module.exports.getPedidosByState = async (request, response, next) => {
     },
   });
   response.json(pedidos);
+};
+
+//* Obtener el último pedido que se hizo en la mesa (el más reciente)
+module.exports.getLastPedidoByTable = async (request, response, next) => {
+  let idMesa = parseInt(request.params.idMesa); //* Recibe el id de la mesa
+  const lastPedido = await prismaClient.pedido.findMany({
+    //* Al ser many no es necesario que sea unique
+    where: { idMesa: idMesa },
+    orderBy: {
+      id: "desc", //* Obtenemos el último
+    },
+    include: {
+      detalles: true,
+      EstadoPedido: true,
+      Cliente: true,
+      Mesero: true,
+      Mesa: true,
+      Sucursal: true,
+      TipoPedido: true,
+    },
+    take: 1, //* Agarramos el primero que salga o sea el último tipo find last
+  });
+
+  response.json(lastPedido[0]);
 };
 
 /*
@@ -149,7 +179,8 @@ module.exports.registerPedido = async (request, response, next) => {
     },
   });
 
-  if (pedido.idTipoPedido != 2) { //* Cuando sea diferente de online
+  if (pedido.idTipoPedido != 2) {
+    //* Cuando sea diferente de online
     const mesaActualizada = await prismaClient.mesa.update({
       where: { id: pedido.idMesa },
       data: {
@@ -173,10 +204,11 @@ module.exports.updatePedido = async (request, response, next) => {
   let idPedido = request.params.id;
   let orden = request.body;
   const pedido = await prismaClient.pedido.update({
-    where: { id: idPedido},
+    where: { id: idPedido },
     data: {
-      idEstado: orden.idEstado
+      idEstado: orden.idEstado,
+      precio: orden.precio, //* Se actualiza igualmente...
     },
   });
   return response.json(pedido);
-}
+};

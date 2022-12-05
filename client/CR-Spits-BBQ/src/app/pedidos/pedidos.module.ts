@@ -7,22 +7,22 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort'; 
-import {MatDividerModule} from '@angular/material/divider'; 
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatSortModule } from '@angular/material/sort';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { PedidosFormComponent } from './pedidos-form/pedidos-form.component';
 import { MatInputModule } from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
-// import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   declarations: [
     GestionPedidosComponent,
@@ -33,7 +33,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     CommonModule,
     PedidosRoutingModule,
 
- //* Angular material 
+    //* Angular material 
     MatDialogModule,
     MatIconModule,
     MatTableModule,
@@ -51,7 +51,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatAutocompleteModule,
     MatSelectModule,
     MatBadgeModule,
- //*   MatMomentDateModule,
+    MatMomentDateModule,
     MatNativeDateModule,
     ReactiveFormsModule,
   ],

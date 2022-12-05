@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 
@@ -37,8 +38,11 @@ export class ProductosFormComponent {
 }
   */
 
-  constructor(private fb: FormBuilder, private gService: GenericService,
-    private router: Router, private activeRouter: ActivatedRoute,
+  constructor(private fb: FormBuilder, 
+    private gService: GenericService,
+    private router: Router, 
+    private activeRouter: ActivatedRoute,
+    private authService: AuthenticationService,
     private notification: NotificacionService) {
     this.formularioReactive();
     this.listaCategorias();

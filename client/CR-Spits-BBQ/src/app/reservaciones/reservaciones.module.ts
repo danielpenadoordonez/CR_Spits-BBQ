@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ReservacionesRoutingModule } from './reservaciones-routing.module';
 import { GestionReservacionesComponent } from './gestion-reservaciones/gestion-reservaciones.component';
 import { ReservacionesFormComponent } from './reservaciones-form/reservaciones-form.component';
@@ -16,7 +15,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
+import { MatMomentDateModule } from "@angular/material-moment-adapter";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReservacionesRoutingModule,
-    //* angular material
+    //* Angular material
     MatDialogModule,
     MatButtonToggleModule,
     MatIconModule,
@@ -39,7 +42,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
+    MatMomentDateModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
+    //* Libreria @angular-material-components/datetime-picker
+    NgxMatDatetimePickerModule, 
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule
   ]
 })
 

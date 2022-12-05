@@ -5,6 +5,7 @@
 
 export const reservaciones = [
     {
+        codigo: "CRSB-01-1",
         fecha_hora: new Date('2022-11-5'),
         cantidad: 5,
         idSucursal: 1,
@@ -12,6 +13,7 @@ export const reservaciones = [
         idMesa: 5
     },
     {
+        codigo: "CRSB-02-1",
         fecha_hora: new Date('2022-11-6'),
         cantidad: 4,
         idSucursal: 2,
@@ -19,6 +21,7 @@ export const reservaciones = [
         idMesa: 13
     },
     {
+        codigo: "CRSB-01-2",
         fecha_hora: new Date('2022-11-8'),
         cantidad: 2,
         idSucursal: 1,
@@ -26,6 +29,7 @@ export const reservaciones = [
         idMesa: 7
     },
     {
+        codigo: "CRSB-03-1",
         fecha_hora: new Date('2022-11-9'),
         cantidad: 4,
         idSucursal: 3,
@@ -33,6 +37,7 @@ export const reservaciones = [
         idMesa: 26
     },
     {
+        codigo: "CRSB-02-2",
         fecha_hora: new Date('2022-11-11'),
         cantidad: 6,
         idSucursal: 2,
@@ -40,6 +45,7 @@ export const reservaciones = [
         idMesa: 14
     },
     {
+        codigo: "CRSB-04-1",
         fecha_hora: new Date('2022-11-13'),
         cantidad: 5,
         idSucursal: 4,

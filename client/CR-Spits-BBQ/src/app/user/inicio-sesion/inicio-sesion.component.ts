@@ -93,7 +93,7 @@ export class InicioSesionComponent {
       return;
     }
 
-    console.log(this.formulario.value);
+    //? console.log(this.formulario.value);
 
     this.authService
       .loginUser(this.formulario.value)

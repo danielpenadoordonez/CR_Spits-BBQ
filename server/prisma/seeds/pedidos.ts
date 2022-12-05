@@ -5,9 +5,10 @@
 //? la fecha se auto asigna
 export const pedidos = [
     //* Presenciales - Con detalles
+    //* Actualizados con el impuesto de ventas del 0.13% - 04/12/2022
     {
-        nombre: 'CRSB-01-01',
-        precio: 15000,
+        nombre: 'CRSB-01-1',
+        precio: 16950,
         fecha: new Date('2022-11-5'),
         idEstado: 6,
         idCliente: '65440685802',
@@ -17,8 +18,8 @@ export const pedidos = [
         idTipoPedido: 1
     },
     {
-        nombre: 'CRSB-01-02',
-        precio: 20200,
+        nombre: 'CRSB-01-2',
+        precio: 22826,
         fecha: new Date('2022-11-7'),
         idEstado: 6,
         idCliente: '508459062',
@@ -28,8 +29,8 @@ export const pedidos = [
         idTipoPedido: 1
     },
     {
-        nombre: 'CRSB-02-01',
-        precio: 12800,
+        nombre: 'CRSB-02-1',
+        precio: 14464,
         fecha: new Date('2022-11-8'),
         idEstado: 5,
         idCliente: '65440685802',
@@ -39,8 +40,8 @@ export const pedidos = [
         idTipoPedido: 1
     },
     {
-        nombre: 'CRSB-04-01',
-        precio: 19200,
+        nombre: 'CRSB-04-1',
+        precio: 21696,
         fecha: new Date('2022-11-9'),
         idEstado: 4,
         idCliente: '167459042',
@@ -53,8 +54,8 @@ export const pedidos = [
     //? Cuando el pedido es online, el id de quien lo haga aplica para ambos
     //? Tampoco usan mesa...
     { 
-        nombre: 'CRSB-01-03',
-        precio: 27100,
+        nombre: 'CRSB-01-3',
+        precio: 30623,
         fecha: new Date('2022-11-13'),
         idEstado: 4,
         idCliente: '65440685802',
@@ -63,8 +64,8 @@ export const pedidos = [
         idTipoPedido: 2
     },
     {
-        nombre: 'CRSB-02-02',
-        precio: 37600,
+        nombre: 'CRSB-02-2',
+        precio: 42488,
         fecha: new Date('2022-11-14'),
         idEstado: 3,
         idCliente: '167459042',
@@ -73,8 +74,8 @@ export const pedidos = [
         idTipoPedido: 2
     },
     {
-        nombre: 'CRSB-04-02',
-        precio: 27100,
+        nombre: 'CRSB-04-2',
+        precio: 30623,
         fecha: new Date('2022-11-14'),
         idEstado: 5,
         idCliente: '167459042',
@@ -84,7 +85,8 @@ export const pedidos = [
     },
     //* Mixto - SIN DETALLES!! - pendientes a agregar por mantenimiento
     {
-        nombre: 'CRSB-03-01',
+        //* N° 8
+        nombre: 'CRSB-03-1',
         //precio: 0, //? Pq no tiene detalles - igual aplica el valor default (0)
         fecha: new Date('2022-11-16'),
         idEstado: 3,
@@ -95,7 +97,7 @@ export const pedidos = [
         idTipoPedido: 1
     },
     {
-        nombre: 'CRSB-02-03',
+        nombre: 'CRSB-02-3',
         //precio: 0, //? Pq no tiene detalles
         //? Fecha hoy.. (día en el que se haga el migrate)
         idEstado: 3,
@@ -106,7 +108,7 @@ export const pedidos = [
         idTipoPedido: 1
     },
     {
-        nombre: 'CRSB-02-04',
+        nombre: 'CRSB-02-4',
         //precio: 0, //? Pq no tiene detalles
         //? Fecha default get by data base configuration
         idEstado: 3,

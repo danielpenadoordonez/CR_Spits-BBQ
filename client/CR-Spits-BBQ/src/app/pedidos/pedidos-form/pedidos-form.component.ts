@@ -121,6 +121,7 @@ export class PedidosFormComponent {
     if (this.currentUser.user.idPerfil == 3) { //* Se settea que es online
       this.isPedidoPresencial = false;
     }
+
     this.getProductData();
   }
 
@@ -438,7 +439,7 @@ export class PedidosFormComponent {
   crearPedido() {
     //* Establecer submit verdadero 
     //* Es necesario insertar las líneas de detalle igualmente
-    console.log('crear');
+    console.log('intentando crear pedido');
     this.submitted = true;
 
     //* Parcheamos values restantes - no del form

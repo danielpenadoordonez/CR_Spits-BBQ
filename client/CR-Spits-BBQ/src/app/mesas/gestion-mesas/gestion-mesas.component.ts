@@ -224,7 +224,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   pedidoMesaAction(idMesa: number) {
     this.gService
-      .get('mesas/', idMesa)
+      .get('mesas', idMesa)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         if (data.EstadoMesa.descripcion == 'Disponible') {
@@ -235,4 +235,19 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
         }
       });
   }
+
+  reservarMesaAction(idMesa: number) {
+    this.gService
+      .get('mesas', idMesa)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        if (data.EstadoMesa.descripcion == 'Disponible') {
+          this.router.navigate(['reservaciones/create'], {
+            queryParams: { codigoMesa: data.codigo },
+            relativeTo: this.route,
+          });
+        }
+      });
+  }
+
 }

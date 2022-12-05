@@ -6,6 +6,8 @@ import { GestionPedidosComponent } from '../pedidos/gestion-pedidos/gestion-pedi
 import { PedidosFormComponent } from '../pedidos/pedidos-form/pedidos-form.component';
 import { GestionProductoComponent } from '../productos/gestion-producto/gestion-producto.component';
 import { ProductosFormComponent } from '../productos/productos-form/productos-form.component';
+import { GestionReservacionesComponent } from '../reservaciones/gestion-reservaciones/gestion-reservaciones.component';
+import { ReservacionesFormComponent } from '../reservaciones/reservaciones-form/reservaciones-form.component';
 import { AuthGuard } from '../share/guards/auth.guard';
 import { BodyIndexComponent } from './body-index/body-index.component';
 import { DashboardIndexComponent } from './dashboard-index/dashboard-index.component';
@@ -48,9 +50,25 @@ const routes: Routes = [
         }
       },
       {
+        path: 'reservaciones',
+        canActivate: [AuthGuard],
+        component: GestionReservacionesComponent,
+        data: {
+          roles: ['Administrador', 'Mesero', 'Cliente'],
+        }
+      },
+      {
         path: 'mesas/create',
         canActivate: [AuthGuard],
         component: MesasFormComponent,
+        data: {
+          roles: ['Administrador', 'Mesero'],
+        }
+      },
+      {
+        path: 'productos/create',
+        canActivate: [AuthGuard],
+        component: ProductosFormComponent,
         data: {
           roles: ['Administrador', 'Mesero'],
         }
@@ -64,11 +82,11 @@ const routes: Routes = [
         }
       },
       {
-        path: 'productos/create',
+        path: 'mesas/reservaciones/create',
         canActivate: [AuthGuard],
-        component: ProductosFormComponent,
+        component: ReservacionesFormComponent,
         data: {
-          roles: ['Administrador', 'Mesero'],
+          roles: ['Administrador', 'Mesero', 'Cliente'],
         }
       },
       //* Rutas de segundo nivel
@@ -104,6 +122,14 @@ const routes: Routes = [
           roles: ['Administrador', 'Mesero', 'Cliente'],
         }
       },
+      {
+        path: 'reservaciones/update/:id',
+        canActivate: [AuthGuard],
+        component: ReservacionesFormComponent,
+        data: {
+          roles: ['Administrador', 'Mesero'],
+        }
+      }
     ]
   },
 ];
