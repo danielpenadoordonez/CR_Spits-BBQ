@@ -503,3 +503,9 @@ tr.mat-row{
     color: #fff;
     font-weight: bold;
 }
+
+
+/* datetime picker */
+.datetime-picker .mat-button-wrapper{
+    color: #fff !important;
+}
