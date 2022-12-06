@@ -1,5 +1,5 @@
 
-  <div class="mesero-sucursal" *ngIf="(currentUser && currentUser.user.sucursales.length != 0)">
+  <div class="mesero-sucursal" *ngIf="(currentUser && currentUser.user.sucursales.length != 0 && currentUser.user.Perfil.descripcion == 'Mesero' )">
     <h1 class="mesero-sucursal-title">{{currentUser.user.sucursales[0].nombre}}</h1>
     <hr class="fire-line">
   </div>
@@ -93,7 +93,7 @@
                  [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle de la comanda'" *ngIf="currentUser.user.idPerfil != 3 && row.estado">
                   {{row.EstadoMesa.descripcion == 'Disponible' && row.estado  ? 'post_add' : 'preview'}}
                 </mat-icon>
-                <mat-icon class="sidenav-link-icon settings"  (click)="reservarMesaAction(row.id)" *ngIf="row.estado && row.idDisponibilidad == 1" title="Crear una reservación en esta mesa">queue</mat-icon>
+                <mat-icon class="sidenav-link-icon settings"  (click)="reservarMesaAction(row.id)" *ngIf="row.estado && row.idDisponibilidad == 1" title="Crear una reservación en esta mesa">auto_stories</mat-icon>
               </div>
             </div>
           </div>
