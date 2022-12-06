@@ -9,8 +9,9 @@ module.exports.getPreviousNumber = (reservations) => {
     let highestNum = 0;
     //* Recorrer todas los pedidos y buscar el numero mayor para retornarlo
     const getNumber = (reservation) => {
-        highestNum = reservation.nombre.split("-")[2];
+        highestNum = reservation.codigo.split("-")[2];
     }
+    console.log(reservations);
     reservations.forEach(getNumber);
     return highestNum;
 }
