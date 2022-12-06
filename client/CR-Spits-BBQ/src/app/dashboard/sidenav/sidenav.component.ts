@@ -154,4 +154,17 @@ export class SidenavComponent implements OnInit {
   getUserFullName(): String{
     return `${this.currentUser.user.nombre} ${this.currentUser.user.apellido1}`;
   }
+
+  isAllowRol(rol: string, rolesAllowed: any, label:string): boolean{
+    let isValid = false;
+    rolesAllowed.forEach(item => {
+      if(item == rol){
+        isValid = true;
+      }
+    })
+    if(!isValid){
+      document.getElementById(label).style.display = 'none';
+    }
+    return isValid;
+  }
 }

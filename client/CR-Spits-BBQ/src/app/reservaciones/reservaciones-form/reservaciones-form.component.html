@@ -1,152 +1,113 @@
-<form
-  [formGroup]="formReservations"
-  novalidate
-  (ngSubmit)="isCreate ? crearReservacion() : actualizarReservacion()"
->
+<form [formGroup]="formReservations" novalidate (ngSubmit)="isCreate ? crearReservacion() : actualizarReservacion()">
   <!-- * Mae Isaac si lee esto, le recomiendo poner un cuadrito con los datos de la mesa y la sucursal arriba si se puede xfa..., la mesa se carga sola, use la variable mesaSelected -->
+
   <mat-card class="shipping-card">
-    <mat-card-header>
-      <mat-card-title>{{ titleForm }} Reservación</mat-card-title>
+
+    <mat-card-header style="justify-content: center;">
+      <mat-card-title style="color: #fff; justify-content: center; font-size: 1.2rem; font-weight: bold;">{{ titleForm
+        }} Reservación</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="row" *ngIf="!isCreate">
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              type="text"
-              placeholder="Número de reservacion"
-              formControlName="id"
-              title="Número de reservacion"
-              readonly="true"
-            />
-          </mat-form-field>
+    <div class="pedido-detail flexbox">
+      <div class="pedido-detail-table flexbox" *ngIf="mesa" data-aos="zoom-in" data-aos-duration0="1200">
+        <div class="pedido-detail-table-content">
+          <h2 class="pedido-detail-table-code">{{ mesa.Sucursal.nombre }}</h2>
+          <img class="table-icon" [src]="
+              mesa.EstadoMesa.descripcion == 'Disponible'
+                ? 'https://img.icons8.com/ios-filled/150/C8C0B5/table-top-view.png'
+                : mesa.EstadoMesa.descripcion == 'Reservada'
+                ? 'https://img.icons8.com/ios-filled/150/024F8B/table-top-view.png'
+                : 'https://img.icons8.com/ios-filled/150/C70000/table-top-view.png'
+            " />
+          <div class="table-diners-information flexbox">
+            <i class="fa-solid fa-user diners"></i>
+            <p class="diners-quantity">X{{ mesa.capacidad }}</p>
+          </div>
         </div>
-        <div class="col">
+        <h2 class="pedido-detail-table-code">{{ mesa.codigo }}</h2>
+      </div>
+      <div class="pedido-detail-cliente flexbox" *ngIf="clienteSeleccionado" data-aos="zoom-in"
+        data-aos-duration0="1200">
+        <div class="user-logo">
+          <mat-icon class="user-icon">account_circle</mat-icon>
+        </div>
+        <div class="user-information">
+          <h3 class="user-name">{{ getUserFullName() }}</h3>
+        </div>
+      </div>
+      <div class="pedido-select-cliente flexbox" data-aos="zoom-in" data-aos-duration0="1200"
+        *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">
+        <div class="row" *ngIf="!(isCreate)">
           <div class="col">
             <mat-form-field class="full-width">
-              <input
-                matInput
-                type="text"
-                placeholder="Código de reservacion"
-                formControlName="codigo"
-                title="Código de la reservacion"
-                readonly="true"
-              />
+              <input matInput type="text" placeholder="Código de reservacion" formControlName="codigo"
+                title="Código de la reservacion" readonly="true" />
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Número de reservacion" formControlName="id"
+                title="Número de reservacion" readonly="true" />
             </mat-form-field>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field>
-            <input
-              matInput
-              [ngxMatDatetimePicker]="picker"
-              [min]="minDate"
-              [max]="maxDate"
-              required="true"
-              placeholder="Fecha"
-              title="Elija la fecha y la hora de la reservación (MM/dd/yyyy, hh:mm:ss)"
-              formControlName="fecha_hora"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="$any(picker)"
-            ></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker
-              #picker
-              [showSpinners]="showSpinners"
-              [stepHour]="stepHour"
-              [stepMinute]="stepMinute"
-              [stepSecond]="stepSecond"
-              [color]="color"
-            ></ngx-mat-datetime-picker>
-            <mat-error *ngIf="errorHandling('fecha_hora', 'required')">
-              La fecha y la hora son <strong>requeridas</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('fecha_hora', 'pattern')">
-              La fecha y la hora son
-              <strong>deben seguir el formato correspondiente</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('fecha_hora', 'min')">
-              Por favor, seleccione una fecha <strong>válida</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('fecha_hora', 'max')">
-              Por favor, seleccione una fecha <strong>válida</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field class="full-width">
-            <input
-              matInput
-              #cantidadPersonas
-              [min]="1"
-              [max]="cantidad"
-              pattern="^[0-9]{1,2}$"
-              type="text"
-              placeholder="Cantidad personas"
-              required="true"
-              formControlName="cantidad"
-              title="Ingrese la cantidad de personas"
-              autocomplete="true"
-              (mouseover)="actualizarCantidad()"
-            />
-            <mat-hint
-              >{{ cantidadPersonas.value == "" ? 0 : cantidadPersonas.value }} /
-              {{ cantidad }}</mat-hint
-            >
-            <mat-error *ngIf="errorHandling('cantidad', 'required')">
-              La cantidad de personas <strong>requerida</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('cantidad', 'pattern')">
-              Por favor, <strong>solo ingrese números</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('cantidad', 'min')">
-              La cantidad debe ser de al menos <strong>1 persona</strong>
-            </mat-error>
-            <mat-error *ngIf="errorHandling('cantidad', 'max')">
-              La cantidad ingresada
-              <strong
-                >excede la capacidad {{ cantidadPersonas.value }} /
-                {{ cantidad }}</strong
-              >
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field
-            class="full-width"
-            *ngIf="isAuthenticated ? currentUser.user.idPerfil != 3 : false"
-          >
-            <!-- ? Pregunta si está autenticado, en caso de estarlo pregunta por el perfil -->
-            <mat-select
-              placeholder="Cliente"
-              [required]="currentUser.user.idPerfil != 3"
-              formControlName="idUsuario"
-              title="Seleccione el cliente"
-            >
-              <mat-option
-                *ngFor="let client of clientsList"
-                [value]="client.id"
-              >
-                {{
-                  client.nombre +
-                    " " +
-                    client.apellido1 +
-                    " " +
-                    client.apellido2
-                }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="errorHandling('idUsuario', 'required')">
-              El cliente es <strong>requerido</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
+        <h3>Selecciona un cliente</h3>
+        <mat-form-field appearance="fill" class="full-width" *ngIf="isCreate && clientsList">
+          <mat-label>Cliente</mat-label>
+          <input type="text" placeholder="Seleccione el cliente" aria-label="Cliente" matInput minlength="10"
+            maxlength="100" [formControl]="inputFiltro" [matAutocomplete]="auto" [required]="true"
+            style="color: rgba(255, 255, 255, 0.719)" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClientName">
+            <mat-option *ngFor="let cliente of filteredOptions | async" [value]="cliente"
+              (onSelectionChange)="asignarCliente(cliente)">
+              <!--* Hay que tener cuidado, ya que el apellido 2 es opcional-->
+              {{ cliente.nombre }} {{ cliente.apellido1 }}
+              {{ cliente.apellido2 !== undefined ? cliente.apellido2 : "" }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="datetime-picker">
+          <input matInput [ngxMatDatetimePicker]="picker" [min]="minDate" [max]="maxDate" required="true"
+            placeholder="Fecha" title="Elija la fecha y la hora de la reservación (MM/dd/yyyy, hh:mm:ss)"
+            formControlName="fecha_hora" />
+          <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [stepHour]="stepHour" [stepMinute]="stepMinute"
+            [stepSecond]="stepSecond" [color]="color"></ngx-mat-datetime-picker>
+          <mat-error *ngIf="errorHandling('fecha_hora', 'required')">
+            La fecha y la hora son <strong>requeridas</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('fecha_hora', 'pattern')">
+            La fecha y la hora son
+            <strong>deben seguir el formato correspondiente</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('fecha_hora', 'min')">
+            Por favor, seleccione una fecha <strong>válida</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('fecha_hora', 'max')">
+            Por favor, seleccione una fecha <strong>válida</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" class="qtyCliente">
+          <input matInput #cantidadPersonas [min]="1" [max]="cantidad" pattern="^[0-9]{1,2}$" type="text"
+            placeholder="Cantidad personas" required="true" formControlName="cantidad"
+            title="Ingrese la cantidad de personas" autocomplete="true" (mouseover)="actualizarCantidad()" />
+          <mat-hint>{{ cantidadPersonas.value == "" ? 0 : cantidadPersonas.value }} /
+            {{ cantidad }}</mat-hint>
+          <mat-error *ngIf="errorHandling('cantidad', 'required')">
+            La cantidad de personas <strong>requerida</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('cantidad', 'pattern')">
+            Por favor, <strong>solo ingrese números</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('cantidad', 'min')">
+            La cantidad debe ser de al menos <strong>1 persona</strong>
+          </mat-error>
+          <mat-error *ngIf="errorHandling('cantidad', 'max')">
+            La cantidad ingresada
+            <strong>excede la capacidad {{ cantidadPersonas.value }} /
+              {{ cantidad }}</strong>
+          </mat-error>
+        </mat-form-field>
+
         <div class="col">
           <mat-form-field class="full-width" *ngIf="!isCreate">
             <input
@@ -165,31 +126,24 @@
               </mat-option> -->
           </mat-form-field>
         </div>
+        <mat-form-field class="full-width" *ngIf="!isCreate">
+          <input matInput placeholder="Nombre completo del cliente" required="false" autocomplete="false"
+            formControlName="cliente" title="Nombre del producto" [readonly]="!isCreate"
+            style="color: rgba(255, 255, 255, 0.719)" />
+        </mat-form-field>
+        <!-- ! Campos ocultos -->
+        <input type="hidden" formControlName="idMesa" />
       </div>
-      <div class="row">
-        <div class="col">
-          <!-- ! Campos ocultos -->
-          <input type="hidden" formControlName="idMesa" />
-        </div>
-        <div class="col"></div>
-      </div>
-    </mat-card-content>
-    <mat-button-toggle-group
-      class="actions-group"
-      name="fontStyle"
-      aria-label="Font Style"
-    >
-      <button mat-raesed-button type="submit" title="Crear reservación">
-        <mat-icon class="actions">save</mat-icon>
-      </button>
-      <mat-button-toggle
-        *ngIf="isCreate"
-        (click)="onReset()"
-        title="Limpiar datos"
-      >
-        <mat-icon class="actions">cleaning_services</mat-icon>
+    </div>
+    <mat-button-toggle-group class="actions-group pedido-actions flexbox" name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle class="button flexbox accept-order" mat-raesed-button type="submit" title="Generar la orden"
+        (click)="isCreate ? crearReservacion() : actualizarReservacion()">
+        <p>{{isCreate ? 'Reservar' : 'Actualizar reserva'}}</p>
+        <mat-icon class="actions">done</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle (click)="onBack()" title="Cancelar acción">
+      <mat-button-toggle class="button flexbox cancel-order" (click)="onBack()" title="Cancelar la orden">
+        <p>Cancelar orden</p>
+
         <mat-icon class="actions">cancel</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
