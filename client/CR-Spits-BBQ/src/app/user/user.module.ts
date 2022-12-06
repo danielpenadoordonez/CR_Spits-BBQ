@@ -13,12 +13,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistroComponent } from './registro/registro.component';
 import { MatIconModule } from '@angular/material/icon';
 import {MatStepperModule} from '@angular/material/stepper';
+import { GestionUsuariosComponent } from './gestion-usuarios/gestion-usuarios.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
     UsuarioComponent,
     InicioSesionComponent,
-    RegistroComponent
+    RegistroComponent,
+    GestionUsuariosComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +36,10 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatIconModule,
     MatStepperModule,
     ReactiveFormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ]
 })
 export class UserModule { }

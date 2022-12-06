@@ -42,3 +42,5 @@ export const navbarData = [
         roles: ['Cliente', 'Mesero', 'Administrador']
     },
 ]
+
+//* Falta uno para los reportes, aunque son 3 los hptas...
