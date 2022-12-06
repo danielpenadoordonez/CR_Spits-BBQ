@@ -509,3 +509,7 @@ tr.mat-row{
 .datetime-picker .mat-button-wrapper{
     color: #fff !important;
 }
+
+.reserva-table tr{
+    margin:  0 auto !important;
+}

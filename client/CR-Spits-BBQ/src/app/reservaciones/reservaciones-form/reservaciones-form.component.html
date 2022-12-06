@@ -36,7 +36,7 @@
       </div>
       <div class="pedido-select-cliente flexbox" data-aos="zoom-in" data-aos-duration0="1200"
         *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">
-        <div class="row" *ngIf="!(isCreate)">
+        <div class="row" *ngIf="false">
           <div class="col">
             <mat-form-field class="full-width">
               <input matInput type="text" placeholder="Código de reservacion" formControlName="codigo"
@@ -48,7 +48,7 @@
             </mat-form-field>
           </div>
         </div>
-        <h3>Selecciona un cliente</h3>
+        <h3 *ngIf="isCreate">Selecciona un cliente</h3>
         <mat-form-field appearance="fill" class="full-width" *ngIf="isCreate && clientsList">
           <mat-label>Cliente</mat-label>
           <input type="text" placeholder="Seleccione el cliente" aria-label="Cliente" matInput minlength="10"
@@ -109,7 +109,7 @@
         </mat-form-field>
 
         <div class="col">
-          <mat-form-field class="full-width" *ngIf="!isCreate">
+          <mat-form-field class="full-width" *ngIf="false">
             <input
               matInput
               placeholder="Sucursal"
@@ -126,7 +126,7 @@
               </mat-option> -->
           </mat-form-field>
         </div>
-        <mat-form-field class="full-width" *ngIf="!isCreate">
+        <mat-form-field class="full-width" *ngIf="false">
           <input matInput placeholder="Nombre completo del cliente" required="false" autocomplete="false"
             formControlName="cliente" title="Nombre del producto" [readonly]="!isCreate"
             style="color: rgba(255, 255, 255, 0.719)" />

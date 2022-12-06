@@ -215,6 +215,7 @@ export class ReservacionesFormComponent {
       .subscribe((data: any) => {
         this.mesaSelected = data;
         this.isMesaLoaded = true;
+        this.mesa = data;
         //? console.log(this.mesaSelected)
       });
   }
@@ -254,6 +255,8 @@ export class ReservacionesFormComponent {
               idUsuario: this.reservationInfo.idUsuario,
               idMesa: this.reservationInfo.idMesa
             });
+            this.mesa = data.Mesa;
+            this.loadMesaByCodigo(data.Mesa.codigo)
           });
       }
     })

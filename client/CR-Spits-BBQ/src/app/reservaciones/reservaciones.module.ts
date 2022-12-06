@@ -52,6 +52,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     NgxMatDatetimePickerModule, 
     NgxMatTimepickerModule,
     NgxMatNativeDateModule
+  ],
+  exports: [
+    GestionReservacionesComponent,
   ]
 })
 
