@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
@@ -39,7 +39,7 @@ export class ReservacionesFormComponent {
   maxDate: object = null;
   //* Saltos en el spinner
   stepHour = 1;
-  stepMinute = 10;
+  stepMinute = 5;
   stepSecond = 1;
   color: ThemePalette = 'warn'; //* Temas: primary, accent y warn 
 
@@ -72,6 +72,7 @@ export class ReservacionesFormComponent {
     this.route.queryParams.subscribe(params => {
       let codigoMesa = params['codigoMesa'] || null;
       if (codigoMesa != null) { //* Es create
+        this.isCreate = true; //* Por si acaso
         console.log("es crear");
         this.loadMesaByCodigo(codigoMesa);
       } else { //* Update
@@ -108,6 +109,11 @@ export class ReservacionesFormComponent {
   onReset() {
     this.submitted = false;
     this.formReservations.reset();
+  }
+
+  onBack() {
+    //* Cuando intenté salir - botón salir
+    this.router.navigate(['/dashboard/reservaciones']);
   }
 
   //* Cargamos la lista de clientes
@@ -173,13 +179,35 @@ export class ReservacionesFormComponent {
       .subscribe((data: any) => {
         this.mesaSelected = data;
         this.isMesaLoaded = true;
+        console.log("Mesa por id:");
+        console.log(this.mesaSelected);
       });
   }
 
   //* Cargar datos en caso de que sea update...
   loadDataReservation() {
-    this.isCreate = false;
-    this.loadMesaById(1);
+    this.activeRouter.params.subscribe((params: Params) => {
+      this.idReservacion = params['id']; //? Recibe el id de la reservación [int], OJO no es lo mismo que el de código mesareservationInfo
+      if (this.idReservacion !== undefined) {
+        this.isCreate = false; //* Update
+        this.titleForm = 'Actualizar'; //* Cambiamos título
+        this.gService.get('reservaciones', this.idReservacion) //? Trae la reservación por medio del id númerico [int]
+          .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+            this.reservationInfo = data; //* Obtenemos la data y la asignamos
+            this.loadMesaById(this.reservationInfo.idMesa); //* Cargamos por id
+            //? SOLO USO EL SET SI MAPEO ABSOLUTAMENTE TODO
+            this.formReservations.setValue({
+              id: this.reservationInfo.id,
+              codigo: this.reservationInfo.codigo,
+              fecha_hora: this.reservationInfo.fecha_hora,
+              cantidad: this.reservationInfo.cantidad,
+              idSucursal: this.reservationInfo.Sucursal.nombre,
+              idUsuario: this.reservationInfo.idUsuario,
+              idMesa: this.reservationInfo.idMesa
+            });
+          });
+      }
+    })
   }
 
   //* Crear una reservación
@@ -198,6 +226,25 @@ export class ReservacionesFormComponent {
     //TODO Revisamos la data
     console.log(this.formReservations.value);
 
+    //* Validamos horas
+    let fechaSeleccionada = new Date(this.formReservations.get("fecha_hora").value);
+    let fechaAhora = new Date();
+
+    //* Validación de fechas
+    if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
+      this.notification.mensaje("Reservaciones",
+        "La hora ingresada no es <b>válida</b>.",
+        TipoMessage.error);
+      return;
+    }
+
+    if (fechaSeleccionada.getMinutes() < (fechaAhora.getMinutes() + 30)) {
+      this.notification.mensaje("Reservaciones",
+        "La hora ingresada debe ser </b>al menos 30m</b> después de la hora actual.",
+        TipoMessage.error);
+      return;
+    }
+
     //* Asignamos lo que falta
     //? La sucursal, mesa o en caso de ser cliente su id...
     if (this.currentUser.user.idPerfil == 3) { //* Cliente
@@ -212,7 +259,7 @@ export class ReservacionesFormComponent {
         this.respReservation = data;
         //* Notificacion de la tarea realizada
         let notificationBody = `<div class='flexbox'><p>Reservación número: ${this.respReservation.id} <br> ${this.respReservation.codigo} 
-       ha sido <b>creada</b>.</p></div>`
+       ha sido <b>creada</b> exitosamente.</p></div>`
         this.notification.mensaje('Reservaciones', notificationBody, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['/dashboard/reservaciones'], {
@@ -223,7 +270,57 @@ export class ReservacionesFormComponent {
 
   //* Actualizar una reservación
   actualizarReservacion(): void {
+    //* Establecemos submit verdadero 
+    this.submitted = true;
 
+    //* Verificar validación del form
+    if (this.formReservations.invalid) {
+      this.notification.mensaje("Reservaciones",
+        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
+        TipoMessage.error);
+      return;
+    }
+
+    //? Esto no puede ser editado por cliente, por lo que no necesita eso
+
+    //TODO Revisamos la data
+    console.log(this.formReservations.value);
+
+    //* Validamos horas
+    let fechaSeleccionada = new Date(this.formReservations.get("fecha_hora").value);
+    let fechaAhora = new Date();
+
+    //* Validación de fechas
+    
+    //* Valida si ya la reservación expiró
+    if (fechaSeleccionada.getDate() > fechaAhora.getDate() && fechaSeleccionada.getTime() > fechaAhora.getTime()){
+    if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
+        this.notification.mensaje("Reservaciones",
+          "La hora ingresada no es <b>válida</b>.",
+          TipoMessage.error);
+        return;
+      }
+      if (fechaSeleccionada.getMinutes() < (fechaAhora.getMinutes() + 30)) {
+        this.notification.mensaje("Reservaciones",
+          "La hora ingresada debe ser </b>al menos 30m</b> después de la hora actual.",
+          TipoMessage.error);
+        return;
+      }
+    }
+
+    //* Accion API create enviando toda la informacion del formulario
+    this.gService.update('reservaciones', this.formReservations.value)
+      .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+        this.respReservation = data;
+        //* Notificacion de la tarea realizada
+        let notificationBody = `<div class='flexbox'><p>Reservación número: ${this.respReservation.id} <br> ${this.respReservation.codigo} 
+         ha sido <b>actualizada</b> correctamente.</p></div>`
+        this.notification.mensaje('Reservaciones', notificationBody, TipoMessage.success);
+        //? Rederigimos
+        this.router.navigate(['/dashboard/reservaciones'], {
+          queryParams: { create: 'true' }
+        });
+      });
   }
 
   //? Filtro de fecha

@@ -1,5 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-
 const prismaClient = new PrismaClient();
 const reservationService = require("../services/ReservacionService");
 /*
@@ -21,7 +20,6 @@ module.exports.getAllReservations = async (request, response, next) => {
 
 //* Obtener reservación by id
 module.exports.getReservationById = async (request, response, next) => {
-  console.log("hola");
   let idReservacion = parseInt(request.params.id);
   const reservation = await prismaClient.reservacion.findFirst({
     where: { id: idReservacion },
@@ -83,14 +81,17 @@ module.exports.getReservationByCode = async (request, response, next) => {
 module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
 
-  //Obtiene todos las reservacion por Sucursal
-  const allReservations = prismaClient.reservacion.findMany({
+  //* Obtiene todos las reservacion por Sucursal
+  const allReservations = await prismaClient.reservacion.findMany({
     where: { idSucursal: reservation.idSucursal },
   });
 
-  //Crear codigo de reservacion
+  //* Crear codigo de reservacion
   let previousNum = reservationService.getPreviousNumber(allReservations);
-  let reservationCode = reservationService.generateReservacionCode(reservation.idSucursal, previousNum);
+  let reservationCode = reservationService.generateReservacionCode(
+    reservation.idSucursal,
+    previousNum
+  );
 
   const newReservation = await prismaClient.reservacion.create({
     data: {
@@ -129,7 +130,7 @@ module.exports.updateReservation = async (request, response, next) => {
     data: {
       //* Solo estos campos se actualizan
       fecha_hora: reservation.fecha_hora,
-      cantidad: reservation.cantidad,
+      cantidad: parseInt(reservation.cantidad),
       idUsuario: reservation.idUsuario,
     },
   });

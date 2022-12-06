@@ -149,20 +149,20 @@
         </div>
         <div class="col">
           <mat-form-field class="full-width" *ngIf="!isCreate">
-            <mat-select
+            <input
+              matInput
               placeholder="Sucursal"
               formControlName="idSucursal"
               title="Sucursal de la reservación"
-              [disabled]="isCreate"
               [required]="false"
-            >
-              <mat-option
+              [readonly]="!isCreate"
+            />
+            <!-- <mat-option
                 *ngFor="let sucursal of sucursalesList"
                 [value]="sucursal.id"
               >
                 {{ sucursal.nombre }}
-              </mat-option>
-            </mat-select>
+              </mat-option> -->
           </mat-form-field>
         </div>
       </div>
@@ -174,8 +174,24 @@
         <div class="col"></div>
       </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
-    </mat-card-actions>
+    <mat-button-toggle-group
+      class="actions-group"
+      name="fontStyle"
+      aria-label="Font Style"
+    >
+      <button mat-raesed-button type="submit" title="Crear reservación">
+        <mat-icon class="actions">save</mat-icon>
+      </button>
+      <mat-button-toggle
+        *ngIf="isCreate"
+        (click)="onReset()"
+        title="Limpiar datos"
+      >
+        <mat-icon class="actions">cleaning_services</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle (click)="onBack()" title="Cancelar acción">
+        <mat-icon class="actions">cancel</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </mat-card>
 </form>
