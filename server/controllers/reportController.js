@@ -12,7 +12,11 @@ module.exports.ventasPorFecha = async (request, response, next) => {
         }
         //console.log(`Inicio: ${fechaInicio}  -   Cierre: ${fechaCierre}`);
         const reportData = await prisma.$queryRaw(
-            Prisma.sql`SELECT nombre, precio, fecha FROM Pedido WHERE fecha BETWEEN ${fechaInicio} and ${fechaCierre};`
+            Prisma.sql`SELECT p.nombre as codigo, p.precio, p.fecha, s.nombre, tp.descripcion, ep.descripcion as estado 
+                        FROM Pedido p, Sucursal s, TipoPedido tp, EstadoPedido ep 
+                        WHERE fecha BETWEEN ${fechaInicio} and ${fechaCierre} 
+                                and p.idSucursal = s.id and p.idTipoPedido = tp.id
+                                and p.idEstado = ep.id;`    
         );
         response.json(reportData);
     }
@@ -20,7 +24,11 @@ module.exports.ventasPorFecha = async (request, response, next) => {
         //Si no se especifican fechas entonces por defecto se busca por la fecha actual
         let currentDate = getCurrentDate();
         const reportData = await prisma.$queryRaw(
-            Prisma.sql`SELECT nombre, precio, fecha FROM Pedido WHERE fecha = ${currentDate};`
+            Prisma.sql`SELECT p.nombre as codigo, p.precio, p.fecha, s.nombre, tp.descripcion, ep.descripcion as estado 
+                        FROM Pedido p, Sucursal s, TipoPedido tp, EstadoPedido ep 
+                        WHERE fecha = ${currentDate} 
+                                and p.idSucursal = s.id and p.idTipoPedido = tp.id
+                                and p.idEstado = ep.id;`
         );
         response.json(reportData);
     }
