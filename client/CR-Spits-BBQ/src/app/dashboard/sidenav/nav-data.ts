@@ -36,7 +36,7 @@ export const navbarData = [
         roles: ['Cliente'] 
     },
     {
-        routerLink: 'reservar',
+        routerLink: 'reservaciones',
         icon: 'auto_stories',
         label: 'Reservación',
         roles: ['Cliente', 'Mesero', 'Administrador']
