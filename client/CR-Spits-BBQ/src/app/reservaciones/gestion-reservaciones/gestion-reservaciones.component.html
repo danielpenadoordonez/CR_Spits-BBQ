@@ -10,6 +10,7 @@
         (keyup)="aplicarFiltro($event)"
         placeholder="Ex. CRSB-01-0X"
         #input
+        style="color: rgba(255, 255, 255, 0.863);"
       />
     </mat-form-field>
     <div class="mat-elevation-z8 grid-table-container reserva-table" id="reserva-table" *ngIf="dataSource">
@@ -32,7 +33,7 @@
                     <p class="product-name">Cédula: {{row.Usuario.id}}</p>
                 </div>
                 <div class="product-data">
-                  <p class="product-code">Fecha : {{ row.fecha_hora | date : "dd/MM/yyyy" }}</p>
+                  <p class="product-code">Fecha : {{ row.fecha_hora | date : "dd/MM/yyyy hh:mm a" }}</p>
                   <p class="product-name">Comensales: X{{row.cantidad}}</p>
               </div>
                   <div class="actions">
@@ -62,7 +63,7 @@
         <ng-container matColumnDef="fecha_hora">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
           <td mat-cell *matCellDef="let row">
-            {{ row.fecha_hora | date : "dd/MM/yyyy" }}
+            {{ row.fecha_hora | date : "dd/MM/yyyy hh:mm a" }}
           </td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>

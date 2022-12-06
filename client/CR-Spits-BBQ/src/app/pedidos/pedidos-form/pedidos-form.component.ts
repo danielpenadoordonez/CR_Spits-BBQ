@@ -40,8 +40,7 @@ export class PedidosFormComponent {
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
   dataSourceCarrito: any = null;
 
-
-  productData: any;//lista productos
+  productData: any;//* lista productos
   cartData: any;
   totalOrder: any;
   subTotalOrder: any;
@@ -203,13 +202,13 @@ export class PedidosFormComponent {
           `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
           TipoMessage.success
         );
-        this.cartData = this.cartService.getItems.filter(item => item.mesa == this.mesa.codigo);    
+        this.cartData = this.cartService.getItems.filter(item => item.mesa == this.mesa.codigo);
         this.qtyItems = this.cartData.length;
-        this.setTotalsOrder(this.mesa.codigo)  
+        this.setTotalsOrder(this.mesa.codigo)
       });
   }
 
-  setTotalsOrder(mesa: string){
+  setTotalsOrder(mesa: string) {
     this.subTotalOrder = this.cartService.getTotal(mesa);
     this.totalOrder = this.cartService.getTotalConImpuestos(mesa);
     this.impuestoOrder = this.totalOrder - this.subTotalOrder;
@@ -338,11 +337,11 @@ export class PedidosFormComponent {
   }
 
   getProductData() {
+    let hileraValidadora: string = this.currentUser.user.idPerfil == 1 ? "productos/all-hability" : `productos/sucursal/${this.currentUser.user.sucursales[0].id}`;
     this.gService
-      .list('productos/all-hability')
+      .list(hileraValidadora)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        //console.log(data);
         this.productData = data;
         this.dataSource = new MatTableDataSource(this.productData);
         this.dataSource.sort = this.sort;
@@ -512,7 +511,7 @@ export class PedidosFormComponent {
     }
   }
 
-  checkIfExistOldItemsOnCreate(mesa: string){
+  checkIfExistOldItemsOnCreate(mesa: string) {
     let listCart = this.cartService.getItems;
     listCart = listCart.filter(item => item.mesa == mesa);
     listCart.forEach(item => {

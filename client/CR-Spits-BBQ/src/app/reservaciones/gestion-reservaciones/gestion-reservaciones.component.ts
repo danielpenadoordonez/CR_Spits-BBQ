@@ -5,11 +5,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 
 @Component({
   selector: 'app-gestion-reservaciones',
   templateUrl: './gestion-reservaciones.component.html',
-  styleUrls: ['./../../productos/gestion-producto/gestion-producto.component.css','./gestion-reservaciones.component.css']
+  styleUrls: ['./../../productos/gestion-producto/gestion-producto.component.css', './gestion-reservaciones.component.css']
 })
 
 export class GestionReservacionesComponent implements AfterViewInit {
@@ -19,9 +20,18 @@ export class GestionReservacionesComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>(); //* Establecemos la fuente de data //- , 'acciones'
   displayedColumns = ['reserva']//['id', 'codigo', 'sucursal', 'usuario', 'cedula', 'cantidad', 'fecha_hora', 'acciones']; //* Mesas no van aquí
+  currentUser: any; //* El usuario conectado
+  isAuthenticated: boolean = false; //* Es para saber si está o no autentificado
 
   constructor(private router: Router,
-    private route: ActivatedRoute, private gService: GenericService) {
+    private route: ActivatedRoute,
+    private authService: AuthenticationService,
+    private gService: GenericService) {
+  }
+
+  ngOnInit() {
+    //* Primero cargamos al usuario
+    this.getCurrentUser();
   }
 
   ngAfterViewInit(): void {
@@ -32,8 +42,12 @@ export class GestionReservacionesComponent implements AfterViewInit {
 
   //* Obtenemos la lista de reservaciones
   listaReservaciones() {
+    //? Mesero, solo de su propia sucursal, clientes los suyos y admin todos
+    let hileraValidadora: string = this.currentUser.user.idPerfil == 2 ? `reservaciones/sucursal/${this.currentUser.user.sucursales[0].id}` :
+      this.currentUser.user.idPerfil == 3 ? `reservaciones/usuario/${this.currentUser.user.id}` :
+        "reservaciones"; //* Admin
     this.gService
-      .list('reservaciones/')
+      .list(hileraValidadora)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         console.log(data);
@@ -47,6 +61,16 @@ export class GestionReservacionesComponent implements AfterViewInit {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  getCurrentUser() {
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+    });
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
+    //? console.log(this.currentUser);
   }
 
   //* Filtro v2 by Marito
@@ -69,7 +93,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
     });
   }
 
-  getCantidadTotalReservaciones(){
+  getCantidadTotalReservaciones() {
     let countReservations: number = 0;
     if (this.datos !== undefined) {
       countReservations = this.datos.map(t => t.id).reduce((partialSum: any, a: any) => partialSum + 1, 0);

@@ -163,8 +163,6 @@
                     Por favor, ingrese una contraseña <strong>válida</strong>
                   </mat-error>
                 </mat-form-field>
-                <span *ngIf="isPasswordsValid" style="color: red"
-                  >Ambas contraseñas deben ser iguales</span
                 >
               </div>
               <div class="col">
@@ -217,6 +215,7 @@
                 <mat-form-field class="full-width" hideRequiredMarker>
                   <input
                     matInput
+                    #email
                     minlength="5"
                     maxlength="256"
                     email="true"
@@ -228,6 +227,7 @@
                     title="Ingrese su dirección de correo electrónico (email)"
                     autocomplete="true"
                   />
+                  <mat-hint>{{ email.value.length }} / 256</mat-hint>
                   <mat-error *ngIf="errorHandling('correo', 'required')">
                     El email es <strong>requerido</strong>
                   </mat-error>
@@ -254,7 +254,7 @@
                     title="Digite su nombre de usuario (username)"
                     autocomplete="false"
                   />
-                  <mat-hint>{{ username.value.length }} / 200</mat-hint>
+                  <mat-hint>{{ username.value.length }} / 16</mat-hint>
                   <mat-error *ngIf="errorHandling('username', 'required')">
                     El nombre de usuario es <strong>requerido</strong>
                   </mat-error>
@@ -297,7 +297,15 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="col">
+              <div
+                class="col"
+                *ngIf="
+                  sucursales &&
+                  isAuthenticated &&
+                  currentUser &&
+                  currentUser.user.Perfil.descripcion == 'Administrador'
+                "
+              >
                 <mat-form-field
                   class="full-width"
                   *ngIf="profileRegister != 3 && toggleMultiple"
@@ -329,60 +337,13 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="row">
+            <div
+              class="row"
+              *ngIf="currentUser.user.Perfil.descripcion == 'Administrador'"
+            >
               <div
                 class="col"
-                *ngIf="
-                  sucursales &&
-                  isAuthenticated &&
-                  currentUser &&
-                  currentUser.user.Perfil.descripcion == 'Administrador'
-                "
-              >
-                <mat-form-field
-                  class="full-width"
-                  *ngIf="sucursales && profileRegister != 3 && toggleMultiple"
-                >
-                  <mat-select
-                    [placeholder]="
-                      profileRegister == 2 ? 'Sucursal' : 'Sucursales'
-                    "
-                    [required]="profileRegister != 3"
-                    formControlName="sucursales"
-                    [title]="
-                      profileRegister == 2
-                        ? 'Eliga la sucursal a la que será asignado el mesero / la mesera'
-                        : 'Eliga la(s) sucursal(es) a las que será asignado el administrador(a)'
-                    "
-                    [multiple]="isMultipleSucursal"
-                  >
-                    <mat-option
-                      *ngFor="let sucursal of sucursales"
-                      [value]="sucursal.id"
-                    >
-                      {{ sucursal.nombre }}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="errorHandling('sucursales', 'required')">
-                    {{
-                      profileRegister == 2
-                        ? "La sucursal es"
-                        : "Las sucursales son "
-                    }}
-                    <strong>{{
-                      profileRegister == 2 ? "requerida" : "requeridas"
-                    }}</strong>
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div
-                class="col"
-                *ngIf="
-                  perfiles &&
-                  isAuthenticated &&
-                  currentUser &&
-                  currentUser.user.Perfil.descripcion == 'Administrador'
-                "
+                *ngIf="perfiles && isAuthenticated && currentUser"
               >
                 <mat-form-field
                   class="full-width"

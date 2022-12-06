@@ -12,8 +12,8 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
   selector: 'app-reservaciones-form',
   templateUrl: './reservaciones-form.component.html',
   styleUrls: ['./../../pedidos/pedidos-form/pedidos-form.component.css',
-              './../../mesas/gestion-mesas/gestion-mesas.component.css',
-              './reservaciones-form.component.css']
+    './../../mesas/gestion-mesas/gestion-mesas.component.css',
+    './reservaciones-form.component.css']
 })
 export class ReservacionesFormComponent {
 
@@ -40,6 +40,7 @@ export class ReservacionesFormComponent {
   showSpinners = true;
   minDate: object = null;
   maxDate: object = null;
+  enableMeridian = true; //* AM | PM
   //* Saltos en el spinner
   stepHour = 1;
   stepMinute = 5;
@@ -131,7 +132,7 @@ export class ReservacionesFormComponent {
 
   onBack() {
     //* Cuando intenté salir - botón salir
-    this.router.navigate(['/dashboard/reservaciones']);
+    this.router.navigate(['/dashboard/mesas']);
   }
 
   //* Cargamos la lista de clientes
@@ -230,7 +231,7 @@ export class ReservacionesFormComponent {
         this.mesaSelected = data;
         this.isMesaLoaded = true;
         console.log("Mesa por id:");
-        console.log(this.mesaSelected);
+        //? console.log(this.mesaSelected);
       });
   }
 
@@ -244,6 +245,7 @@ export class ReservacionesFormComponent {
         this.gService.get('reservaciones', this.idReservacion) //? Trae la reservación por medio del id númerico [int]
           .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
             this.reservationInfo = data; //* Obtenemos la data y la asignamos
+            console.log(this.reservationInfo)
             this.loadMesaById(this.reservationInfo.idMesa); //* Cargamos por id
             //? SOLO USO EL SET SI MAPEO ABSOLUTAMENTE TODO
             this.formReservations.setValue({
@@ -251,7 +253,7 @@ export class ReservacionesFormComponent {
               codigo: this.reservationInfo.codigo,
               fecha_hora: this.reservationInfo.fecha_hora,
               cantidad: this.reservationInfo.cantidad,
-              idSucursal: this.reservationInfo.Sucursal.nombre,
+              idSucursal: this.reservationInfo.idSucursal,
               idUsuario: this.reservationInfo.idUsuario,
               idMesa: this.reservationInfo.idMesa
             });
@@ -282,15 +284,26 @@ export class ReservacionesFormComponent {
     let fechaSeleccionada = new Date(this.formReservations.get("fecha_hora").value);
     let fechaAhora = new Date();
 
-    //* Validación de fechas
-    if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
+    //? Que la fecha no sea menor
+    if (fechaSeleccionada.getDate() < fechaAhora.getDate()) {
       this.notification.mensaje("Reservaciones",
-        "La hora ingresada no es <b>válida</b>.",
+        "La fecha ingresada no es <b>válida</b>.",
         TipoMessage.error);
       return;
     }
 
-    if (fechaSeleccionada.getMinutes() < (fechaAhora.getMinutes() + 30)) {
+    //? Valida el tema de las horas
+    if (fechaSeleccionada.getDate() == fechaAhora.getDate()) {
+      if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
+        this.notification.mensaje("Reservaciones",
+          "La hora ingresada no es <b>válida</b>.",
+          TipoMessage.error);
+        return;
+      }
+    }
+
+    //? Valida que hayan al menos 30m de diferencia...
+    if (fechaSeleccionada.getTime() < (fechaAhora.getTime() + (60000 * 30))) {
       this.notification.mensaje("Reservaciones",
         "La hora ingresada debe ser </b>al menos 30m</b> después de la hora actual.",
         TipoMessage.error);
@@ -344,15 +357,17 @@ export class ReservacionesFormComponent {
 
     //* Validación de fechas
 
-    //* Valida si ya la reservación expiró la fecha actual
-    if (fechaSeleccionada.getDate() > fechaAhora.getDate() && fechaSeleccionada.getTime() > fechaAhora.getTime()){
-    if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
+    //* Valida si ya la reservación si ya expiró la fecha actual
+    if (fechaSeleccionada.getDate() > fechaAhora.getDate()) {
+      if (fechaSeleccionada.getDate() == fechaAhora.getDate() && fechaSeleccionada.getTime() < fechaAhora.getTime()) {
         this.notification.mensaje("Reservaciones",
           "La hora ingresada no es <b>válida</b>.",
           TipoMessage.error);
         return;
       }
-      if (fechaSeleccionada.getMinutes() < (fechaAhora.getMinutes() + 30)) {
+
+      //* Validación de los 30m
+      if (fechaSeleccionada.getDate() == fechaAhora.getDate() && fechaSeleccionada.getTime() < (fechaAhora.getTime() + (60000 * 30))) {
         this.notification.mensaje("Reservaciones",
           "La hora ingresada debe ser </b>al menos 30m</b> después de la hora actual.",
           TipoMessage.error);
@@ -370,12 +385,12 @@ export class ReservacionesFormComponent {
         this.notification.mensaje('Reservaciones', notificationBody, TipoMessage.success);
         //? Rederigimos
         this.router.navigate(['/dashboard/reservaciones'], {
-          queryParams: { create: 'true' }
+          queryParams: { update: 'true' }
         });
       });
   }
 
-  // asigna el cliente a la reservacion
+  //* asigna el cliente a la reservacion
   asignarCliente(inputCliente: any) {
     this.clienteSeleccionado = inputCliente;
     this.formReservations.patchValue({ idUsuario: this.clienteSeleccionado.id }); //* Únicamente en caso de ser presencial
