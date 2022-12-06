@@ -110,12 +110,20 @@
 
         <div class="col">
           <mat-form-field class="full-width" *ngIf="!isCreate">
-            <mat-select placeholder="Sucursal" formControlName="idSucursal" title="Sucursal de la reservación"
-              [disabled]="isCreate" [required]="false">
-              <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id">
+            <input
+              matInput
+              placeholder="Sucursal"
+              formControlName="idSucursal"
+              title="Sucursal de la reservación"
+              [required]="false"
+              [readonly]="!isCreate"
+            />
+            <!-- <mat-option
+                *ngFor="let sucursal of sucursalesList"
+                [value]="sucursal.id"
+              >
                 {{ sucursal.nombre }}
-              </mat-option>
-            </mat-select>
+              </mat-option> -->
           </mat-form-field>
         </div>
         <mat-form-field class="full-width" *ngIf="!isCreate">
@@ -135,6 +143,7 @@
       </mat-button-toggle>
       <mat-button-toggle class="button flexbox cancel-order" (click)="onBack()" title="Cancelar la orden">
         <p>Cancelar orden</p>
+
         <mat-icon class="actions">cancel</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>

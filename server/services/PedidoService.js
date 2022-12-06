@@ -1,8 +1,8 @@
 module.exports.generateNombrePedido= (idSucursal, previousNum) => {
-    let tableCode = `CRSB-0${idSucursal}-`;
+    let nombrePedido = `CRSB-0${idSucursal}-`;
     let newNumber = parseInt(previousNum) + 1;
-    tableCode += newNumber;
-    return tableCode;
+    nombrePedido += newNumber;
+    return nombrePedido;
 }
 
 module.exports.getPreviousNumber = (pedidos) => {

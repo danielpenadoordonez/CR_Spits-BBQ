@@ -62,7 +62,7 @@ module.exports.getMesaByCode = async (request, response, next) => {
       reservaciones: true,
       Sucursal: true,
       EstadoMesa: true,
-      pedidos: true
+      pedidos: true,
     },
   });
 
@@ -95,7 +95,7 @@ module.exports.getMesasBySucursal = async (request, response, next) => {
       reservaciones: true,
       Sucursal: true,
       EstadoMesa: true,
-      pedidos: true
+      pedidos: true,
     },
   });
   response.json(mesas);
@@ -123,12 +123,12 @@ module.exports.getMesasBySucursalandDisp = async (request, response, next) => {
 module.exports.createTable = async (request, response, next) => {
   let table = request.body;
 
-  //Se obtienen todas las mesas de la sucursal en la que se quiere agregar la nueva mesa
+  //* Se obtienen todas las mesas de la sucursal en la que se quiere agregar la nueva mesa
   const allMesas = await prismaClient.mesa.findMany({
     where: { idSucursal: table.idSucursal },
   });
 
-  //Logica para generar un nuevo codigo de mesa
+  //* Logica para generar un nuevo codigo de mesa
   let previousNum = tableService.getPreviousNumber(allMesas);
   let tableCode = tableService.generateTableCode(table.idSucursal, previousNum);
 

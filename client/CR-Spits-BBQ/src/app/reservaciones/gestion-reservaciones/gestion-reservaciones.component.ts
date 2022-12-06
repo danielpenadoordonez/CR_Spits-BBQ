@@ -62,7 +62,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
 
   //* Crear Reservación
   crearReservacion() {
-    this.router.navigate(['/reservaciones/create'], {
+    this.router.navigate(['reservaciones/create'], {
       relativeTo: this.route,
     });
   }
