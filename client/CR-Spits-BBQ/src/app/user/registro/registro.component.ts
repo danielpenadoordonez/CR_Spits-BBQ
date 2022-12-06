@@ -43,19 +43,6 @@ export class RegistroComponent {
     this.reactiveForm();
   }
 
-  ngOnInit() {
-    this.getCurrentUser(); //* Cargamos el usuario al inicio
-  }
-
-  getCurrentUser() {
-    this.authService.currentUser.subscribe((x) => {
-      this.currentUser = x;
-    });
-    this.authService.isAuthenticated.subscribe(
-      (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
-    );
-  }
-
   //* Formato JSON - Register user
   /* 
        * "id": "665370123",
@@ -115,12 +102,10 @@ export class RegistroComponent {
     this.formRegister.addValidators(
       this.matchValidator(this.formRegister.get('clave'), this.formRegister.get('clave2'))
     );
-
+  }
 
   ngOnInit() {
     this.getCurrentUser(); //* Cargamos el usuario
-    this.getPerfiles(); // lsita de perfiles
-    this.listaSucursales(); // lista sucursales
   }
 
   getCurrentUser() {
