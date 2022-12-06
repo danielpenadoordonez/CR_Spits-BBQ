@@ -1,3 +1,10 @@
+
+.datetime-picker, .qtyCliente{
+  color: #fff !important;
+  font-weight: bold !important;
+  width: 100%;
+}
+
 .full-width {
   width: 100%;
 }

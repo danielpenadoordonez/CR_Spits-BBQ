@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
@@ -11,7 +11,9 @@ import { NotificacionService, TipoMessage } from 'src/app/share/notification.ser
 @Component({
   selector: 'app-reservaciones-form',
   templateUrl: './reservaciones-form.component.html',
-  styleUrls: ['./reservaciones-form.component.css']
+  styleUrls: ['./../../pedidos/pedidos-form/pedidos-form.component.css',
+              './../../mesas/gestion-mesas/gestion-mesas.component.css',
+              './reservaciones-form.component.css']
 })
 export class ReservacionesFormComponent {
 
@@ -19,6 +21,7 @@ export class ReservacionesFormComponent {
   destroy$: Subject<boolean> = new Subject<boolean>();
   makeSubmit: boolean = false; //* Indica si se subió o no
   clientsList: any; //* en caso de que sea un admin o mesero el que lo cree para que seleccione...
+  clienteSeleccionado: any; // cliente seleccionado el list
   sucursalesList: any; //* Es solo para terminos de mostrar en el update
   mesaSelected: any; //* Corresponde a la mesa con toda su data, proviene del id o código respectivamente
   isMesaLoaded: boolean = false; //* Indica si se cargó o no la mesa...
@@ -43,6 +46,10 @@ export class ReservacionesFormComponent {
   stepSecond = 1;
   color: ThemePalette = 'warn'; //* Temas: primary, accent y warn 
 
+  inputFiltro = new FormControl('');
+  filteredOptions: Observable<any[]>;
+
+  mesa: any; // mesa obtenida del route params
   //TODO CONSIDERACIONES:
   //? Cliente se podría obtener por el currentuser o bien en el mat-select 
   //? El código de mesa por params al igual, luego con un api se busca y saco id y sucursal 
@@ -80,12 +87,23 @@ export class ReservacionesFormComponent {
         //? Para actualizar es necesario el params id uno con idReservacion y luego ya con el api lo sacamos...
         this.loadDataReservation(); //* Si no es update
       }
+      this.getMesaDetail();
     });
 
     //* Cargamos el usuario al inicio
     this.getCurrentUser();
     //* Cargamos las fechas
     this.setMaxAndMinDates();
+  }
+
+  // filtro para el mat autocomplete de clientes
+  private _filter(value: any): any[] {
+    console.log(value);
+    const filterValue = value;
+
+    return this.clientsList.filter(clients => clients.nombre.toLowerCase().includes(filterValue)
+      || clients.apellido1.toLowerCase().includes(filterValue)
+      || clients.apellido2.toLowerCase().includes(filterValue));
   }
 
   //* Configuramos el formulario
@@ -117,15 +135,43 @@ export class ReservacionesFormComponent {
   }
 
   //* Cargamos la lista de clientes
-  listaClientes(): void {
-    this.clientsList = null; //* Reset
+  //* Elegir al cliente? [unique]
+  listaClientes() {
+    this.clientsList = null;
     this.gService
       .list('users/perfil/3')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.clientsList = data;
-        //? console.log(this.clientsList);
+        this.filteredOptions = this.inputFiltro.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value || '')),
+        );
       });
+  }
+
+  // obtiene el detalle de la mesa
+  getMesaDetail() {
+    this.route.queryParams.subscribe(params => {
+      let idMesa = params['idMesa'] || null;
+      let codigoMesa = params['codigoMesa'] || null;
+      if (idMesa != null) {
+        this.gService
+          .get('mesas', idMesa)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.mesa = data;
+          });
+      }
+      if (codigoMesa != null) {
+        this.gService
+          .get('mesas/codigo', codigoMesa)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            this.mesa = data;
+          });
+      }
+    })
   }
 
   //* Cargamos la lista de sucursales
@@ -143,6 +189,9 @@ export class ReservacionesFormComponent {
   getCurrentUser() {
     this.authService.currentUser.subscribe((x) => {
       this.currentUser = x;
+      if (this.currentUser.user.Perfil.descripcion == 'Cliente') {
+        this.clienteSeleccionado = x.user;
+      }
     });
     this.authService.isAuthenticated.subscribe(
       (valor) => (this.isAuthenticated = valor)
@@ -166,6 +215,7 @@ export class ReservacionesFormComponent {
       .subscribe((data: any) => {
         this.mesaSelected = data;
         this.isMesaLoaded = true;
+        this.mesa = data;
         //? console.log(this.mesaSelected)
       });
   }
@@ -205,6 +255,8 @@ export class ReservacionesFormComponent {
               idUsuario: this.reservationInfo.idUsuario,
               idMesa: this.reservationInfo.idMesa
             });
+            this.mesa = data.Mesa;
+            this.loadMesaByCodigo(data.Mesa.codigo)
           });
       }
     })
@@ -323,6 +375,13 @@ export class ReservacionesFormComponent {
       });
   }
 
+  // asigna el cliente a la reservacion
+  asignarCliente(inputCliente: any) {
+    this.clienteSeleccionado = inputCliente;
+    this.formReservations.patchValue({ idUsuario: this.clienteSeleccionado.id }); //* Únicamente en caso de ser presencial
+    console.log(this.formReservations.value)
+  }
+
   //? Filtro de fecha
   setMaxAndMinDates() {
     const today: Date = new Date();
@@ -351,4 +410,13 @@ export class ReservacionesFormComponent {
     );
   };
 
+  //* Retorna el nombre completo del usuario cliente actual escogido
+  getUserFullName(): String {
+    return `${this.clienteSeleccionado.nombre} ${this.clienteSeleccionado.apellido1} ${this.clienteSeleccionado.apellido2}`;
+  }
+
+  //* Retorna el nombre completo del cliente seleccionado para mostrarlo en mat-autocomplete
+  displayClientName(cliente: any) {
+    return cliente ? `${cliente.nombre} ${cliente.apellido1} ${cliente.apellido2}` : '';
+  }
 }

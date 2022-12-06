@@ -65,7 +65,7 @@ module.exports.getFacturaById = async (request, response, next) => {
 
 /*
 * POST APIs
-*/ 
+*/
 module.exports.saveFactura = async (request, response, next) => {
     let infoFactura = request.body;
     const factura = await prismaClient.factura_Encabezado.create({
@@ -90,5 +90,5 @@ module.exports.saveFactura = async (request, response, next) => {
         },
     });
 
-    return response.json(factura);
+    response.json(factura);
 }

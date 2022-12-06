@@ -48,7 +48,7 @@ export class RegistroComponent {
     this.getPerfiles(); //* lista de perfiles
     this.listaSucursales(); //* lista sucursales
   }
-
+  
   //* Formato JSON - Register user
   /* 
        * "id": "665370123",
@@ -109,7 +109,7 @@ export class RegistroComponent {
       this.matchValidator(this.formRegister.get('clave'), this.formRegister.get('clave2'))
     );
   }
-
+  
   getCurrentUser() {
     this.authService.currentUser.subscribe((x) => {
       this.currentUser = x;

@@ -5,3 +5,7 @@
   tr.mat-footer-row {
     font-weight: bold;
   }
+
+  .product-data p{
+    margin: .35rem .75rem;
+  }

@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
+    MatAutocompleteModule,
     MatMomentDateModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -50,6 +52,9 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
     NgxMatDatetimePickerModule, 
     NgxMatTimepickerModule,
     NgxMatNativeDateModule
+  ],
+  exports: [
+    GestionReservacionesComponent,
   ]
 })
 

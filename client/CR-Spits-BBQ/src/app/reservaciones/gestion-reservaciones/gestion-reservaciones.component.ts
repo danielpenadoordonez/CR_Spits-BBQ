@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-gestion-reservaciones',
   templateUrl: './gestion-reservaciones.component.html',
-  styleUrls: ['./gestion-reservaciones.component.css']
+  styleUrls: ['./../../productos/gestion-producto/gestion-producto.component.css','./gestion-reservaciones.component.css']
 })
 
 export class GestionReservacionesComponent implements AfterViewInit {
@@ -18,7 +18,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>(); //* Establecemos la fuente de data //- , 'acciones'
-  displayedColumns = ['id', 'codigo', 'sucursal', 'usuario', 'cedula', 'cantidad', 'fecha_hora', 'acciones']; //* Mesas no van aquí
+  displayedColumns = ['reserva']//['id', 'codigo', 'sucursal', 'usuario', 'cedula', 'cantidad', 'fecha_hora', 'acciones']; //* Mesas no van aquí
 
   constructor(private router: Router,
     private route: ActivatedRoute, private gService: GenericService) {
@@ -26,6 +26,8 @@ export class GestionReservacionesComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.listaReservaciones();
+    document.querySelectorAll('#reserva-table tbody')[0].classList.add('grid-table-body');
+    document.querySelectorAll('#reserva-table thead')[0].classList.add('grid-table-head');
   }
 
   //* Obtenemos la lista de reservaciones
@@ -55,7 +57,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
 
   //* Actualizar Reservacion - Reservación usa id númerico
   actualizarReservacion(id: number) {
-    this.router.navigate(['/reservaciones/update', id], {
+    this.router.navigate(['update', id], {
       relativeTo: this.route,
     });
   }
