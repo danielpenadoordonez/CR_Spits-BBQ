@@ -172,7 +172,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         component: ReservacionesFormComponent,
         data: {
-          roles: ['Administrador', 'Mesero'],
+          roles: ['Administrador'],
         }
       }
     ]

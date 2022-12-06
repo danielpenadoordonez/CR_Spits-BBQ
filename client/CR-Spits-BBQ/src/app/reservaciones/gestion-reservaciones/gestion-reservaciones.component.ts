@@ -6,6 +6,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/share/authentication.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ReservacionDetailComponent } from '../reservacion-detail/reservacion-detail.component';
 
 @Component({
   selector: 'app-gestion-reservaciones',
@@ -26,6 +28,7 @@ export class GestionReservacionesComponent implements AfterViewInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private authService: AuthenticationService,
+    private dialog: MatDialog,
     private gService: GenericService) {
   }
 
@@ -91,6 +94,16 @@ export class GestionReservacionesComponent implements AfterViewInit {
     this.router.navigate(['reservaciones/create'], {
       relativeTo: this.route,
     });
+  }
+
+  //* Detalle de la reservación
+  detalleReservacion(id : number){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.data = {
+      id: id,
+    };
+    this.dialog.open(ReservacionDetailComponent, dialogConfig);
   }
 
   getCantidadTotalReservaciones() {

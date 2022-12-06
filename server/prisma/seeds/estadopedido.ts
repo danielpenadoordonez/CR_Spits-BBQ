@@ -7,22 +7,10 @@ export const estadospedidos = [
     },
     {
         id : 2,
-        descripcion : 'En proceso'
+        descripcion : 'Cancelada'
     },
     {
         id : 3,
-        descripcion : 'Pendiente'
-    },
-    {
-        id : 4,
-        descripcion : 'Entregado'
-    },
-    {
-        id : 5,
-        descripcion : 'Por pagar'
-    },
-    {
-        id : 6,
-        descripcion : 'Cancelada'
+        descripcion : 'Procesada'
     }
 ];
