@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
@@ -406,11 +406,6 @@ export class ReservacionesFormComponent {
       (this.makeSubmit || this.formReservations.controls[control].touched)
     );
   };
-
-  onBack() {
-    //* Cuando intenté salir - botón salir
-    this.router.navigate(['/dashboard/mesas']);
-  }
 
   //* Retorna el nombre completo del usuario cliente actual escogido
   getUserFullName(): String {
