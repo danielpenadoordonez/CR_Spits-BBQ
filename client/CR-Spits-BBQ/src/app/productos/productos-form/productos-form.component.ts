@@ -204,7 +204,7 @@ export class ProductosFormComponent {
 
     //* Asignar los valores al formulario 
     this.productosForm.patchValue({ sucursales: gFormat });
-
+    
     //* Accion API create enviando toda la informacion del formulario
     this.gService.update('productos', this.productosForm.value)
       .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {

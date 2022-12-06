@@ -54,7 +54,7 @@ export class ReservacionesFormComponent {
   //TODO CONSIDERACIONES:
   //? Cliente se podría obtener por el currentuser o bien en el mat-select 
   //? El código de mesa por params al igual, luego con un api se busca y saco id y sucursal 
-  //? Mesero y admin sí pueden editar la cantidad, la fecha, usuario y quizás cancelarla
+  //? Administrador sí puede editar la cantidad, la fecha, usuario y quizás cancelarla
   //? El codigo se auto genera en el backend, por lo que no será necesario, solo para mostrarlo en el update
   /* 
   * FORMATO JSON - RESERVACIÓN
@@ -97,7 +97,11 @@ export class ReservacionesFormComponent {
     this.setMaxAndMinDates();
   }
 
-  // filtro para el mat autocomplete de clientes
+  ngAfterViewInit(): void {
+    this.actualizarCantidad(); //* Intenta al menos...
+  }
+
+  //* filtro para el mat autocomplete de clientes
   private _filter(value: any): any[] {
     console.log(value);
     const filterValue = value;

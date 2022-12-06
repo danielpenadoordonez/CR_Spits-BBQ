@@ -21,11 +21,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReservacionDetailComponent } from './reservacion-detail/reservacion-detail.component';
 
 @NgModule({
   declarations: [
     GestionReservacionesComponent,
-    ReservacionesFormComponent
+    ReservacionesFormComponent,
+    ReservacionDetailComponent
   ],
   imports: [
     CommonModule,

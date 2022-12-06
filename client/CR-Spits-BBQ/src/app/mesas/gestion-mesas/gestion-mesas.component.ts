@@ -32,11 +32,11 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
     disponibilidad: -1
   }
 
-  //usuario conectado
+  //* usuario conectado
   isAuthenticated: boolean;
   currentUser: any;
 
-  //data table
+  //* data table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
