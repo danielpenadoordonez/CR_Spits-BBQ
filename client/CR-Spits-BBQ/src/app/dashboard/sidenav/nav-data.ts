@@ -2,36 +2,43 @@ export const navbarData = [
     {
         routerLink: '/',
         icon: 'home',
-        label: 'Inicio' 
+        label: 'Inicio' ,
+        roles: ['Cliente', 'Mesero', 'Administrador']
     },
     {
         routerLink: 'main',
         icon: 'dashboard',
-        label: 'Dashboard' 
+        label: 'Dashboard',
+        roles: ['Administrador']
     },
     {
         routerLink: 'mesas',
         icon: 'table_restaurant',
-        label: 'Mesas' 
+        label: 'Mesas',
+        roles: ['Cliente', 'Mesero', 'Administrador']
     },
     {
         routerLink: 'productos',
         icon: 'kebab_dining',
-        label: 'Productos' 
+        label: 'Productos',
+        roles: ['Mesero', 'Administrador']
     },
     {
         routerLink: 'comandas',
         icon: 'list_alt',
-        label: 'Comandas' 
+        label: 'Comandas',
+        roles: ['Cliente', 'Mesero', 'Administrador']
     },
     {
         routerLink: 'ordenar',
         icon: 'menu_book',
-        label: 'Ordenar' 
+        label: 'Ordenar',
+        roles: ['Cliente'] 
     },
     {
         routerLink: 'reservar',
         icon: 'auto_stories',
-        label: 'Reservación' 
+        label: 'Reservación',
+        roles: ['Cliente', 'Mesero', 'Administrador']
     },
 ]
