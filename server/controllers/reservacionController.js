@@ -53,8 +53,9 @@ module.exports.getReservationsByUser = async (request, response, next) => {
   const reservations = await prismaClient.reservacion.findMany({
     where: { idUsuario: usuario },
     include: {
-      Mesa: true,
       Sucursal: true,
+      Mesa: true,
+      Usuario: true,
     },
     orderBy: [{ id: "desc" }, { codigo: "desc" }],
   });
@@ -131,7 +132,6 @@ module.exports.updateReservation = async (request, response, next) => {
       //* Solo estos campos se actualizan
       fecha_hora: reservation.fecha_hora,
       cantidad: parseInt(reservation.cantidad),
-      idUsuario: reservation.idUsuario,
     },
   });
   response.json(updatedReservation);

@@ -227,7 +227,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       .get('mesas', idMesa)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        if (data.EstadoMesa.descripcion == 'Disponible') {
+        if (data.EstadoMesa.descripcion == 'Disponible' || data.EstadoMesa.descripcion == 'Reservada') {
           this.router.navigate(['pedidos/create'], {
             queryParams: { idMesa: data.id, codigoMesa: data.codigo },
             relativeTo: this.route,

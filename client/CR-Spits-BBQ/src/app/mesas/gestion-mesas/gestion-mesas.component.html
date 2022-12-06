@@ -89,11 +89,13 @@
               <div class="table-configuration-container flexbox">
                 <mat-icon class="sidenav-link-icon settings" (click)="detalleMesa(row.id)" title="Detalle" *ngIf="currentUser.user.idPerfil != 3">info</mat-icon>
                 <mat-icon class="sidenav-link-icon settings" (click)="actualizarMesa(row.codigo)" title="Editar" *ngIf="currentUser.user.idPerfil == 1">edit</mat-icon>
-                <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad == 1 ? pedidoMesaAction(row.id) : detalleOrdenAction(row)"
-                 [title]="row.EstadoMesa.descripcion == 'Disponible' && row.estado ? 'Crear comanda' : 'Ver detalle de la comanda'" *ngIf="currentUser.user.idPerfil != 3 && row.estado">
-                  {{row.EstadoMesa.descripcion == 'Disponible' && row.estado  ? 'post_add' : 'preview'}}
+                <mat-icon class="sidenav-link-icon settings" (click)="row.estado && row.idDisponibilidad != 3 ? pedidoMesaAction(row.id) : detalleOrdenAction(row)"
+                 [title]="row.EstadoMesa.descripcion != 'Ocupada' && row.estado ? 'Crear comanda' : 'Ver detalle de la comanda'" *ngIf="currentUser.user.idPerfil != 3 && row.estado">
+                  {{row.EstadoMesa.descripcion != "Ocupada" && row.estado  ? 'post_add' : 'preview'}}
                 </mat-icon>
                 <mat-icon class="sidenav-link-icon settings"  (click)="reservarMesaAction(row.id)" *ngIf="row.estado && row.idDisponibilidad == 1" title="Crear una reservación en esta mesa">auto_stories</mat-icon>
+                <!-- * Es simplemente un icono para evitar que se desborde todo -->
+                <mat-icon class="sidenav-link-icon settings"  style="visibility: hidden;">cached</mat-icon>
               </div>
             </div>
           </div>

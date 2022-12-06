@@ -47,6 +47,7 @@ export class RegistroComponent {
     this.getCurrentUser(); //* Cargamos el usuario
     this.getPerfiles(); //* lista de perfiles
     this.listaSucursales(); //* lista sucursales
+    this.cargarDatosUsuarios(); //* Validaciones
   }
   
   //* Formato JSON - Register user
@@ -117,7 +118,7 @@ export class RegistroComponent {
     this.authService.isAuthenticated.subscribe(
       (valor) => (this.isAuthenticated = valor) //* Lo suscribimos para obtener el valor y saber si se autentificó o no...
     );
-    console.log(this.currentUser);
+    //? console.log(this.currentUser);
   }
 
   //* Válida ambas contraseñas

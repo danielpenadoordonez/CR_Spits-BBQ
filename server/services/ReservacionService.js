@@ -11,7 +11,6 @@ module.exports.getPreviousNumber = (reservations) => {
     const getNumber = (reservation) => {
         highestNum = reservation.codigo.split("-")[2];
     }
-    console.log(reservations);
     reservations.forEach(getNumber);
     return highestNum;
 }
