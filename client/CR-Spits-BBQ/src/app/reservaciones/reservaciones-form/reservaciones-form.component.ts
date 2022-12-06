@@ -291,8 +291,8 @@ export class ReservacionesFormComponent {
     let fechaAhora = new Date();
 
     //* Validación de fechas
-    
-    //* Valida si ya la reservación expiró
+
+    //* Valida si ya la reservación expiró la fecha actual
     if (fechaSeleccionada.getDate() > fechaAhora.getDate() && fechaSeleccionada.getTime() > fechaAhora.getTime()){
     if (fechaSeleccionada.getTime() < fechaAhora.getTime()) {
         this.notification.mensaje("Reservaciones",
