@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 
 const prismaClient = new PrismaClient();
-
+const reservationService = require("../services/ReservacionService");
 /*
  * GET APIs
  */
@@ -63,14 +63,38 @@ module.exports.getReservationsByUser = async (request, response, next) => {
   response.json(reservations);
 };
 
+//* Todas las reservacion por codigo
+module.exports.getReservationByCode = async (request, response, next) => {
+  let codigoReserva = String(request.params.codigo);
+  const reservation = await prismaClient.reservacion.findFirst({
+    where: { codigo: codigoReserva },
+    include: {
+      Mesa: true,
+      Sucursal: true,
+    },
+    orderBy: [{ id: "desc" }, { codigo: "desc" }],
+  });
+  response.json(reservation);
+};
+
 /*
  *POST APIs
  */
 module.exports.createReservation = async (request, response, next) => {
   let reservation = request.body;
+
+  //Obtiene todos las reservacion por Sucursal
+  const allReservations = prismaClient.reservacion.findMany({
+    where: { idSucursal: reservation.idSucursal },
+  });
+
+  //Crear codigo de reservacion
+  let previousNum = reservationService.getPreviousNumber(allReservations);
+  let reservationCode = reservationService.generateReservacionCode(reservation.idSucursal, previousNum);
+
   const newReservation = await prismaClient.reservacion.create({
     data: {
-      codigo: "test4",
+      codigo: reservationCode,
       fecha_hora:
         reservation.fecha_hora !== undefined
           ? new Date(reservation.fecha_hora)
