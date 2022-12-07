@@ -66,7 +66,7 @@ export class ReporteTipoPagoComponent implements OnInit {
       let position = 0;
       //* Agregar imagen al PDF
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('reporte.pdf');
+      PDF.save('reporteTipoPago.pdf');
     });
   }
 
