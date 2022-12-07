@@ -2,8 +2,8 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { GenericService } from 'src/app/share/generic.service';
-import { NotificacionService } from 'src/app/share/notification.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reporte-fechas',
@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class ReporteFechasComponent implements AfterViewInit {
   //* Reporte por gráfico de tipo pie Chart.js
   //* Documentación https://www.chartjs.org/docs/latest/charts/doughnut.html#pie
-  //* Instalación de chart.js: npm install chart.js --save
+  //* Instalación de chart.js: npm install chart.js@14.2.2 --save
 
   //* Canvas para el grafico
   canvas: any;
@@ -36,23 +36,28 @@ export class ReporteFechasComponent implements AfterViewInit {
   makeSubmit: boolean = false; //* No sé que uso se le de a esto acá
   //* Sirve para el manejo de filtro de fechas
   dateRange = new FormGroup({
-    fechaInicio: new FormControl<Date | null>(null),
-    fechaCierre: new FormControl<Date | null>(null),
+    fechaInicio: new FormControl<Date | null>(null, Validators.required),
+    fechaCierre: new FormControl<Date | null>(null, Validators.required),
   });
 
   constructor(private gService: GenericService,
     private notification: NotificacionService
-  ) { }
+  ) {
+    this.dateRange.get('fechaInicio').setValue(this.filtroFechaInicial);
+    this.dateRange.get('fechaCierre').setValue(this.filtroFechaFinal);
+   }
 
 
   ngAfterViewInit(): void {
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
+    this.notification.mensaje("Reportes",
+    "Se ha cargado la información del reporte",
+    TipoMessage.success);
   }
 
-  inicioGrafico(fecha1: any, fecha2: any): void {
-    this.filtroFechaInicial = fecha1;
-    this.filtroFechaFinal = fecha2;
+  inicioGrafico(): void {
     this.loadDateFormat();
+    this.datos = null;
     if (this.filtroFechaInicial && this.filtroFechaFinal && this.filtroFormatted) {
       //* Obtenemos la información del API
       //? Es necesario que vaya con formato
@@ -133,18 +138,24 @@ export class ReporteFechasComponent implements AfterViewInit {
     if (data != null) {
       this.filtroFechaInicial = new Date(String(data));
     } else {
+      this.notification.mensaje("Reportes",
+      "Por favor, seleccione una fecha inicio válida",
+      TipoMessage.error);
       this.filtroFechaInicial = this.addDays(new Date(), -1); //* Ayer
     }
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
   }
 
   changeFechaFin(data: any): void {
     if (data != null) {
       this.filtroFechaFinal = new Date(String(data));
     } else {
+      this.notification.mensaje("Reportes",
+      "Por favor, seleccione una fecha fin válida",
+      TipoMessage.error);
       this.filtroFechaFinal = new Date(); //* Hoy
     }
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
   }
 
   //* Sirve para añadir o quitar días según se necesite
@@ -154,15 +165,8 @@ export class ReporteFechasComponent implements AfterViewInit {
     return result;
   }
 
-  //* Filtro para fechas
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
-
   //* Borramos
-  ngOnDestroy() {
+  ngOnDestroy() : void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
