@@ -57,7 +57,7 @@ export const pedidos = [
         nombre: 'CRSB-01-3',
         precio: 30623,
         fecha: new Date('2022-11-13'),
-        idEstado: 2,
+        idEstado: 3,
         idCliente: '65440685802',
         idMesero: '65440685802',
         idSucursal: 1,
@@ -77,7 +77,7 @@ export const pedidos = [
         nombre: 'CRSB-04-2',
         precio: 30623,
         fecha: new Date('2022-11-14'),
-        idEstado: 3,
+        idEstado: 2,
         idCliente: '167459042',
         idMesero: '167459042',
         idSucursal: 4,
@@ -89,7 +89,7 @@ export const pedidos = [
         nombre: 'CRSB-03-1',
         //precio: 0, //? Pq no tiene detalles - igual aplica el valor default (0)
         fecha: new Date('2022-11-16'),
-        idEstado: 3,
+        idEstado: 2,
         idCliente: '167459042',
         idMesero: '40625724512',
         idSucursal: 3,
@@ -115,7 +115,30 @@ export const pedidos = [
         idCliente: '508459062',
         idMesero: '508459062',
         idSucursal: 2,
-        idMesa: 19,
+        idTipoPedido: 2 //* Online
+    },
+    {
+        nombre: 'CRSB-04-3',
+        idEstado: 3,
+        idCliente: '167459042',
+        idMesero: '167459042',
+        idSucursal: 4, //* Sin mesa, es online pá
         idTipoPedido: 2
-    }
+    },
+    {
+        nombre: 'CRSB-03-2',
+        idEstado: 3,
+        idCliente: '508459062',
+        idMesero: '508459062',
+        idSucursal: 3, 
+        idTipoPedido: 2
+    },
+    {
+        nombre: 'CRSB-03-3',
+        idEstado: 3,
+        idCliente: '206450674',
+        idMesero: '206450674',
+        idSucursal: 3, 
+        idTipoPedido: 2
+    },
 ];

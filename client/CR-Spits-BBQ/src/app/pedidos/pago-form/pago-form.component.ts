@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class PagoFormComponent {
   //* Este va a ser el proceso principal, form de usuario
   //* Ejemplo https://i.gyazo.com/9c8d9bbb0e87153cde0df136ecbd760c.png
-  //* Ojo no es necesario guardar ni la fecha de expiración, ni ccv, ni el nombre, solo el número y la fecha en la que se realiza o sea (hoy)
+  //* Ojo no es necesario guardar ni la fecha de expiración, ni ccv, ni el nombre, solo el número, el tipo de tarjeta y la fecha en la que se realiza o sea (hoy)
 
   addressForm = this.fb.group({
     company: null,

@@ -12,6 +12,7 @@ import { tiposTarjeta } from "./seeds/tiposTarjeta";
 import { pedidos } from "./seeds/pedidos";
 import { pedido_producto } from "./seeds/pedidoProducto";
 import { reservaciones } from "./seeds/reservacionesMesas";
+import { facturaEncabezados } from "./seeds/facturaEncabezados";
 
 
 
@@ -551,6 +552,11 @@ async function main() {
         data: pedidos
     });
 
+    //* Factura encabezados
+    await prismaClient.factura_Encabezado.createMany({
+        data: facturaEncabezados
+    });
+
     //! Creación de los registros con doble dependencia (N:M)
 
     //* Reservaciones
@@ -560,6 +566,236 @@ async function main() {
 
     await prismaClient.pedido_Producto.createMany({
         data: pedido_producto
+    });
+
+    //* Detalles de la factura
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 1600,
+            impuesto: parseFloat("208"), //* Prevención de decimales
+            total_detalle: parseFloat("1808"), //* Prevención de decimales
+            idFactura_Encabezado: 1,
+            idProducto: 2
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 1500,
+            impuesto: parseFloat("195"),
+            total_detalle: parseFloat("1695"),
+            idFactura_Encabezado: 1,
+            idProducto: 4
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 8500,
+            impuesto: parseFloat("1105"),
+            total_detalle: parseFloat("9605"),
+            idFactura_Encabezado: 1,
+            idProducto: 12
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 8000,
+            impuesto: parseFloat("1040"),
+            total_detalle: parseFloat("9040"),
+            idFactura_Encabezado: 1,
+            idProducto: 18
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 7500,
+            impuesto: parseFloat("975"),
+            total_detalle: parseFloat("8475"),
+            idFactura_Encabezado: 1,
+            idProducto: 20
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 1600,
+            impuesto: parseFloat("208"),
+            total_detalle: parseFloat("1808"),
+            idFactura_Encabezado: 2,
+            idProducto: 5
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 2000,
+            impuesto: parseFloat("260"),
+            total_detalle: parseFloat("2260"),
+            idFactura_Encabezado: 2,
+            idProducto: 2
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 1500,
+            impuesto: parseFloat("195"),
+            total_detalle: parseFloat("1695"),
+            idFactura_Encabezado: 2,
+            idProducto: 6
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 2000,
+            impuesto: parseFloat("260"),
+            total_detalle: parseFloat("2260"),
+            idFactura_Encabezado: 2,
+            idProducto: 8
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 2500,
+            impuesto: parseFloat("325"),
+            total_detalle: parseFloat("2825"),
+            idFactura_Encabezado: 2,
+            idProducto: 11
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 25000,
+            impuesto: parseFloat("3250"),
+            total_detalle: parseFloat("28250"),
+            idFactura_Encabezado: 2,
+            idProducto: 16
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 3000,
+            impuesto: parseFloat("390"),
+            total_detalle: parseFloat("3390"),
+            idFactura_Encabezado: 2,
+            idProducto: 17
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 1600,
+            impuesto: parseFloat("208"),
+            total_detalle: parseFloat("1808"),
+            idFactura_Encabezado: 3,
+            idProducto: 2
+        }
+    });
+
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 1500,
+            impuesto: parseFloat("195"),
+            total_detalle: parseFloat("1695"),
+            idFactura_Encabezado: 3,
+            idProducto: 4
+        }
+    });
+
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 2,
+            precio: 2000,
+            impuesto: parseFloat("260"),
+            total_detalle: parseFloat("2260"),
+            idFactura_Encabezado: 3,
+            idProducto: 9
+        }
+    });
+
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 9500,
+            impuesto: parseFloat("1235"),
+            total_detalle: parseFloat("10735"),
+            idFactura_Encabezado: 3,
+            idProducto: 14
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 5500,
+            impuesto: parseFloat("715"),
+            total_detalle: parseFloat("6215"),
+            idFactura_Encabezado: 3,
+            idProducto: 19
+        }
+    });
+
+    await prismaClient.factura_Detalle.create({
+        data: {
+            cantidad: 1,
+            precio: 7000,
+            impuesto: parseFloat("910"),
+            total_detalle: parseFloat("7910"),
+            idFactura_Encabezado: 3,
+            idProducto: 13
+        }
+    });
+
+
+    //* Corresponde a la asociación de la factura con el monto y tipo de pago
+    //* Tipo pago factura encabezado
+    await prismaClient.facturaEncabezadoTipoPago.create({
+        data: {
+            idFactura_Encabezado: 1,
+            idTipoPago: 2,
+            monto: parseFloat("30623") //* Prevención ante decimal
+        }
+    });
+
+    await prismaClient.facturaEncabezadoTipoPago.create({
+        data: {
+            idFactura_Encabezado: 2,
+            idTipoPago: 2,
+            monto: parseFloat("42488") 
+        }
+    });
+
+    await prismaClient.facturaEncabezadoTipoPago.create({
+        data: {
+            idFactura_Encabezado: 3,
+            idTipoPago: 2,
+            monto: parseFloat("30623") 
+        }
     });
 
     //TODO seeds listos: tipo tarjeta, tipo pedido, tipo pago, reservaciones seed, + pedidos

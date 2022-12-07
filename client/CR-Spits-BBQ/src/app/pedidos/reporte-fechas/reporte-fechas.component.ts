@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { GenericService } from 'src/app/share/generic.service';
-import { NotificacionService } from 'src/app/share/notification.service';
+import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class ReporteFechasComponent implements AfterViewInit {
   //* Reporte por gráfico de tipo pie Chart.js
   //* Documentación https://www.chartjs.org/docs/latest/charts/doughnut.html#pie
-  //* Instalación de chart.js: npm install chart.js --save
+  //* Instalación de chart.js: npm install chart.js@14.2.2 --save
 
   //* Canvas para el grafico
   canvas: any;
@@ -46,13 +46,15 @@ export class ReporteFechasComponent implements AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
+    this.notification.mensaje("Reportes",
+    "Se ha cargado la información del reporte",
+    TipoMessage.success);
   }
 
-  inicioGrafico(fecha1: any, fecha2: any): void {
-    this.filtroFechaInicial = fecha1;
-    this.filtroFechaFinal = fecha2;
+  inicioGrafico(): void {
     this.loadDateFormat();
+    this.datos = null;
     if (this.filtroFechaInicial && this.filtroFechaFinal && this.filtroFormatted) {
       //* Obtenemos la información del API
       //? Es necesario que vaya con formato
@@ -135,7 +137,7 @@ export class ReporteFechasComponent implements AfterViewInit {
     } else {
       this.filtroFechaInicial = this.addDays(new Date(), -1); //* Ayer
     }
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
   }
 
   changeFechaFin(data: any): void {
@@ -144,7 +146,7 @@ export class ReporteFechasComponent implements AfterViewInit {
     } else {
       this.filtroFechaFinal = new Date(); //* Hoy
     }
-    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
+    this.inicioGrafico();
   }
 
   //* Sirve para añadir o quitar días según se necesite
@@ -154,15 +156,8 @@ export class ReporteFechasComponent implements AfterViewInit {
     return result;
   }
 
-  //* Filtro para fechas
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
-
   //* Borramos
-  ngOnDestroy() {
+  ngOnDestroy() : void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
