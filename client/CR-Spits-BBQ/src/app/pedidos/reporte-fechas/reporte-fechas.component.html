@@ -1,9 +1,36 @@
 <mat-card class="shipping-card">
-    <mat-card-title>Cantidad de ventas por fecha</mat-card-title>
+  <mat-card-title>Cantidad de ventas por fecha de {{filtroFechaInicial | date:'mediumDate'}} a {{filtroFechaFinal | date:'mediumDate'}}</mat-card-title>
 
-    <!-- * Creamos filtro -->
-    
-    <mat-card-content>
-        <canvas #graficoCanvas  class="chart"></canvas>
-    </mat-card-content>
+  <!-- * Creamos filtro -->
+  <mat-form-field appearance="fill">
+    <mat-label>Ingrese el rango de fechas</mat-label>
+    <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+      <input
+      matInput
+        matStartDate
+        formControlName="fechaInicio"
+        placeholder="Fecha inicio"
+        (ngModelChange)="changeFechaInicio($event)"
+      />
+      <input
+      matInput
+        matEndDate
+        formControlName="fechaCierre"
+        placeholder="Fecha fin"
+        (ngModelChange)="changeFechaFin($event)"
+      />
+    </mat-date-range-input>
+    <mat-hint>Mes/día/año – Mes/día/año</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error *ngIf="errorHandling('fechaInicio', 'matStartDateInvalid')"
+      >La fecha de inicio no es válida</mat-error
+    >
+    <mat-error *ngIf="errorHandling('fechaCierre', 'matEndDateInvalid')"
+      >La fecha fin no es válida</mat-error
+    >
+  </mat-form-field>
+  <mat-card-content>
+    <canvas #graficoCanvas class="chart"></canvas>
+  </mat-card-content>
 </mat-card>
