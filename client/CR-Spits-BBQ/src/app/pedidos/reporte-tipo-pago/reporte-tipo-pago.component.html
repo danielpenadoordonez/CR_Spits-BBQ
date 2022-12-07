@@ -1,1 +1,108 @@
-<p>reporte-tipo-pago works!</p>
+<mat-card class="shipping-card">
+  <mat-card-title>
+    Total de ventas por rango de fecha de
+    {{ filtroFechaInicial | date : "mediumDate" }} a
+    {{ filtroFechaFinal | date : "mediumDate" }} y tipo pago
+    {{ getDescTipoPago() }}.</mat-card-title
+  >
+  <mat-card-content>
+    <!-- ? Form fields filtro abajo -->
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Ingrese el rango de fechas</mat-label>
+          <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+            <input
+              matInput
+              matStartDate
+              formControlName="fechaInicio"
+              placeholder="Fecha inicio"
+              (ngModelChange)="changeFechaInicio($event)"
+            />
+            <input
+              matInput
+              matEndDate
+              formControlName="fechaCierre"
+              placeholder="Fecha fin"
+              (ngModelChange)="changeFechaFin($event)"
+            />
+          </mat-date-range-input>
+          <mat-hint>Mes/día/año – Mes/día/año</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error
+            *ngIf="errorHandlingDate('fechaInicio', 'matStartDateInvalid')"
+            >La fecha de inicio no es válida</mat-error
+          >
+          <mat-error *ngIf="errorHandlingDate('fechaInicio', 'required')"
+            >La fecha de inicio es <b>requerida</b></mat-error
+          >
+          <mat-error
+            *ngIf="errorHandlingDate('fechaCierre', 'matEndDateInvalid')"
+            >La fecha fin no es válida</mat-error
+          >
+          <mat-error *ngIf="errorHandlingDate('fechaCierre', 'required')"
+            >La fecha fin es <b>requerida</b></mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col"></div>
+    </div>
+    <div class="row">
+      <div [formGroup]="typePay" class="col">
+        <mat-form-field class="full-width" *ngIf="listaTipoPago">
+          <mat-select
+            placeholder="Tipo pago"
+            [required]="true"
+            formControlName="idTipoPago"
+            title="Seleccione el tipo de pago para el reporte"
+            [multiple]="false"
+            (selectionChange)="changeSelectTipoPago($event)"
+          >
+            <mat-option
+              *ngFor="let tipoPago of listaTipoPago"
+              [value]="tipoPago.id"
+            >
+              {{ tipoPago.descripcion }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="errorHandlingTypePay('idTipoPago', 'required')">
+            El tipo de pago es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col"></div>
+    </div>
+    <div id="htmlData" class="contenedor">
+      <table class="tabla">
+        <thead>
+          <tr class="table-primary">
+            <th>Fecha</th>
+            <th>Total de Ventas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ! ESTOS NOMBRES VAN A CAMBIAR -->
+          <tr *ngFor="let item of datos">
+            <th>{{ item.fecha }}</th>
+            <td>{{ item.totalVentas | currency : "CRC" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-4 text-right">
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="openPDF()"
+        title="Descargar documento PDF"
+      >
+        Descargar PDF
+        <mat-icon>download</mat-icon>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

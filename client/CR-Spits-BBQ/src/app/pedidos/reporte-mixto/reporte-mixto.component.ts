@@ -13,6 +13,7 @@ import html2canvas from 'html2canvas';
 export class ReporteMixtoComponent implements AfterViewInit {
   //* Instalación de jspdf y html2canvas
   //* npm install jspdf@14.2.4 html2canvas@14.2.4 --save
+  //? Mesa, mesero y producto
   
   currentUser: any;
   isAuthenticated: boolean = false;
@@ -22,14 +23,13 @@ export class ReporteMixtoComponent implements AfterViewInit {
     private notification: NotificacionService
   ) { }
 
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
-
-
   ngOnInit(): void {
     //* Cargamos al usuario logeado, ya que sí tiene seguridad pá, leer enunciado
     this.getCurrentUser();
+  }
+
+  ngAfterViewInit(): void {
+    
   }
 
   getCurrentUser() {
@@ -40,6 +40,9 @@ export class ReporteMixtoComponent implements AfterViewInit {
       (valor) => (this.isAuthenticated = valor)
     );
   }
+
+
+
 
 
 }

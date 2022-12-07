@@ -3,7 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reporte-fechas',
@@ -36,13 +36,16 @@ export class ReporteFechasComponent implements AfterViewInit {
   makeSubmit: boolean = false; //* No sé que uso se le de a esto acá
   //* Sirve para el manejo de filtro de fechas
   dateRange = new FormGroup({
-    fechaInicio: new FormControl<Date | null>(null),
-    fechaCierre: new FormControl<Date | null>(null),
+    fechaInicio: new FormControl<Date | null>(null, Validators.required),
+    fechaCierre: new FormControl<Date | null>(null, Validators.required),
   });
 
   constructor(private gService: GenericService,
     private notification: NotificacionService
-  ) { }
+  ) {
+    this.dateRange.get('fechaInicio').setValue(this.filtroFechaInicial);
+    this.dateRange.get('fechaCierre').setValue(this.filtroFechaFinal);
+   }
 
 
   ngAfterViewInit(): void {
@@ -135,6 +138,9 @@ export class ReporteFechasComponent implements AfterViewInit {
     if (data != null) {
       this.filtroFechaInicial = new Date(String(data));
     } else {
+      this.notification.mensaje("Reportes",
+      "Por favor, seleccione una fecha inicio válida",
+      TipoMessage.error);
       this.filtroFechaInicial = this.addDays(new Date(), -1); //* Ayer
     }
     this.inicioGrafico();
@@ -144,6 +150,9 @@ export class ReporteFechasComponent implements AfterViewInit {
     if (data != null) {
       this.filtroFechaFinal = new Date(String(data));
     } else {
+      this.notification.mensaje("Reportes",
+      "Por favor, seleccione una fecha fin válida",
+      TipoMessage.error);
       this.filtroFechaFinal = new Date(); //* Hoy
     }
     this.inicioGrafico();
