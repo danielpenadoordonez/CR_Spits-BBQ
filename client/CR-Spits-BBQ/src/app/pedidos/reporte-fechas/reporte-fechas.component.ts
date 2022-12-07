@@ -3,6 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { GenericService } from 'src/app/share/generic.service';
 import { NotificacionService } from 'src/app/share/notification.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-reporte-fechas',
@@ -27,11 +28,17 @@ export class ReporteFechasComponent implements AfterViewInit {
   //* Lista de meses para filtrar el gráfico
   mesList: any;
   //* Fecha actual
-  filtroFechaInicial = new Date("2022-11-05");
+  filtroFechaInicial: Date = this.addDays(new Date(), -1); //* Ayer
+  filtroFechaFinal: Date = new Date(); //* Hoy
   //* 1 día después por default
-  filtroFechaFinal = this.addDays(this.filtroFechaInicial, 30);
   filtroFormatted: any = null; //* Sirve para darle formato a la entrada
   destroy$: Subject<boolean> = new Subject<boolean>();
+  makeSubmit: boolean = false; //* No sé que uso se le de a esto acá
+  //* Sirve para el manejo de filtro de fechas
+  dateRange = new FormGroup({
+    fechaInicio: new FormControl<Date | null>(null),
+    fechaCierre: new FormControl<Date | null>(null),
+  });
 
   constructor(private gService: GenericService,
     private notification: NotificacionService
@@ -63,7 +70,7 @@ export class ReporteFechasComponent implements AfterViewInit {
 
   //* Configurar y crear gráfico
   graficoBrowser(): void {
-    console.log(this.datos)
+    //? console.log(this.datos)
     this.canvas = this.graficoCanvas.nativeElement;
     this.ctx = this.canvas.getContext('2d');
     //* Si existe destruir el Canvas para mostrar el grafico
@@ -105,7 +112,6 @@ export class ReporteFechasComponent implements AfterViewInit {
       fechaInicio: `${this.filtroFechaInicial.getFullYear()}-${this.filtroFechaInicial.getMonth() + 1}-${this.filtroFechaInicial.getDate()}`,
       fechaCierre: `${this.filtroFechaFinal.getFullYear()}-${this.filtroFechaFinal.getMonth() + 1}-${this.filtroFechaFinal.getDate()}`
     };
-    console.log(this.filtroFechaFinal);
     //? console.log(JSON.stringify(this.filtroFormatted));
   }
 
@@ -113,20 +119,32 @@ export class ReporteFechasComponent implements AfterViewInit {
     let newArray: Array<object> = [];
     this.datos.forEach(async (element, index, hola) => {
       let fecha = new Date(element.fecha);
-      newArray[index] = {fecha: `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`,
-      cantidadProductos: element.cantidadProductos}
+      newArray[index] = {
+        fecha: `${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`,
+        cantidadProductos: element.cantidadProductos
+      }
     });
 
     this.datos = newArray; //* Seteamos 
     this.graficoBrowser();
   }
 
-  changeFechaIncio(data : any){
-
+  changeFechaInicio(data: any): void {
+    if (data != null) {
+      this.filtroFechaInicial = new Date(String(data));
+    } else {
+      this.filtroFechaInicial = this.addDays(new Date(), -1); //* Ayer
+    }
+    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
   }
 
-  changeFechaFin(data : any){
-
+  changeFechaFin(data: any): void {
+    if (data != null) {
+      this.filtroFechaFinal = new Date(String(data));
+    } else {
+      this.filtroFechaFinal = new Date(); //* Hoy
+    }
+    this.inicioGrafico(this.filtroFechaInicial, this.filtroFechaFinal);
   }
 
   //* Sirve para añadir o quitar días según se necesite
@@ -136,10 +154,26 @@ export class ReporteFechasComponent implements AfterViewInit {
     return result;
   }
 
+  //* Filtro para fechas
+  myFilter = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    // Prevent Saturday and Sunday from being selected.
+    return day !== 0 && day !== 6;
+  };
+
   //* Borramos
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+
+  //* Manejo de errores
+  public errorHandling = (control: string, error: string) => {
+    return (
+      this.dateRange.controls[control].hasError(error) &&
+      this.dateRange.controls[control].invalid &&
+      (this.makeSubmit || this.dateRange.controls[control].touched)
+    );
+  };
 
 }
