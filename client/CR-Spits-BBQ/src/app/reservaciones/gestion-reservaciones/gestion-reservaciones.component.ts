@@ -114,4 +114,12 @@ export class GestionReservacionesComponent implements AfterViewInit {
     return countReservations;
   }
 
+  getDateTag(reservaDate: Date): string{
+    let newD = new Date(reservaDate.toString());
+    let Meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL",
+    "AGO", "SET", "OCT", "NOV", "DEC" ];
+    let mes = Meses[newD.getMonth() - 1];
+    return newD.getDate()+ " " + mes + " " + newD.getFullYear(); 
+  }
+
 }

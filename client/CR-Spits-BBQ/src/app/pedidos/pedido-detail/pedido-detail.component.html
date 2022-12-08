@@ -48,8 +48,10 @@
               </div>
             </div>
           </div>
-          <mat-select required="true" placeholder="Cambiar estado pedido" title="Lista de sucursales" class="pedido-state-select">
-            <mat-option *ngFor="let estado of estadoPedido" [value]="estado.id" (click)=" onChangePedidoEstado(estado.id)">
+          <mat-select required="true" placeholder="Cambiar estado pedido" title="Lista de sucursales" *ngIf="(currentUser.user.Perfil.descripcion != 'Cliente')"
+            class="pedido-state-select">
+            <mat-option *ngFor="let estado of estadoPedido" [value]="estado.id"
+              (click)=" onChangePedidoEstado(estado.id)">
               {{ estado.descripcion }}
             </mat-option>
           </mat-select>
@@ -89,10 +91,18 @@
           </div>
         </mat-tab>
         <mat-tab label="Pagar">
+          <mat-select required="true" placeholder="Cómo desea pagar" title="Lista de sucursales"
+            class="pedido-state-select">
+            <mat-option (click)=" changeWayToPay(true)" [value]="true">
+              Tarjeta
+            </mat-option>
+            <mat-option (click)=" changeWayToPay(false)" [value]="false">
+              Efectivo
+            </mat-option>
+          </mat-select>
           <div class="contenedor">
-
             <!-- Tarjeta -->
-            <section class="tarjeta" id="tarjeta">
+            <section class="tarjeta" id="tarjeta" *ngIf="payWithCreditCard">
               <div class="delantera">
                 <div class="logo-marca" id="logo-marca">
                   <!-- <img src="img/logos/visa.png" alt=""> -->
@@ -144,10 +154,13 @@
                   sujeto a las condiciones y términos estipulados en el contrato.</p>
                 <a href="#" class="link-banco">www.crspitsbbq.com</a>
               </div>
-            </section>
+            </section>            
+          </div>
+          <div class="efectivo">
+            <input type="text" (input)="moneyFormat($event)" class="efectivo-input" id="efectivoInput" placeholder="Digite el monto" *ngIf="!(payWithCreditCard)">
           </div>
           <div class="pay-actions flexbox">
-            <button class="pay-action" (click)="mostrarFrente()">Voltear Tarjeta</button>
+            <button *ngIf="payWithCreditCard" class="pay-action" (click)="mostrarFrente()">Voltear Tarjeta</button>
             <button class="pay-action">Pagar</button>
           </div>
         </mat-tab>
