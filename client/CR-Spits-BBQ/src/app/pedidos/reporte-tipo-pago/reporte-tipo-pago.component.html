@@ -11,7 +11,7 @@
       <div class="col">
         <mat-form-field appearance="fill">
           <mat-label>Ingrese el rango de fechas</mat-label>
-          <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+          <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" novalidate>
             <input
               matInput
               matStartDate
@@ -52,7 +52,7 @@
       <div class="col"></div>
     </div>
     <div class="row">
-      <div [formGroup]="typePay" class="col">
+      <div [formGroup]="typePay" class="col" novalidate>
         <mat-form-field class="full-width" *ngIf="listaTipoPago">
           <mat-select
             placeholder="Tipo pago"
@@ -80,15 +80,15 @@
       <table class="tabla">
         <thead>
           <tr class="table-primary">
-            <th>Fecha</th>
+            <th>Méotodo de pago</th>
             <th>Total de Ventas</th>
           </tr>
         </thead>
         <tbody>
           <!-- ! ESTOS NOMBRES VAN A CAMBIAR -->
           <tr *ngFor="let item of datos">
-            <th>{{ item.fecha }}</th>
-            <td>{{ item.totalVentas | currency : "CRC" }}</td>
+            <th>{{ item.MetodoDePago }}</th>
+            <td>{{ item.Cantidad | currency : "CRC" }}</td>
           </tr>
         </tbody>
       </table>

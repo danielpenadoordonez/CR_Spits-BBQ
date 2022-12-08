@@ -38,6 +38,7 @@ module.exports.ventasPorMedioPago = async (request, response, next) => {
     //* Casteo los parámetros
     let fechaInicio = request.body.fechaInicio;
     let fechaCierre = request.body.fechaCierre;
+    let idTipoPago = request.body.idTipoPago;
 
     if (fechaInicio !== undefined) {
         if (fechaCierre === undefined) {
@@ -46,9 +47,9 @@ module.exports.ventasPorMedioPago = async (request, response, next) => {
         }
         //* Cantidad de productos vendidos x fecha
         const reportData = await prisma.$queryRaw(
-            Prisma.sql`SELECT t.descripcion as MetodoDePago, SUM(f.idTipoPago) as Cantidad
-                        FROM TipoPago t, FacturaEncabezadoTipoPago f, Factura_Encabezado fe
-                        WHERE fecha BETWEEN ${fechaInicio} AND ${fechaCierre} AND f.idTipoPago = t.id AND f.idFactura_Encabezado = fe.id
+            Prisma.sql`SELECT t.descripcion as MetodoDePago, SUM(fd.precio) as Cantidad
+                        FROM TipoPago t, FacturaEncabezadoTipoPago f, Factura_Encabezado fe, factura_detalle fd
+                        WHERE fecha BETWEEN ${fechaInicio} AND ${fechaCierre} AND f.idTipoPago = t.id AND f.idTipoPago = ${idTipoPago} AND f.idFactura_Encabezado = fe.id AND fe.id = fd.idFactura_Encabezado
                         GROUP BY t.descripcion`
         );
         response.json(reportData);
