@@ -187,6 +187,8 @@
                         (input)="inputTarjeta($event)"
                         formControlName="numeroTarjeta"
                       />
+                      <mat-error *ngIf="errorHandling('numeroTarjeta', 'required')"
+                      >El número de la tarjeta es requerido <b>requerido</b></mat-error>
                     </div>
                     <div class="flexbox">
                       <div class="grupo" id="nombre">
@@ -213,6 +215,8 @@
                             (input)="inputFecha($event, 'mesTarjeta')"
                             formControlName="mesTarjeta"
                           />
+                          <mat-error *ngIf="errorHandling('mesTarjeta', 'required')"
+                          >El mes de la tarjeta es <b>requerido</b></mat-error>
                           /
                           <input
                             matInput
@@ -226,6 +230,8 @@
                             (input)="inputFecha($event, 'annoTarjeta')"
                             formControlName="annoTarjeta"
                           />
+                          <mat-error *ngIf="errorHandling('annoTarjeta', 'required')"
+                          >El año de la tarjeta es <b>requerido</b></mat-error>
                         </p>
                       </div>
                     </div>
@@ -256,6 +262,8 @@
                         formControlName="ccv"
                         (input)="inputCCV($event)"
                       />
+                      <mat-error *ngIf="errorHandling('ccv', 'required')"
+                      >El código CCV es <b>requerido</b></mat-error>
                     </div>
                   </div>
                   <p class="leyenda">
@@ -281,7 +289,7 @@
                 formControlName="monto"
               />
               <mat-error *ngIf="errorHandling('monto', 'required')"
-              >El monto es requerido
+              >El monto es <b>requerido</b>
             </mat-error>
             </div>
             <div class="efectivo">
