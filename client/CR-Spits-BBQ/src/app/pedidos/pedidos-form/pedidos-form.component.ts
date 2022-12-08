@@ -551,9 +551,7 @@ export class PedidosFormComponent {
       precio: undefined,
       idEstado: undefined,
       detalles: [],
-    });
-
-
+    }); 
     if (this.currentUser.user.idPerfil != 1) {
       //* Solo el admin puede escoger tipo y modificarlo...
       this.pedidosForm.patchValue({
