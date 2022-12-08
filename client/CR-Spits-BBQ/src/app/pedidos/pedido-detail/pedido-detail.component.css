@@ -331,6 +331,21 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.efectivo{
+    text-align: center;
+}
+
+.efectivo-input{
+    width: 90%;
+    padding: 1rem;
+    box-shadow: inset 0 0 10px rgba(0,0,0, .3);
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: .5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
 .delantera .flexbox {
 	display: flex;
 	justify-content: space-between;

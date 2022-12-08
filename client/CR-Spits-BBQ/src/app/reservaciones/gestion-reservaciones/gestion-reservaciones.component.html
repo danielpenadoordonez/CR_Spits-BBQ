@@ -1,150 +1,50 @@
-<mat-card
-  class="full-width"
-  style="background-color: transparent; text-align: center"
->
-  <mat-card-title style="color: #fff; font-weight: bold">
+<mat-card class="full-width" style="background-color: transparent; text-align: center;">
+  <mat-card-title style="color: #fff; font-weight: bold;">
     Gestión de reservaciones📋
   </mat-card-title>
   <mat-card-content>
     <mat-form-field appearance="standard">
       <mat-label>Filtrado</mat-label>
-      <input
-        matInput
-        (keyup)="aplicarFiltro($event)"
-        placeholder="Ex. CRSB-01-0X"
-        #input
-        style="color: rgba(255, 255, 255, 0.863)"
-      />
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Ex. CRSB-01-0X" #input />
     </mat-form-field>
-    <div
-      class="mat-elevation-z8 grid-table-container reserva-table"
-      id="reserva-table"
-      *ngIf="dataSource"
-    >
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        class="full-width-table"
-        matSort
-        matSortStart="desc"
-        aria-label="Elements"
-      >
+    <div class="mat-elevation-z8 grid-table-container reserva-table" id="reserva-table" *ngIf="dataSource">
+      <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
+        aria-label="Elements">
         <!-- Columna producto -->
         <ng-container matColumnDef="reserva">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            style="display: none"
-          >
-            reserva
-          </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none;">reserva</th>
           <td mat-cell *matCellDef="let row">
-            <div
-              class="products-container"
-              data-aos="zoom-in"
-              data-aos-duration="750"
-            >
+            <div class="products-container" data-aos="zoom-in" data-aos-duration="750">
               <div class="product-image">
-                <img
-                  src="https://img.icons8.com/ios/100/null/repository.png"
-                  alt=""
-                  class="product-img"
-                />
+                <img src="https://img.icons8.com/ios/100/null/repository.png" alt="" class="product-img">
               </div>
               <div class="product-data">
-                <p class="product-code">
-                  Código: {{ row.id }} - {{ row.codigo }}
-                </p>
-                <p class="product-name">{{ row.sucursal }}</p>
+                <p class="product-code">Código: {{row.id}} - {{row.codigo}}</p>
+                <p class="product-name">{{row.sucursal}}</p>
               </div>
               <div class="product-data">
-                <p class="product-code">
-                  Cliente: {{ row.Usuario.nombre }} {{ row.Usuario.apellido1 }}
-                  {{ row.Usuario.apellido2 }}
-                </p>
-                <p class="product-name">Cédula: {{ row.Usuario.id }}</p>
+                <p class="product-code">Cliente: {{row.Usuario.nombre}} {{row.Usuario.apellido1}}
+                  {{row.Usuario.apellido2}}</p>
+                <p class="product-name">Cédula: {{row.Usuario.id}}</p>
               </div>
               <div class="product-data">
-                <p class="product-code">
-                  Fecha : {{ row.fecha_hora | date : "dd/MM/yyyy hh:mm a" }}
-                </p>
-                <p class="product-name">Comensales: X{{ row.cantidad }}</p>
+                <p class="product-name">Comensales: X{{row.cantidad}}</p>
               </div>
               <div class="actions">
-                <mat-icon
-                  class="settings"
-                  (click)="detalleReservacion(row.id)"
-                  title="Información acerca de esta reservación"
-                  >info</mat-icon
-                >
-                <mat-icon
-                  class="settings"
-                  (click)="actualizarReservacion(row.id)"
-                  *ngIf="currentUser.user.idPerfil == 1"
-                  title="editar reservación"
-                  >edit</mat-icon
-                >
+                <mat-icon class="settings" (click)="actualizarReservacion(row.id)" *ngIf="(currentUser.user.Perfil.descripcion != 'Cliente')">edit</mat-icon>
               </div>
+              <p class="product-code reserve-date flexbox">
+                <mat-icon class="settings">calendar_month</mat-icon>
+                {{getDateTag(row.fecha_hora)}}</p>
             </div>
           </td>
         </ng-container>
-
-        <!-- * Columna Sucursal -->
-        <ng-container matColumnDef="cedula">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cédula</th>
-          <td mat-cell *matCellDef="let row">{{ row.Usuario.id }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- * Columna cantidad de personas -->
-        <ng-container matColumnDef="cantidad">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Cantidad de personas
-          </th>
-          <td mat-cell *matCellDef="let row">{{ row.cantidad }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- * Columna fecha con formato -->
-        <ng-container matColumnDef="fecha_hora">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.fecha_hora | date : "dd/MM/yyyy hh:mm a" }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- * Usamos el id númerico para actualizar la reservación... -->
-        <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef>Actualizar</th>
-          <td mat-cell *matCellDef="let row">
-            <button
-              mat-mini-fab
-              matTooltip="Actualizar Reservación"
-              aria-label="Actualizar Reservación"
-              color="primary"
-              (click)="actualizarReservacion(row.id)"
-            >
-              <mat-icon class="mat-18">edit</mat-icon>
-            </button>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
-      <mat-paginator
-        #paginator
-        [length]="dataSource?.data?.length"
-        [pageIndex]="0"
-        [pageSize]="9"
-        [pageSizeOptions]="[3, 6, 9]"
-        aria-label="Seleccione una pagina"
-        class="product-paginator"
-      >
+      <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="9"
+        [pageSizeOptions]="[3, 6, 9]" aria-label="Seleccione una pagina" class="product-paginator">
       </mat-paginator>
     </div>
   </mat-card-content>

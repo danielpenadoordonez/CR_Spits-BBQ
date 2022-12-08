@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/share/authentication.service';
 import { GenericService } from 'src/app/share/generic.service';
 
 
@@ -16,10 +17,14 @@ export class PedidoDetailComponent implements OnInit {
   datosDialog: any;
   destroy$: Subject<boolean> = new Subject<boolean>();
   estadoPedido: any;
+  payWithCreditCard: boolean;
+  currentUser: any;
+  isAuthenticated: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private dialogRef: MatDialogRef<PedidoDetailComponent>,
-    private gService: GenericService
+    private gService: GenericService,
+    private authService: AuthenticationService
   ) {
     this.datosDialog = data;
   }
@@ -29,7 +34,20 @@ export class PedidoDetailComponent implements OnInit {
       this.obtenerDetallesByOrderID(this.datosDialog.id);
       this.addStyleClasses();
       this.getEstadoPedido();
+      this.getCurrentUser();
     }
+  }
+
+  //* Obtenemos al usuario actual logeado, si es que lo hay obvio
+  getCurrentUser() {
+    //* Subscripción a la información del usuario actual
+    this.authService.currentUser.subscribe((x) => {
+      this.currentUser = x;
+    });
+    //* Subscripción al booleano que indica si esta autenticado
+    this.authService.isAuthenticated.subscribe(
+      (valor) => (this.isAuthenticated = valor)
+    );
   }
 
   getEstadoPedido() {
@@ -67,8 +85,20 @@ export class PedidoDetailComponent implements OnInit {
     document.querySelector('.cdk-overlay-pane').classList.add('cdk-overlay-fullscreen');
   }
 
+  // Cambia si el pedido sera por tarjeta o por efectivo
+  changeWayToPay(wayToPay: boolean){
+    // se asigna a la factura el tipo de pago de acuerdo a esta variable
+    this.payWithCreditCard = wayToPay;
+  }
 
-
+  moneyFormat(event: any){
+    // muestra el total con formato colones y reemplaza letras , es decir no las muestra
+    // OJO: este valor se tiene que convertir en decimal o algo asi y asignar a una variable global
+    let value = event.target.value;
+    value = value.replace(/\D/g, '');
+    value = "₡" + value;
+    (document.getElementById('efectivoInput') as HTMLInputElement).value = value;
+  }
 
   // Algoritmo para validar si una tarjeta es valida o no
   LuhnCheck(value: any) {

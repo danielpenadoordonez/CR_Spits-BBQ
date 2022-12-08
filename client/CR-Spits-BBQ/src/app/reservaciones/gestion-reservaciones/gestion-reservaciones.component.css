@@ -9,3 +9,9 @@
   .product-data p{
     margin: .35rem .75rem;
   }
+
+  .reserve-date{
+    padding: 1rem;
+    background-color: #007241;
+    font-size: 1.2rem;
+  }

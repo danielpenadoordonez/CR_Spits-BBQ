@@ -79,5 +79,4 @@ export class GestionPedidosComponent implements AfterViewInit {
       (valor) => (this.isAuthenticated = valor)
     );
   }
-
 }
