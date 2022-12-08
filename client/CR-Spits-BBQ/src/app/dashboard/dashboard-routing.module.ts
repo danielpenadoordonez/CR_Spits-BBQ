@@ -135,6 +135,14 @@ const routes: Routes = [
         }
       },
       {
+        path: 'pedidos/create',
+        canActivate: [AuthGuard],
+        component: PedidosFormComponent,
+        data: {
+          roles: ['Cliente'],
+        }
+      },
+      {
         path: 'mesas/reservaciones/create',
         canActivate: [AuthGuard],
         component: ReservacionesFormComponent,
