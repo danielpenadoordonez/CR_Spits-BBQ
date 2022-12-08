@@ -30,7 +30,7 @@ export const navbarData = [
         roles: ['Cliente', 'Mesero', 'Administrador']
     },
     {
-        routerLink: 'ordenar',
+        routerLink: 'pedidos/create',
         icon: 'menu_book',
         label: 'Ordenar',
         roles: ['Cliente'] 

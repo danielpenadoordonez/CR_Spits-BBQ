@@ -1,4 +1,13 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,9 +15,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subject, takeUntil } from 'rxjs';
 import { GenericService } from 'src/app/share/generic.service';
 import { MesaDetailComponent } from '../mesa-detail/mesa-detail.component';
-import { filter, map } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
+import {
+  NotificacionService,
+  TipoMessage,
+} from 'src/app/share/notification.service';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 
 @Component({
@@ -16,21 +28,20 @@ import { AuthenticationService } from 'src/app/share/authentication.service';
   templateUrl: './gestion-mesas.component.html',
   styleUrls: ['./gestion-mesas.component.css'],
 })
-
 export class GestionMesasComponent implements AfterViewInit, OnInit {
   datos: any; //* Data
   mesaObject: any; //* Objeto mesa
   sucursalesList: any; //* Lista sucursales
-  disponibilidadesList // Lista de disponiilidades
+  disponibilidadesList; // Lista de disponiilidades
 
   destroy$: Subject<boolean> = new Subject<boolean>(); //* Suscripción
-  displayedColumns = ['mesa']//* Columnas que se verán de las mesas, solo para MatTable
+  displayedColumns = ['mesa']; //* Columnas que se verán de las mesas, solo para MatTable
 
   filtros: any = {
     sucursal: -1,
     estado: -1,
-    disponibilidad: -1
-  }
+    disponibilidad: -1,
+  };
 
   //* usuario conectado
   isAuthenticated: boolean;
@@ -41,20 +52,28 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private gService: GenericService, private dialog: MatDialog,
-    private route: ActivatedRoute, private router: Router,
-    private notification: NotificacionService, private changeDetectorRefs: ChangeDetectorRef,
-    private authService: AuthenticationService) { }
+  constructor(
+    private gService: GenericService,
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    private notification: NotificacionService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private authService: AuthenticationService
+  ) {}
 
   ngOnInit() {
     this.getCurrentUser();
   }
 
   ngAfterViewInit(): void {
-    document.querySelectorAll('#mesas-table tbody')[0].classList.add('grid-table-body');
-    document.querySelectorAll('#mesas-table thead')[0].classList.add('grid-table-head');
+    document
+      .querySelectorAll('#mesas-table tbody')[0]
+      .classList.add('grid-table-body');
+    document
+      .querySelectorAll('#mesas-table thead')[0]
+      .classList.add('grid-table-head');
   }
-
 
   //* get Current User
   getCurrentUser() {
@@ -71,8 +90,9 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   }
 
   loadMesasData(userData: any) {
-    userData.user.Perfil.descripcion != 'Mesero' ?
-      this.listaMesas() : this.listarMesasBySucursal(this.currentUser.user.sucursales[0].id);
+    userData.user.Perfil.descripcion != 'Mesero'
+      ? this.listaMesas()
+      : this.listarMesasBySucursal(this.currentUser.user.sucursales[0].id);
     this.listaSucursales();
     this.listaDisponibilidades();
   }
@@ -125,9 +145,7 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
 
   listaMesasToFilter() {
     if (this.currentUser.user.Perfil.descripcion != 'Mesero') {
-      return this.gService
-        .list('mesas/all')
-        .pipe(takeUntil(this.destroy$));
+      return this.gService.list('mesas/all').pipe(takeUntil(this.destroy$));
     } else {
       return this.gService
         .get('mesas/sucursal', this.currentUser.user.sucursales[0].id)
@@ -180,26 +198,36 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   }
 
   aplicarFiltro() {
-    if (this.filtros.sucursal == -1 && this.filtros.estado == -1 && this.filtros.disponibilidad == -1) {
-      this.notification.mensaje('Filtro', "No se puede filtrar sin antes haber escogido algún filtro", TipoMessage.warning);
+    if (
+      this.filtros.sucursal == -1 &&
+      this.filtros.estado == -1 &&
+      this.filtros.disponibilidad == -1
+    ) {
+      this.notification.mensaje(
+        'Filtro',
+        'No se puede filtrar sin antes haber escogido algún filtro',
+        TipoMessage.warning
+      );
       return;
     }
 
     this.listaMesasToFilter().subscribe((data: any) => {
       if (this.filtros.sucursal != 0 && this.filtros.sucursal != -1)
-        data = data.filter(item => item.idSucursal == this.filtros.sucursal);
+        data = data.filter((item) => item.idSucursal == this.filtros.sucursal);
 
       if (this.filtros.estado != null && this.filtros.estado != -1)
-        data = data.filter(item => item.estado == this.filtros.estado);
+        data = data.filter((item) => item.estado == this.filtros.estado);
 
       if (this.filtros.disponibilidad != 0 && this.filtros.disponibilidad != -1)
-        data = data.filter(item => item.idDisponibilidad == this.filtros.disponibilidad);
+        data = data.filter(
+          (item) => item.idDisponibilidad == this.filtros.disponibilidad
+        );
 
-      this.datos = data
+      this.datos = data;
       this.dataSource = new MatTableDataSource(this.datos);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    })
+    });
   }
   //* Llamada en el front (click)="detalleMesa(item.id) - No sé si quiere trabajarlo por id o código
 
@@ -214,12 +242,22 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
   }
 
   detalleOrdenAction(mesa: any) {
-    let ultimoPedido = mesa.pedidos[mesa.pedidos.length - 1].id; //* último pedido de dicha mesa
+    let ultimoPedido = 0; //* último pedido de dicha mesa
+    if (mesa.pedidos.length > 0) {
+      ultimoPedido = mesa.pedidos[mesa.pedidos.length - 1].id;
+    }
     //* console.log(ultimoPedido);
-    this.router.navigate(['pedidos/update', ""], {
-      queryParams: { idPedido: ultimoPedido, codigoMesa: mesa.codigo },
-      relativeTo: this.route,
-    });
+    if (ultimoPedido != 0) {
+      this.router.navigate(['pedidos/update', ''], {
+        queryParams: { idPedido: ultimoPedido, codigoMesa: mesa.codigo },
+        relativeTo: this.route,
+      });
+    }else{
+      this.router.navigate(['pedidos/update', ""], {
+        queryParams: { codigoMesa: mesa.codigo },
+        relativeTo: this.route,
+      });
+    }
   }
 
   pedidoMesaAction(idMesa: number) {
@@ -227,7 +265,10 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
       .get('mesas', idMesa)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        if (data.EstadoMesa.descripcion == 'Disponible' || data.EstadoMesa.descripcion == 'Reservada') {
+        if (
+          data.EstadoMesa.descripcion == 'Disponible' ||
+          data.EstadoMesa.descripcion == 'Reservada'
+        ) {
           this.router.navigate(['pedidos/create'], {
             queryParams: { idMesa: data.id, codigoMesa: data.codigo },
             relativeTo: this.route,
@@ -249,5 +290,4 @@ export class GestionMesasComponent implements AfterViewInit, OnInit {
         }
       });
   }
-
 }

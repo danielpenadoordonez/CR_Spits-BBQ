@@ -94,7 +94,7 @@
         </mat-tab>
         <!-- * asignamos el form group -->
         <!-- ? Válida que sea en línea y sea cliente -->
-        <mat-tab label="Pagar" *ngIf="datos.idTipoPedido != 1 && currentUser.user.idPerfil == 3 && datos.idEstado == 1">
+        <mat-tab label="Pagar" *ngIf="currentUser.user.idPerfil != 3">
           <div [formGroup]="pedidosForm" novalidate (ngSubmit)="pagar()">
           <mat-select [required]="true" placeholder="Cómo desea pagar" title="Lista tipo de pago"
             class="pedido-state-select" (selectionChange)="changeWayToPay($event)">

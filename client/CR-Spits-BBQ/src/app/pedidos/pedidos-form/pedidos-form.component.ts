@@ -1,9 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { GenericService } from 'src/app/share/generic.service';
 import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { NotificacionService, TipoMessage } from 'src/app/share/notification.service';
+import {
+  NotificacionService,
+  TipoMessage,
+} from 'src/app/share/notification.service';
 import { AuthenticationService } from 'src/app/share/authentication.service';
 import { LoadScriptsService } from 'src/app/share/load-scripts.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +25,7 @@ import { CartService } from 'src/app/share/cart.service';
   styleUrls: [
     './pedidos-form.component.css',
     './../../mesas/gestion-mesas/gestion-mesas.component.css',
-    './../../productos/gestion-producto/gestion-producto.component.css'
+    './../../productos/gestion-producto/gestion-producto.component.css',
   ],
 })
 export class PedidosFormComponent {
@@ -36,11 +44,11 @@ export class PedidosFormComponent {
   pedidosForm: FormGroup; //* El nombre del formulario [CUIDADO]
   idPedido: number = 0; //* id del pedido [int]
   isCreate: boolean = true; //* si es update o create
-  isCarritoLoaded: boolean = false;//* Sirve para saber si cargó o no el carrito
+  isCarritoLoaded: boolean = false; //* Sirve para saber si cargó o no el carrito
   isPedidoPresencial: boolean = true; //* Indica el tipo de pedido, por default true
   dataSourceCarrito: any = null;
 
-  productData: any;//* lista productos
+  productData: any; //* lista productos
   cartData: any;
   totalOrder: any;
   subTotalOrder: any;
@@ -62,6 +70,7 @@ export class PedidosFormComponent {
   inputFiltro = new FormControl('');
   filteredOptions: Observable<any[]>;
 
+  sucursalSelected: number = -1;
   /*
   * FORMATO JSON - PEDIDO
 ! CUIDADO CON LA FECHA Y SU FORMATO, SINO ENVIAR POR DEFAULT (HOY)
@@ -93,7 +102,7 @@ export class PedidosFormComponent {
     this.getCurrentUser();
     this.formularioReactive();
     //! this.listaClientes(); se inhabilitan debido a que solo tienen uso con update
-    //! this.listaSucursales();
+    
     //! this.listaOrderStates(); - Arreglar luego
     this.listaTiposOrden();
     this.listaPedidos();
@@ -101,24 +110,30 @@ export class PedidosFormComponent {
 
   //? Update del pedido - recordar bloquear el filtro de sucursal si es mesero
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       let pedido = params['idPedido'] || null; //* No voy a borrar esto, pues nunca se sabe
       let codigoMesa = params['codigoMesa'] || null;
-      if (pedido != null) { //* Significa que es update
+      if (pedido != null) {
+        //* Significa que es update
         //* Sirve para ver el preview...
         this.isCreateOrUpdate(); //* Cambia a false el isCreate
         this.getMesaDetail();
         this.asignarCarritoUpdate(codigoMesa);
-      } else { //* Create
-        this.getMesaDetail();
-        this.checkIfExistOldItemsOnCreate(codigoMesa);
-        this.isCarritoLoaded = true;
+      } else {
+       if(codigoMesa != null ){
+         //* Create
+         this.getMesaDetail();
+         this.checkIfExistOldItemsOnCreate(codigoMesa);
+         this.isCarritoLoaded = true;
+       }
       }
       this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
-    })
+    });
 
-    if (this.currentUser.user.idPerfil == 3) { //* Se settea que es online
+    if (this.currentUser.user.idPerfil == 3) {
+      //* Se settea que es online
       this.isPedidoPresencial = false;
+      this.getMesaDetail();
     }
 
     this.getProductData();
@@ -128,11 +143,22 @@ export class PedidosFormComponent {
     this.setTableStyles();
   }
 
-  setTableStyles() {
-    (document.querySelector('#pedido-product-table tbody') as HTMLElement).classList.add('grid-table-body');
-    (document.querySelector('#pedido-product-table thead') as HTMLElement).classList.add('grid-table-head');
+  setProductBySucursal(sucursal: number){
+    this.sucursalSelected = sucursal;
+    if(this.mesa != undefined || this.mesa != null){
+      this.mesa.idSucursal = this.sucursalSelected;
+    }
+    this.getProductData();
   }
 
+  setTableStyles() {
+    (
+      document.querySelector('#pedido-product-table tbody') as HTMLElement
+    ).classList.add('grid-table-body');
+    (
+      document.querySelector('#pedido-product-table thead') as HTMLElement
+    ).classList.add('grid-table-head');
+  }
 
   filtrarProducto(evento) {
     let filtro = evento.target.value;
@@ -140,7 +166,9 @@ export class PedidosFormComponent {
       .list('productos/all-hability')
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
-        data = data.filter(producto => producto.nombre.toLowerCase().includes(filtro.toLowerCase()));
+        data = data.filter((producto) =>
+          producto.nombre.toLowerCase().includes(filtro.toLowerCase())
+        );
         this.productData = data;
         this.dataSource = new MatTableDataSource(this.productData);
         this.dataSource.sort = this.sort;
@@ -153,9 +181,12 @@ export class PedidosFormComponent {
     console.log(value);
     const filterValue = value;
 
-    return this.clientsList.filter(clients => clients.nombre.toLowerCase().includes(filterValue)
-      || clients.apellido1.toLowerCase().includes(filterValue)
-      || clients.apellido2.toLowerCase().includes(filterValue));
+    return this.clientsList.filter(
+      (clients) =>
+        clients.nombre.toLowerCase().includes(filterValue) ||
+        clients.apellido1.toLowerCase().includes(filterValue) ||
+        clients.apellido2.toLowerCase().includes(filterValue)
+    );
   }
 
   formularioReactive() {
@@ -164,30 +195,47 @@ export class PedidosFormComponent {
       id: null, //* No se puede editar - autoincrement
       nombre: null, //* Viene del backend automático
       precio: null, //* Este campo se autocácula con base en los detalles - se envía nulo - [DEFAULT]
-      fecha: [ //? Vigila si es admin y de feria edita
+      fecha: [
+        //? Vigila si es admin y de feria edita
         null,
         Validators.compose([
-          Validators.minLength(8), Validators.maxLength(10), Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/) //? Formato fecha MM/dd/yyyy
+          Validators.minLength(8),
+          Validators.maxLength(10),
+          Validators.pattern(/^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/), //? Formato fecha MM/dd/yyyy
         ]), //* [DEFAULT]
       ],
       idEstado: null, //* Se elige el primer estado 1 - [DEFAULT]
-      idCliente: [null, Validators.compose([
-        Validators.required, Validators.minLength(9), Validators.maxLength(100), Validators.pattern(/^[0-9]*$/)
-      ])], //? Se elige de un combo box - A no ser que sea cliente
+      idCliente: [
+        null,
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(100),
+          Validators.pattern(/^[0-9]*$/),
+        ]),
+      ], //? Se elige de un combo box - A no ser que sea cliente
       idMesero: null, //? Se asigna por el servicio
       idSucursal: null, //? Se asigna por la sucursal a la que esté asignada la mesa elegida o bien por el mesero
       idMesa: null, //? Se elige en el inicio - [OPCIONAL - ONLINE]
-      idTipoPedido: [null, this.currentUser.user.idPerfil == 1 ? Validators.required : null], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
+      idTipoPedido: [
+        null,
+        this.currentUser.user.idPerfil == 1 ? Validators.required : null,
+      ], //* Se auto hace, si es un cliente es online, sino es presencial - [DEFAULT PRESENCIAL]
       detalles: null, //* Cambiar cuando se añada el carro
-      cliente: null
+      cliente: null,
     });
   }
 
   //* agregar al carrito
   addToCart(id: number) {
-    if (this.isCreate && this.cartService.idMesa == "" || this.cartService.idMesa) {
-      this.cartService.idMesa = this.mesa.codigo;
-      console.log(`Código de mesa ${this.mesa.codigo}`)
+    if(this.currentUser.user.Perfil.idPerfil != 3){
+      if (
+        (this.isCreate && this.cartService.idMesa == '') ||
+        this.cartService.idMesa
+      ) {
+        this.cartService.idMesa = this.mesa.codigo;
+        console.log(`Código de mesa ${this.mesa.codigo}`);
+      }
     }
 
     this.gService
@@ -202,9 +250,11 @@ export class PedidosFormComponent {
           `Producto: ${data.nombre} se ha agregado a la orden 🛒`,
           TipoMessage.success
         );
-        this.cartData = this.cartService.getItems.filter(item => item.mesa == this.mesa.codigo);
+        this.cartData = this.cartService.getItems.filter(
+          (item) => item.mesa == this.mesa.codigo
+        );
         this.qtyItems = this.cartData.length;
-        this.setTotalsOrder(this.mesa.codigo)
+        this.setTotalsOrder(this.mesa.codigo);
       });
   }
 
@@ -220,13 +270,17 @@ export class PedidosFormComponent {
   }
 
   toggleCartDataCover() {
-    document.querySelector('.cart-data-back-cover').classList.toggle('show-cart-data-back-cover');
+    document
+      .querySelector('.cart-data-back-cover')
+      .classList.toggle('show-cart-data-back-cover');
   }
 
   expandTotal() {
     let indinf = document.querySelector('.total-details');
     indinf.classList.toggle('show-total-details');
-    document.querySelector('.expand-total-icon').classList.toggle('expand-total-icon-rotate');
+    document
+      .querySelector('.expand-total-icon')
+      .classList.toggle('expand-total-icon-rotate');
   }
 
   addNote(idItem: any, event: any) {
@@ -247,7 +301,7 @@ export class PedidosFormComponent {
   //* Obtiene la próxima orden
   nextIdOrder() {
     let max: number = this.listaOrdenes.length || null;
-    console.log(`new car ${++max}`)
+    console.log(`new car ${++max}`);
     return max;
   }
 
@@ -271,7 +325,7 @@ export class PedidosFormComponent {
         this.clientsList = data;
         this.filteredOptions = this.inputFiltro.valueChanges.pipe(
           startWith(''),
-          map(value => this._filter(value || '')),
+          map((value) => this._filter(value || ''))
         );
       });
   }
@@ -314,7 +368,7 @@ export class PedidosFormComponent {
   };
 
   getMesaDetail() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       let idMesa = params['idMesa'] || null;
       let codigoMesa = params['codigoMesa'] || null;
       if (idMesa != null) {
@@ -333,11 +387,27 @@ export class PedidosFormComponent {
             this.mesa = data;
           });
       }
-    })
+
+      if(this.currentUser.user.idPerfil == 3){
+        let codigoVirtual = this.currentUser.user.id + Date.now().toString();
+        this.mesa =  {codigo: codigoVirtual, idSucursal: this.sucursalSelected};
+      }
+    });
   }
 
   getProductData() {
-    let hileraValidadora: string = this.currentUser.user.idPerfil == 1 ? "productos/all-hability" : `productos/sucursal/${this.currentUser.user.sucursales[0].id}`;
+    let hileraValidadora: string;
+    if(this.currentUser.user.idPerfil != 3){
+      hileraValidadora = this.currentUser.user.idPerfil == 1
+      ? 'productos/all-hability'
+      : `productos/sucursal/${this.currentUser.user.sucursales[0].id}`;
+    }else{
+      if(this.sucursalSelected == -1){
+        return;
+      }else{
+        hileraValidadora = `productos/sucursal/${this.sucursalSelected}`
+      }
+    }
     this.gService
       .list(hileraValidadora)
       .pipe(takeUntil(this.destroy$))
@@ -359,7 +429,7 @@ export class PedidosFormComponent {
   asignarCliente(inputCliente: any) {
     this.clienteSeleccionado = inputCliente;
     this.pedidosForm.patchValue({ idCliente: this.clienteSeleccionado.id }); //* Únicamente en caso de ser presencial
-    console.log(this.pedidosForm.value)
+    console.log(this.pedidosForm.value);
   }
 
   isCreateOrUpdate(): void {
@@ -387,7 +457,13 @@ export class PedidosFormComponent {
               idTipoPedido: this.pedidoInfo.idTipoPedido,
               detalles: null, //* No se mapea
               //* Nombre del cliente compuesto
-              cliente: `${this.pedidoInfo.Cliente.nombre} ${this.pedidoInfo.Cliente.apellido1} ${this.pedidoInfo.Cliente.apellido2 != undefined ? this.pedidoInfo.Cliente.apellido2 : ""}`,
+              cliente: `${this.pedidoInfo.Cliente.nombre} ${
+                this.pedidoInfo.Cliente.apellido1
+              } ${
+                this.pedidoInfo.Cliente.apellido2 != undefined
+                  ? this.pedidoInfo.Cliente.apellido2
+                  : ''
+              }`,
             });
           });
       }
@@ -398,10 +474,10 @@ export class PedidosFormComponent {
     this.cartService.idMesa = codigoMesa;
     this.cartService.refrescarCarrito();
     this.isCarritoLoaded = true;
-    this.cartService.currentDataCart$.subscribe(data => {
-      data = data.filter(cartItem => cartItem.mesa == codigoMesa);
+    this.cartService.currentDataCart$.subscribe((data) => {
+      data = data.filter((cartItem) => cartItem.mesa == codigoMesa);
       this.cartData = data;
-    })
+    });
     this.qtyItems = this.cartData.length;
     this.setTotalsOrder(codigoMesa);
   }
@@ -414,6 +490,7 @@ export class PedidosFormComponent {
       //* si el usuario que registra la orden es el mismo cliente se asigna automaticamente como cliente
       if (this.currentUser.user.Perfil.descripcion == 'Cliente') {
         this.cliente = x.user;
+        this.listaSucursales();
       } else {
         //* si no liste clientes
         this.listaClientes();
@@ -432,11 +509,13 @@ export class PedidosFormComponent {
 
   //* Retorna el nombre completo del cliente seleccionado para mostrarlo en mat-autocomplete
   displayClientName(cliente: any) {
-    return cliente ? `${cliente.nombre} ${cliente.apellido1} ${cliente.apellido2}` : '';
+    return cliente
+      ? `${cliente.nombre} ${cliente.apellido1} ${cliente.apellido2}`
+      : '';
   }
 
   crearPedido() {
-    //* Establecer submit verdadero 
+    //* Establecer submit verdadero
     //* Es necesario insertar las líneas de detalle igualmente
     console.log('intentando crear pedido');
     this.submitted = true;
@@ -449,49 +528,64 @@ export class PedidosFormComponent {
     }
     this.pedidosForm.patchValue({ idMesero: this.currentUser.user.id });
     this.pedidosForm.patchValue({ idSucursal: this.mesa.idSucursal }); //? De donde sale la sucursal si es online?
-    if (this.currentUser.user.idPerfil != 3 && this.isPedidoPresencial) { //* Diferente de cliente o que la orden sea online
+    if (this.currentUser.user.idPerfil != 3 && this.isPedidoPresencial) {
+      //* Diferente de cliente o que la orden sea online
       this.pedidosForm.patchValue({ idMesa: this.mesa.id });
     } else {
       this.pedidosForm.patchValue({ idMesa: undefined });
     }
 
     //* Vigilamos la data
-    console.log(this.pedidosForm.value)
+    console.log(this.pedidosForm.value);
 
     if (this.pedidosForm.invalid) {
-      this.notification.mensaje("Productos",
-        "Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos",
-        TipoMessage.error);
+      this.notification.mensaje(
+        'Productos',
+        'Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos',
+        TipoMessage.error
+      );
       return;
     }
 
     //? ojo con tipo de pedido
-    this.pedidosForm.patchValue({ precio: undefined, idEstado: undefined, detalles: [] });
-    if (this.currentUser.user.idPerfil != 1) { //* Solo el admin puede escoger tipo y modificarlo...
-      this.pedidosForm.patchValue({ idTipoPedido: this.currentUser.user.idPerfil == 3 ? 2 : 1 })
+    this.pedidosForm.patchValue({
+      precio: undefined,
+      idEstado: undefined,
+      detalles: [],
+    });
+    if (this.currentUser.user.idPerfil != 1) {
+      //* Solo el admin puede escoger tipo y modificarlo...
+      this.pedidosForm.patchValue({
+        idTipoPedido: this.currentUser.user.idPerfil == 3 ? 2 : 1,
+      });
     }
 
     //* Vigilamos la data
-    console.log(this.pedidosForm.value)
+    console.log(this.pedidosForm.value);
 
-    this.gService.create('pedidos/register', this.pedidosForm.value)
-      .pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+    this.gService
+      .create('pedidos/register', this.pedidosForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
         this.respPedido = data;
         //* Notificacion de la tarea realizada
         let notificationBody = `<div class='flexbox'><p>Pedido número #: ${this.respPedido.data.id} <br> ${this.respPedido.data.nombre} 
-                                ha sido <b>registrado éxitosamente</b>.</p></div>`
-        this.notification.mensaje('Productos', notificationBody, TipoMessage.success);
+                                ha sido <b>registrado éxitosamente</b>.</p></div>`;
+        this.notification.mensaje(
+          'Productos',
+          notificationBody,
+          TipoMessage.success
+        );
         //? Redirigimos
         this.router.navigate(['/dashboard/comandas'], {
-          queryParams: { update: 'true' }
+          queryParams: { update: 'true' },
         });
       });
   }
 
   actualizarPedido() {
     //* La idea de esto es las líneas detalle.. solamente
-    console.log("hola update");
-
+    console.log('hola update');
   }
 
   // Remueve un item
@@ -513,10 +607,10 @@ export class PedidosFormComponent {
 
   checkIfExistOldItemsOnCreate(mesa: string) {
     let listCart = this.cartService.getItems;
-    listCart = listCart.filter(item => item.mesa == mesa);
-    listCart.forEach(item => {
+    listCart = listCart.filter((item) => item.mesa == mesa);
+    listCart.forEach((item) => {
       this.cartService.removeAllItems(item.idItem, mesa);
-    })
+    });
   }
 
   onReset() {
@@ -524,6 +618,12 @@ export class PedidosFormComponent {
     this.submitted = false;
     this.pedidosForm.reset();
     this.inputFiltro.reset();
+    this.checkIfExistOldItemsOnCreate(this.mesa.codigo);
+    this.cartData = this.cartService.getItems.filter(
+      (item) => item.mesa == this.mesa.codigo
+    );
+    this.qtyItems = this.cartData.length;
+    this.setTotalsOrder(this.mesa.codigo);
   }
 
   onBack() {
@@ -537,8 +637,6 @@ export class PedidosFormComponent {
     this.destroy$.unsubscribe();
   }
 
-
-
   //? Filtro de fecha - que no sea menor y que no se pase de 1 semana
   dateFilter = (d: Date | null): boolean => {
     const datePicked = d || new Date();
@@ -550,4 +648,3 @@ export class PedidosFormComponent {
     );
   };
 }
-

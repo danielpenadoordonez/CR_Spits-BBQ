@@ -43,7 +43,7 @@
   <mat-card class="shipping-card">
     <div class="pedido-detail flexbox">
       <div class="pedido-detail-table flexbox" *ngIf="mesa" data-aos="zoom-in" data-aos-duration0="1200">
-        <div class="pedido-detail-table-content">
+        <div class="pedido-detail-table-content" *ngIf="currentUser.user.idPerfil != 3" >
           <h2 class="pedido-detail-table-code">{{ mesa.Sucursal.nombre }}</h2>
           <img class="table-icon" [src]="
               mesa.EstadoMesa.descripcion == 'Disponible'
@@ -57,7 +57,7 @@
             <p class="diners-quantity">X{{ mesa.capacidad }}</p>
           </div>
         </div>
-        <h2 class="pedido-detail-table-code">{{ mesa.codigo }}</h2>
+        <h2 *ngIf="currentUser.user.idPerfil != 3" class="pedido-detail-table-code">{{ mesa.codigo }}</h2>
       </div>
       <div class="pedido-detail-cliente flexbox" *ngIf="cliente" data-aos="zoom-in" data-aos-duration0="1200">
         <div class="user-logo">
@@ -67,6 +67,14 @@
           <h3 class="user-name">{{ getUserFullName() }}</h3>
         </div>
       </div>
+      <mat-form-field appearance="fill" class="filter">
+        <mat-label>Sucursales</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="setProductBySucursal(sucursal.id)">
+            {{sucursal.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <div class="pedido-select-cliente flexbox" data-aos="zoom-in" data-aos-duration0="1200"
         *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">
         <h3>Selecciona un cliente</h3>
