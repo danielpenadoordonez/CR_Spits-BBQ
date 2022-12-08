@@ -18,6 +18,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { CartService } from 'src/app/share/cart.service';
+import { M } from 'chart.js/dist/chunks/helpers.core';
 
 @Component({
   selector: 'app-pedidos-form',
@@ -36,6 +37,7 @@ export class PedidosFormComponent {
   clientsList: any; //* Lista de clientes
   sucursalesList: any; //* lista de sucursales
   listaOrdenes: any; //* Lista de pedidos
+  pedidoData: any = null; //* Obtiene la data del pedido si ya existía
   statesList: any; //* Lista de estados de pedido
   typeOrdersList: any; //* Lista tipos de órdenes (presencial & online)
   pedidoInfo: any; //? información del producto a actualizar [UPDATE]
@@ -102,7 +104,7 @@ export class PedidosFormComponent {
     this.getCurrentUser();
     this.formularioReactive();
     //! this.listaClientes(); se inhabilitan debido a que solo tienen uso con update
-    
+
     //! this.listaOrderStates(); - Arreglar luego
     this.listaTiposOrden();
     this.listaPedidos();
@@ -120,12 +122,12 @@ export class PedidosFormComponent {
         this.getMesaDetail();
         this.asignarCarritoUpdate(codigoMesa);
       } else {
-       if(codigoMesa != null ){
-         //* Create
-         this.getMesaDetail();
-         this.checkIfExistOldItemsOnCreate(codigoMesa);
-         this.isCarritoLoaded = true;
-       }
+        if (codigoMesa != null) {
+          //* Create
+          this.getMesaDetail();
+          this.checkIfExistOldItemsOnCreate(codigoMesa);
+          this.isCarritoLoaded = true;
+        }
       }
       this.scriptService.loadScript(this.scripts[0], this.scripts[0]);
     });
@@ -143,9 +145,9 @@ export class PedidosFormComponent {
     this.setTableStyles();
   }
 
-  setProductBySucursal(sucursal: number){
+  setProductBySucursal(sucursal: number) {
     this.sucursalSelected = sucursal;
-    if(this.mesa != undefined || this.mesa != null){
+    if (this.mesa != undefined || this.mesa != null) {
       this.mesa.idSucursal = this.sucursalSelected;
     }
     this.getProductData();
@@ -228,7 +230,7 @@ export class PedidosFormComponent {
 
   //* agregar al carrito
   addToCart(id: number) {
-    if(this.currentUser.user.Perfil.idPerfil != 3){
+    if (this.currentUser.user.Perfil.idPerfil != 3) {
       if (
         (this.isCreate && this.cartService.idMesa == '') ||
         this.cartService.idMesa
@@ -290,7 +292,7 @@ export class PedidosFormComponent {
     }
   }
 
-  // Sobrecarga metodo
+  //* Sobrecarga metodo
   addNoteClick(idItem: any) {
     let note: string = document.getElementById(idItem).textContent;
     if (this.mesa && this.mesa != null) {
@@ -388,23 +390,23 @@ export class PedidosFormComponent {
           });
       }
 
-      if(this.currentUser.user.idPerfil == 3){
+      if (this.currentUser.user.idPerfil == 3) {
         let codigoVirtual = this.currentUser.user.id + Date.now().toString();
-        this.mesa =  {codigo: codigoVirtual, idSucursal: this.sucursalSelected};
+        this.mesa = { codigo: codigoVirtual, idSucursal: this.sucursalSelected };
       }
     });
   }
 
   getProductData() {
     let hileraValidadora: string;
-    if(this.currentUser.user.idPerfil != 3){
+    if (this.currentUser.user.idPerfil != 3) {
       hileraValidadora = this.currentUser.user.idPerfil == 1
-      ? 'productos/all-hability'
-      : `productos/sucursal/${this.currentUser.user.sucursales[0].id}`;
-    }else{
-      if(this.sucursalSelected == -1){
+        ? 'productos/all-hability'
+        : `productos/sucursal/${this.currentUser.user.sucursales[0].id}`;
+    } else {
+      if (this.sucursalSelected == -1) {
         return;
-      }else{
+      } else {
         hileraValidadora = `productos/sucursal/${this.sucursalSelected}`
       }
     }
@@ -457,13 +459,11 @@ export class PedidosFormComponent {
               idTipoPedido: this.pedidoInfo.idTipoPedido,
               detalles: null, //* No se mapea
               //* Nombre del cliente compuesto
-              cliente: `${this.pedidoInfo.Cliente.nombre} ${
-                this.pedidoInfo.Cliente.apellido1
-              } ${
-                this.pedidoInfo.Cliente.apellido2 != undefined
+              cliente: `${this.pedidoInfo.Cliente.nombre} ${this.pedidoInfo.Cliente.apellido1
+                } ${this.pedidoInfo.Cliente.apellido2 != undefined
                   ? this.pedidoInfo.Cliente.apellido2
                   : ''
-              }`,
+                }`,
             });
           });
       }
@@ -540,14 +540,13 @@ export class PedidosFormComponent {
 
     if (this.pedidosForm.invalid) {
       this.notification.mensaje(
-        'Productos',
+        'Pedidos',
         'Parece que la información no está correcta. <br> Revisa en completar todos campos requeridos',
         TipoMessage.error
       );
       return;
     }
 
-    //? ojo con tipo de pedido
     this.pedidosForm.patchValue({
       precio: undefined,
       idEstado: undefined,
@@ -563,16 +562,83 @@ export class PedidosFormComponent {
     //* Vigilamos la data
     console.log(this.pedidosForm.value);
 
+    let respFormatCartData: any;
+
     this.gService
       .create('pedidos/register', this.pedidosForm.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.respPedido = data;
+        console.log("Serví pto")
+        console.log(this.respPedido);
         //* Notificacion de la tarea realizada
-        let notificationBody = `<div class='flexbox'><p>Pedido número #: ${this.respPedido.data.id} <br> ${this.respPedido.data.nombre} 
+        if (this.isPedidoPresencial) {
+          let notificationBody = `<div class='flexbox'><p>Pedido número #: ${this.respPedido.data.id} <br> ${this.respPedido.data.nombre} 
                                 ha sido <b>registrado éxitosamente</b>.</p></div>`;
+          this.notification.mensaje(
+            'Pedidos',
+            notificationBody,
+            TipoMessage.success
+          );
+        }
+        if (this.isPedidoPresencial && this.isCreate) {
+          //? Redirigimos
+          this.router.navigate(['/dashboard/comandas'], {
+            queryParams: { create: 'true' },
+          });
+        }
+      });
+
+    //* Timeout solo previene
+    if (!this.isPedidoPresencial && this.isCreate) {
+      setTimeout(async () => {
+        respFormatCartData = this.loadCartFormatData(this.respPedido.data.id);
+        this.gService
+          .create('detalles-pedido', respFormatCartData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((data: any) => {
+            let respApiDetails = data;
+            //* Notificacion de la tarea realizada
+            let notificationBody = `<div class='flexbox'><p>Pedido número #: ${this.respPedido.data.id} <br> con un total de ${respApiDetails.count} líneas de detalle
+          <br> ha sido <b>registrado y formalizado éxitosamente</b>.</p></div>`;
+            this.notification.mensaje(
+              'Pedidos',
+              notificationBody,
+              TipoMessage.success
+            );
+            //? Redirigimos
+            this.router.navigate(['/dashboard/comandas'], {
+              queryParams: { update: 'true' },
+            });
+          });
+        //! borramos el carrito
+        this.cartService.removeAllItems;
+      }, 400);
+    }
+  }
+
+  formalizarPedido() {
+    if (this.cartService.getItems.length <= 0) {
+      this.notification.mensaje(
+        'Pedidos',
+        'Parece que no ha añadido productos al carrito. <br> Revisa su orden',
+        TipoMessage.error
+      );
+      return;
+    }
+
+    let respApiCompleta = this.loadCartFormatData(this.idPedido);
+
+    this.gService
+      .create('detalles-pedido', respApiCompleta)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data: any) => {
+        let respApiDetails = data;
+        //* Notificacion de la tarea realizada
+        let notificationBody = `<div class='flexbox'><p>Pedido número #: ${this.idPedido} <br> con un total de ${respApiDetails.count} líneas de detalle
+        <br> ha sido <b>formalizado éxitosamente</b>.</p></div>`;
         this.notification.mensaje(
-          'Productos',
+          'Pedidos',
           notificationBody,
           TipoMessage.success
         );
@@ -581,11 +647,36 @@ export class PedidosFormComponent {
           queryParams: { update: 'true' },
         });
       });
+    //! borramos el carrito
+    this.cartService.removeAllItems;
   }
 
-  actualizarPedido() {
-    //* La idea de esto es las líneas detalle.. solamente
-    console.log('hola update');
+  loadCartFormatData(idPedido: any): any {
+    let respAPICartItems: Array<any> = [];
+    let respApiCompleta: any = [];
+    let hileraIdPedido = String(idPedido);
+    let precioAcumulado : number = 0;
+    let multiplicadora : number = 0;
+
+    this.cartService.getItems.forEach(async (element, index) => {
+      respAPICartItems[index] = {
+        idPedido: parseInt(hileraIdPedido),
+        idProducto: element.idItem,
+        cantidad: element.cantidad,
+        notas: element.notas
+      };
+      multiplicadora = element.precio * element.cantidad;
+      precioAcumulado += multiplicadora + (multiplicadora * 0.13);
+    });
+
+    respApiCompleta = {
+      detalles: respAPICartItems,
+      codigoMesa: this.isPedidoPresencial || this.currentUser.idPerfil == 3 ? this.mesa.codigo : undefined,
+      idPedido: parseInt(hileraIdPedido),
+      precio: precioAcumulado
+    };
+
+    return respApiCompleta;
   }
 
   // Remueve un item
@@ -607,8 +698,8 @@ export class PedidosFormComponent {
 
   checkIfExistOldItemsOnCreate(mesa: string) {
     let listCart = this.cartService.getItems;
-    listCart = listCart.filter((item) => item.mesa == mesa);
-    listCart.forEach((item) => {
+    listCart = listCart.filter(async (item) => item.mesa == mesa);
+    listCart.forEach(async (item) => {
       this.cartService.removeAllItems(item.idItem, mesa);
     });
   }

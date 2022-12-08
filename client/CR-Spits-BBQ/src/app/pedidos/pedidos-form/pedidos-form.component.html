@@ -1,26 +1,49 @@
 <!-- <div class="cart-btn"> -->
-<button class="cart-btn" mat-icon-button matBadgeColor="accent" [matBadge]="qtyItems"
-  [routerLinkActive]="'mat-raised-button'" aria-label="Cantidad" (click)="toggleCartData()">
+<button
+  class="cart-btn"
+  mat-icon-button
+  matBadgeColor="accent"
+  [matBadge]="qtyItems"
+  [routerLinkActive]="'mat-raised-button'"
+  aria-label="Cantidad"
+  (click)="toggleCartData()"
+>
   <mat-icon class="cart-icon">shopping_cart</mat-icon>
 </button>
 <!-- </div> -->
 <div class="cart-data-back-cover" (click)="toggleCartData()"></div>
 <div class="cart-data">
   <mat-icon class="cart-close-icon" (click)="toggleCartData()">close</mat-icon>
-  <div class="cart-data-content flexbox" data-aos="zoom-in" data-aos-duration="1000">
+  <div
+    class="cart-data-content flexbox"
+    data-aos="zoom-in"
+    data-aos-duration="1000"
+  >
     <div class="cart-item flexbox" *ngFor="let item of cartData">
       <img [src]="item.product.imagen" alt="" class="cart-item-img" />
       <p class="cart-item-description">{{ item.product.nombre }}</p>
       <p class="cart-item-qty">X{{ item.cantidad }}</p>
       <div class="cart-item-actions flexbox">
-        <mat-icon class="cart-actions-icon" (click)="removeItem(item.idItem)">remove_shopping_cart exposure_neg_1</mat-icon>
-        <mat-icon class="cart-actions-icon" (click)="removeAllItems(item.idItem)">delete</mat-icon>
+        <mat-icon class="cart-actions-icon" (click)="removeItem(item.idItem)"
+          >remove_shopping_cart exposure_neg_1</mat-icon
+        >
+        <mat-icon
+          class="cart-actions-icon"
+          (click)="removeAllItems(item.idItem)"
+          >delete</mat-icon
+        >
         <!-- <mat-icon class="cart-actions-icon" (click)="addNote(item.idItem)">note_add</mat-icon> -->
       </div>
-      <input type="text" [id]="item.idItem" placeholder="Agregar nota" class="add-notes"
-       (input)="addNote(item.idItem, $event)" [value]="item.notas" />
+      <input
+        type="text"
+        [id]="item.idItem"
+        placeholder="Agregar nota"
+        class="add-notes"
+        (input)="addNote(item.idItem, $event)"
+        [value]="item.notas"
+      />
     </div>
-    <div class="cart-total" *ngIf="(totalOrder != 0)">
+    <div class="cart-total" *ngIf="totalOrder != 0">
       <div class="total-details">
         <p class="total">
           Impuesto IVA: {{ impuestoOrder | currency : "CRC" : "symbol-narrow" }}
@@ -32,34 +55,61 @@
       <p class="total total-order">
         Total: {{ totalOrder | currency : "CRC" : "symbol-narrow" }}
       </p>
-      <mat-icon class="expand-total-icon" (click)="expandTotal()">expand_less</mat-icon>
+      <mat-icon class="expand-total-icon" (click)="expandTotal()"
+        >expand_less</mat-icon
+      >
     </div>
   </div>
 </div>
 
-<form [formGroup]="pedidosForm" novalidate (ngSubmit)="isCreate ? crearPedido() : actualizarPedido()"
-  data-aos="zoom-in">
+<form
+  [formGroup]="pedidosForm"
+  novalidate
+  (ngSubmit)="isCreate ? crearPedido() : formalizarPedido()"
+  data-aos="zoom-in"
+>
   <input type="hidden" formControlName="id" />
   <mat-card class="shipping-card">
     <div class="pedido-detail flexbox">
-      <div class="pedido-detail-table flexbox" *ngIf="mesa" data-aos="zoom-in" data-aos-duration0="1200">
-        <div class="pedido-detail-table-content" *ngIf="currentUser.user.idPerfil != 3" >
+      <div
+        class="pedido-detail-table flexbox"
+        *ngIf="mesa && currentUser.user.idPerfil != 3"
+        data-aos="zoom-in"
+        data-aos-duration0="1200"
+      >
+        <div
+          class="pedido-detail-table-content"
+          *ngIf="currentUser.user.idPerfil != 3"
+        >
           <h2 class="pedido-detail-table-code">{{ mesa.Sucursal.nombre }}</h2>
-          <img class="table-icon" [src]="
+          <img
+            class="table-icon"
+            [src]="
               mesa.EstadoMesa.descripcion == 'Disponible'
                 ? 'https://img.icons8.com/ios-filled/150/C8C0B5/table-top-view.png'
                 : mesa.EstadoMesa.descripcion == 'Reservada'
                 ? 'https://img.icons8.com/ios-filled/150/024F8B/table-top-view.png'
                 : 'https://img.icons8.com/ios-filled/150/C70000/table-top-view.png'
-            " />
+            "
+          />
           <div class="table-diners-information flexbox">
             <i class="fa-solid fa-user diners"></i>
             <p class="diners-quantity">X{{ mesa.capacidad }}</p>
           </div>
         </div>
-        <h2 *ngIf="currentUser.user.idPerfil != 3" class="pedido-detail-table-code">{{ mesa.codigo }}</h2>
+        <h2
+          *ngIf="currentUser.user.idPerfil != 3"
+          class="pedido-detail-table-code"
+        >
+          {{ mesa.codigo }}
+        </h2>
       </div>
-      <div class="pedido-detail-cliente flexbox" *ngIf="cliente" data-aos="zoom-in" data-aos-duration0="1200">
+      <div
+        class="pedido-detail-cliente flexbox"
+        *ngIf="cliente"
+        data-aos="zoom-in"
+        data-aos-duration0="1200"
+      >
         <div class="user-logo">
           <mat-icon class="user-icon">account_circle</mat-icon>
         </div>
@@ -67,25 +117,52 @@
           <h3 class="user-name">{{ getUserFullName() }}</h3>
         </div>
       </div>
-      <mat-form-field appearance="fill" class="filter">
+      <mat-form-field appearance="fill" class="filter" *ngIf="currentUser.user.idPerfil != 2">
         <mat-label>Sucursales</mat-label>
         <mat-select>
-          <mat-option *ngFor="let sucursal of sucursalesList" [value]="sucursal.id" (click)="setProductBySucursal(sucursal.id)">
-            {{sucursal.nombre}}
+          <mat-option
+            *ngFor="let sucursal of sucursalesList"
+            [value]="sucursal.id"
+            (click)="setProductBySucursal(sucursal.id)"
+          >
+            {{ sucursal.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="pedido-select-cliente flexbox" data-aos="zoom-in" data-aos-duration0="1200"
-        *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'">
+      <div
+        class="pedido-select-cliente flexbox"
+        data-aos="zoom-in"
+        data-aos-duration0="1200"
+        *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'"
+      >
         <h3>Selecciona un cliente</h3>
-        <mat-form-field appearance="fill" class="full-width" *ngIf="isCreate && clientsList && isPedidoPresencial">
+        <mat-form-field
+          appearance="fill"
+          class="full-width"
+          *ngIf="isCreate && clientsList && isPedidoPresencial"
+        >
           <mat-label>Cliente</mat-label>
-          <input type="text" placeholder="Seleccione el cliente" aria-label="Cliente" matInput minlength="10"
-            maxlength="100" [formControl]="inputFiltro" [matAutocomplete]="auto" [required]="true"
-            style="color: rgba(255, 255, 255, 0.719)" />
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClientName">
-            <mat-option *ngFor="let cliente of filteredOptions | async" [value]="cliente"
-              (onSelectionChange)="asignarCliente(cliente)">
+          <input
+            type="text"
+            placeholder="Seleccione el cliente"
+            aria-label="Cliente"
+            matInput
+            minlength="10"
+            maxlength="100"
+            [formControl]="inputFiltro"
+            [matAutocomplete]="auto"
+            [required]="true"
+            style="color: rgba(255, 255, 255, 0.719)"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayClientName"
+          >
+            <mat-option
+              *ngFor="let cliente of filteredOptions | async"
+              [value]="cliente"
+              (onSelectionChange)="asignarCliente(cliente)"
+            >
               <!--* Hay que tener cuidado, ya que el apellido 2 es opcional-->
               {{ cliente.nombre }} {{ cliente.apellido1 }}
               {{ cliente.apellido2 !== undefined ? cliente.apellido2 : "" }}
@@ -93,22 +170,43 @@
           </mat-autocomplete>
         </mat-form-field>
         <mat-form-field class="full-width" *ngIf="!isCreate">
-          <input matInput placeholder="Nombre completo del cliente" required="false" autocomplete="false"
-            formControlName="cliente" title="Nombre del producto" [readonly]="!isCreate"
-            style="color: rgba(255, 255, 255, 0.719)" />
+          <input
+            matInput
+            placeholder="Nombre completo del cliente"
+            required="false"
+            autocomplete="false"
+            formControlName="cliente"
+            title="Nombre del producto"
+            [readonly]="!isCreate"
+            style="color: rgba(255, 255, 255, 0.719)"
+          />
         </mat-form-field>
-        <mat-form-field *ngIf="
+        <mat-form-field
+          *ngIf="
             (typeOrdersList && currentUser.user.idPerfil == 1) || !isCreate
-          " appearance="fill" class="full-width">
+          "
+          appearance="fill"
+          class="full-width"
+        >
           <mat-label>Tipo de comanda</mat-label>
-          <mat-select required="true" placeholder="Tipo de comanda" formControlName="idTipoPedido"
-            [disabled]="currentUser.user.idPerfil != 1" title="Seleccione el tipo de comanda de la orden"
-            (selectionChange)="asignarTipoPedido($event)">
-            <mat-option *ngFor="let tipoPedido of typeOrdersList" [value]="tipoPedido.id">
+          <mat-select
+            required="true"
+            placeholder="Tipo de comanda"
+            formControlName="idTipoPedido"
+            [disabled]="currentUser.user.idPerfil != 1"
+            title="Seleccione el tipo de comanda de la orden"
+            (selectionChange)="asignarTipoPedido($event)"
+          >
+            <mat-option
+              *ngFor="let tipoPedido of typeOrdersList"
+              [value]="tipoPedido.id"
+            >
               {{ tipoPedido.descripcion }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="pedidosForm.controls['idTipoPedido'].hasError('required')">
+          <mat-error
+            *ngIf="pedidosForm.controls['idTipoPedido'].hasError('required')"
+          >
             El tipo de la comanda es <strong>requerida</strong>
           </mat-error>
         </mat-form-field>
@@ -125,19 +223,45 @@
     </div>
     <div class="cart-items-list">
       <div class="product-filter-container flexbox">
-        <input type="text" class="product-filter" placeholder="Filtrar" (input)="filtrarProducto($event)" />
-        <mat-icon class="actions filter-seatch">search</mat-icon>
+        <input
+          type="text"
+          class="product-filter"
+          placeholder="Filtrar"
+          (input)="filtrarProducto($event)"
+        />
+        <mat-icon class="actions filter-seatch" 
+          >search</mat-icon
+        >
       </div>
-      <div class="mat-elevation-z8 grid-table-container" id="pedido-product-table" *ngIf="dataSource">
-        <table mat-table [dataSource]="dataSource" class="full-width-table" matSort matSortStart="desc"
-          aria-label="Elements">
+      <div
+        class="mat-elevation-z8 grid-table-container"
+        id="pedido-product-table"
+        *ngIf="dataSource"
+      >
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="full-width-table"
+          matSort
+          matSortStart="desc"
+          aria-label="Elements"
+        >
           <!-- Columna producto -->
           <ng-container matColumnDef="producto">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header style="display: none">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              style="display: none"
+            >
               Producto
             </th>
             <td mat-cell *matCellDef="let row">
-              <div class="products-container" data-aos="zoom-in" data-aos-duration="750">
+              <div
+                class="products-container"
+                data-aos="zoom-in"
+                data-aos-duration="750"
+              >
                 <div class="product-image">
                   <img [src]="row.imagen" alt="" class="product-img" />
                 </div>
@@ -146,33 +270,67 @@
                   <p class="product-name">{{ row.nombre }}</p>
                 </div>
                 <div class="producto-action">
-                  <mat-icon class="actions" (click)="addToCart(row.id)" *ngIf="isCreate || isCarritoLoaded">
-                    shopping_cart</mat-icon>
+                  <mat-icon
+                    class="actions"
+                    (click)="addToCart(row.id)"
+                    *ngIf="isCreate || isCarritoLoaded"
+                  >
+                    shopping_cart</mat-icon
+                  >
                 </div>
               </div>
             </td>
           </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-paginator #paginator [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="9"
-          [pageSizeOptions]="[3, 6, 9]" aria-label="Seleccione una pagina" class="product-paginator">
+        <mat-paginator
+          #paginator
+          [length]="dataSource?.data?.length"
+          [pageIndex]="0"
+          [pageSize]="9"
+          [pageSizeOptions]="[3, 6, 9]"
+          aria-label="Seleccione una pagina"
+          class="product-paginator"
+        >
         </mat-paginator>
       </div>
     </div>
-    <mat-button-toggle-group class="actions-group pedido-actions flexbox" name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle class="button flexbox accept-order" mat-raesed-button type="submit"
-        title="Generar la orden" (click)="isCreate ? crearPedido() : actualizarPedido()">
-        <p>{{isCreate ? 'Aceptar orden' : 'Actualizar Orden'}}</p>
+    <mat-button-toggle-group
+      class="actions-group pedido-actions flexbox"
+      name="fontStyle"
+      aria-label="Font Style"
+    >
+      <mat-button-toggle
+        class="button flexbox accept-order"
+        mat-raesed-button
+        type="submit"
+        title="Generar la orden"
+        (click)="isCreate ? crearPedido() : formalizarPedido()"
+      >
+        <p>{{ isCreate ? "Aceptar orden" : "Actualizar Orden" }}</p>
         <mat-icon class="actions">done</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle class="button flexbox restart-order" *ngIf="isCreate" (click)="onReset()"
-        title="Limpiar datos">
+      <mat-button-toggle
+        class="button flexbox restart-order"
+        *ngIf="isCreate"
+        (click)="onReset()"
+        title="Limpiar datos"
+      >
         <p>Reiniciar orden</p>
-        <mat-icon class="actions" *ngIf="currentUser.user.idPerfil != 3">restart_alt</mat-icon>
+        <mat-icon class="actions" *ngIf="currentUser.user.idPerfil != 3"
+          >restart_alt</mat-icon
+        >
       </mat-button-toggle>
-      <mat-button-toggle class="button flexbox cancel-order" (click)="onBack()" title="Cancelar la orden">
+      <mat-button-toggle
+        class="button flexbox cancel-order"
+        (click)="onBack()"
+        title="Cancelar la orden"
+      >
         <p>Cancelar orden</p>
         <mat-icon class="actions">cancel</mat-icon>
       </mat-button-toggle>

@@ -163,7 +163,7 @@ module.exports.registerPedido = async (request, response, next) => {
     data: {
       //* NO VA EL ID, ES UN AUTOINCREMENT
       nombre: nombrePedido,
-      fecha: pedido.fecha !== undefined ? new Date(pedido.fecha) : pedido.fecha, //! LO MÁS NORMAL ES QUE VENGA VACÍO, YA QUE LA FECHA POR DEFAULT SE COLOCA ESE DÍA
+      fecha: pedido.fecha? new Date(pedido.fecha) : undefined, //! LO MÁS NORMAL ES QUE VENGA VACÍO, YA QUE LA FECHA POR DEFAULT SE COLOCA ESE DÍA
       precio: pedido.precio,
       idEstado: pedido.idEstado,
       idCliente: pedido.idCliente,

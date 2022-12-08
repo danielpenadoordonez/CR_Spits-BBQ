@@ -87,8 +87,7 @@ export class AuthenticationService {
       this.authenticated.next(false);
 
       //? Eliminar carritos asociados
-      //? No estoy seguro si solo a cliente se le borra o mesero y admin igual
-      //this.cartService.deleteCart();
+      localStorage.clear();
       return true;
     }
     return false;
