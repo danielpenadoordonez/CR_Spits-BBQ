@@ -11,7 +11,6 @@ module.exports.ventasPorFecha = async (request, response, next) => {
             //* Si no viene la fecha de cierre entonces se toma la fecha actual
             fechaCierre = getCurrentDate();
         }
-        //* console.log(`Inicio: ${fechaInicio}  -   Cierre: ${fechaCierre}`);
         //* Cantidad de productos vendidos x fecha
         const reportData = await prisma.$queryRaw(
             Prisma.sql`SELECT SUM(p.id) as cantidadProductos, p.fecha
@@ -25,11 +24,10 @@ module.exports.ventasPorFecha = async (request, response, next) => {
         //* Si no se especifican fechas entonces por defecto se busca por la fecha actual
         let currentDate = getCurrentDate();
         const reportData = await prisma.$queryRaw(
-            Prisma.sql`SELECT p.nombre as codigo, p.precio, p.fecha, s.nombre, tp.descripcion, ep.descripcion as estado 
+            Prisma.sql`SELECT SUM(p.id) as cantidadProductos, p.fecha
                         FROM Pedido p, Sucursal s, TipoPedido tp, EstadoPedido ep 
-                        WHERE fecha = ${currentDate} 
-                                and p.idSucursal = s.id and p.idTipoPedido = tp.id
-                                and p.idEstado = ep.id;`
+                        WHERE fecha = ${currentDate} AND p.idSucursal = s.id AND p.idTipoPedido = tp.id AND p.idTipoPedido = 1 AND p.idEstado = ep.id AND p.idTipoPedido = 1 AND p.idEstado = ep.id
+                        GROUP BY p.fecha;`
         );
         response.json(reportData);
     }
@@ -37,10 +35,35 @@ module.exports.ventasPorFecha = async (request, response, next) => {
 
 
 module.exports.ventasPorMedioPago = async (request, response, next) => {
-    const reportData = await prisma.$queryRaw(
+    //* Casteo los parámetros
+    let fechaInicio = request.body.fechaInicio;
+    let fechaCierre = request.body.fechaCierre;
 
-    );
-    response.json(reportData);
+    if (fechaInicio !== undefined) {
+        if(fechaCierre === undefined){
+            //* Si no viene la fecha de cierre entonces se toma la fecha actual
+            fechaCierre = getCurrentDate();
+        }
+        //* Cantidad de productos vendidos x fecha
+        const reportData = await prisma.$queryRaw(
+            Prisma.sql`SELECT t.descripcion as MetodoDePago, SUM(f.idTipoPago) as Cantidad
+                        FROM TipoPago t, FacturaEncabezadoTipoPago f, Factura_Encabezado fe
+                        WHERE fecha BETWEEN ${fechaInicio} AND ${fechaCierre} AND f.idTipoPago = t.id AND f.idFactura_Encabezado = fe.id
+                        GROUP BY t.descripcion`
+        );
+        response.json(reportData);
+    }
+    else {
+        //* Si no se especifican fechas entonces por defecto se busca por la fecha actual
+        let currentDate = getCurrentDate();
+        const reportData = await prisma.$queryRaw(
+            Prisma.sql`SELECT t.descripcion as MetodoDePago, SUM(f.idTipoPago) as Cantidad
+                        FROM TipoPago t, FacturaEncabezadoTipoPago f, Factura_Encabezado fe
+                        WHERE fecha = ${currentDate} AND f.idTipoPago = t.id AND f.idFactura_Encabezado = fe.id
+                        GROUP BY t.descripcion`
+        );
+        response.json(reportData);
+    }
 }
 
 function getCurrentDate() {
