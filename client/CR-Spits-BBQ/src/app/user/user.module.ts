@@ -40,6 +40,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule
+  ],
+  exports: [
+    GestionUsuariosComponent,
   ]
 })
 export class UserModule { }

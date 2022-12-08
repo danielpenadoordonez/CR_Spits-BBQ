@@ -41,6 +41,12 @@ export const navbarData = [
         label: 'Reservación',
         roles: ['Cliente', 'Mesero', 'Administrador']
     },
+    {
+        routerLink: 'usuarios',
+        icon: 'person',
+        label: 'Usuarios',
+        roles: ['Administrador']
+    },
 ]
 
 //* Falta uno para los reportes, aunque son 3 los hptas...

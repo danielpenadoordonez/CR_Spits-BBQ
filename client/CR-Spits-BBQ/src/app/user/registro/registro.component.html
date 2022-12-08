@@ -339,7 +339,7 @@
             </div>
             <div
               class="row"
-              *ngIf="currentUser.user.Perfil.descripcion == 'Administrador'"
+              *ngIf="currentUser && currentUser.user.Perfil.descripcion == 'Administrador'"
             >
               <div
                 class="col"
