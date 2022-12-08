@@ -47,6 +47,24 @@ export const navbarData = [
         label: 'Usuarios',
         roles: ['Administrador']
     },
+    {
+        routerLink: 'reportes/fecha',
+        icon: 'bar_chart',
+        label: 'Ventas',
+        roles: ['Administrador']
+    },
+    {
+        routerLink: 'reportes/tipopago',
+        icon: 'query_stats',
+        label: 'Tipo de pago',
+        roles: ['Administrador']
+    },
+    // {
+    //     routerLink: 'reportes/mixtos',
+    //     icon: 'person',
+    //     label: 'Usuarios',
+    //     roles: ['Administrador']
+    // },
 ]
 
 //* Falta uno para los reportes, aunque son 3 los hptas...
