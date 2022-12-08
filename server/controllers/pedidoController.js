@@ -204,10 +204,9 @@ module.exports.updatePedido = async (request, response, next) => {
   let idPedido = request.params.id;
   let orden = request.body;
   const pedido = await prismaClient.pedido.update({
-    where: { id: idPedido },
+    where: { id: parseInt(idPedido) },
     data: {
       idEstado: orden.idEstado,
-      precio: orden.precio, //* Se actualiza igualmente...
     },
   });
   return response.json(pedido);

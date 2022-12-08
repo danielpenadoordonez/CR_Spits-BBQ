@@ -71,6 +71,14 @@ const routes: Routes = [
         }
       },
       {
+        path: 'ordenar', //* Para el cliente
+        canActivate: [AuthGuard],
+        component: GestionPedidosComponent,
+        data: {
+          roles: ['Cliente'],
+        }
+      },
+      {
         path: 'pedidos/pago',
         canActivate: [AuthGuard],
         component: PagoFormComponent,

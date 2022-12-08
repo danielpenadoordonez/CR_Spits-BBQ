@@ -75,17 +75,16 @@ export class ReporteTipoPagoComponent implements OnInit {
     this.datos = null;
     //* Validamos que todo esté cargado
     if (this.filtroFechaInicial && this.filtroFechaFinal && this.tipoPagoSelected && this.respFormatted) {
-      console.log("body format send")
       console.log(this.respFormatted);
       //! QUIERE EL TOTAL DE VENTAS, sumar el precio y ya
-      // this.gService
-      //   .create('reportes/ventas-fecha', this.respFormatted)
-      //   .pipe(takeUntil(this.destroy$))
-      //   .subscribe((data: any) => {
-      //     this.datos = data;
-      //     console.log(this.datos);
-      //     this.loadArrayFormat(); //* Por último le damos formato a la data antes de enviar al pdf
-      //   });
+      this.gService
+        .create('reportes/ventas-tipopago', this.respFormatted)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((data: any) => {
+          this.datos = data;
+          console.log(this.datos);
+          //? this.loadArrayFormat(); //* Por último le damos formato a la data antes de enviar al pdf
+        });
     }
   }
 
@@ -116,8 +115,8 @@ export class ReporteTipoPagoComponent implements OnInit {
     } else {
       this.filtroFechaInicial = this.addDays(new Date(), -1); //* Ayer
       this.notification.mensaje("Reportes",
-      "Por favor, seleccione una fecha inicio válida",
-      TipoMessage.error);
+        "Por favor, seleccione una fecha inicio válida",
+        TipoMessage.error);
     }
     //* Refrescamos la data
     this.loadData();
@@ -128,8 +127,8 @@ export class ReporteTipoPagoComponent implements OnInit {
       this.filtroFechaFinal = new Date(String(data));
     } else {
       this.notification.mensaje("Reportes",
-      "Por favor, seleccione una fecha fin válida",
-      TipoMessage.error);
+        "Por favor, seleccione una fecha fin válida",
+        TipoMessage.error);
       this.filtroFechaFinal = new Date(); //* Hoy
     }
     //* Refrescamos la data
@@ -141,8 +140,8 @@ export class ReporteTipoPagoComponent implements OnInit {
       this.tipoPagoSelected = data.value;
     } else {
       this.notification.mensaje("Reportes",
-      "Por favor, seleccione una tipo de pago válido",
-      TipoMessage.error);
+        "Por favor, seleccione una tipo de pago válido",
+        TipoMessage.error);
       this.tipoPagoSelected = 1; //* Default prevent
     }
     //* Refrescamos la data
@@ -156,7 +155,7 @@ export class ReporteTipoPagoComponent implements OnInit {
     return result;
   }
 
-  //* Damos formato
+  //* Damos formato - Sin Uso
   loadArrayFormat() {
     let newArray: Array<object> = [];
     this.datos.forEach(async (element, index, hola) => {

@@ -81,11 +81,13 @@ module.exports.saveFactura = async (request, response, next) => {
                 createMany: {
                     data: infoFactura.detalles,
                 },
+                skipDuplicates: true //* Evito problemas
             },
             tipoPagos: {
                 createMany: {
                     data: infoFactura.tipoPagos,
                 },
+                skipDuplicates: true
             },
         },
     });
