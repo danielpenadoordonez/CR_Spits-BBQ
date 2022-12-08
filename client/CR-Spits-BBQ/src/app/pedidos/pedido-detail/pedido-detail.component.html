@@ -7,14 +7,21 @@
     <div class="dialogo-content">
       <div class="dialogo-pedido-header flexbox">
         <div class="dialogo-pedido-state">
-          <p class="pedido-code">Código {{datos.id}}</p>
-          <p class="pedido-state">Pedido {{datos.EstadoPedido.descripcion}}</p>
+          <p class="pedido-code">Código {{ datos.id }}</p>
+          <p class="pedido-state">
+            Pedido {{ datos.EstadoPedido.descripcion }}
+          </p>
           <mat-icon class="money-icon">payments</mat-icon>
         </div>
         <div class="dialogo-pedido-total-header">
-          <p class="dialogo-pedido-total-header-mesero">Mesero <br> {{datos.Mesero.nombre}} {{datos.Mesero.apellido1}}
-            {{datos.Mesero.apellido2}}</p>
-          <p class="dialogo-pedido-total-header-total">{{datos.precio | currency: 'CRC':'symbol-narrow'}}</p>
+          <p class="dialogo-pedido-total-header-mesero">
+            Mesero <br />
+            {{ datos.Mesero.nombre }} {{ datos.Mesero.apellido1 }}
+            {{ datos.Mesero.apellido2 }}
+          </p>
+          <p class="dialogo-pedido-total-header-total">
+            {{ datos.precio | currency : "CRC" : "symbol-narrow" }}
+          </p>
         </div>
       </div>
       <div class="cut-line">
@@ -25,20 +32,36 @@
           <div class="dialogo-pedido-content">
             <div class="dialogo-pedido-detalles flexbox">
               <div class="dialogo-pedido-detalles-data">
-                <p class="dialogo-pedido-detalles-data-state">{{datos.EstadoPedido.descripcion}}</p>
-                <p class="dialogo-pedido-detalles-data-fecha">{{datos.fecha | date:'dd/MM/yy h:mm:ss a'}}</p>
-                <p class="dialogo-pedido-detalles-data-sucursal">{{datos.Sucursal.nombre}}</p>
-                <p class="dialogo-pedido-detalles-data-cliente">Cliente <br> {{datos.Cliente.nombre}}
-                  {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}} </p>
-                <p *ngIf="datos.idMesa !== null" class="dialogo-pedido-detalles-data-mesa">Mesa
-                  {{datos.Mesa.codigo}} <br>
+                <p class="dialogo-pedido-detalles-data-state">
+                  {{ datos.EstadoPedido.descripcion }}
                 </p>
-                <div *ngIf="datos.idMesa !== null" class="flexbox dialogo-pedido-detalles-data-mesa-capacity">
+                <p class="dialogo-pedido-detalles-data-fecha">
+                  {{ datos.fecha | date : "dd/MM/yy h:mm:ss a" }}
+                </p>
+                <p class="dialogo-pedido-detalles-data-sucursal">
+                  {{ datos.Sucursal.nombre }}
+                </p>
+                <p class="dialogo-pedido-detalles-data-cliente">
+                  Cliente <br />
+                  {{ datos.Cliente.nombre }} {{ datos.Cliente.apellido1 }}
+                  {{ datos.Cliente.apellido2 }}
+                </p>
+                <p
+                  *ngIf="datos.idMesa !== null"
+                  class="dialogo-pedido-detalles-data-mesa"
+                >
+                  Mesa {{ datos.Mesa.codigo }} <br />
+                </p>
+                <div
+                  *ngIf="datos.idMesa !== null"
+                  class="flexbox dialogo-pedido-detalles-data-mesa-capacity"
+                >
                   <mat-icon class="person-icon">person</mat-icon>
-                  X{{datos.Mesa.capacidad}}
+                  X{{ datos.Mesa.capacidad }}
                 </div>
-                <br><br>
-                <p class="dialogo-pedido-detalles-data-total">Total: {{datos.precio | currency: 'CRC':'symbol-narrow'}}
+                <br /><br />
+                <p class="dialogo-pedido-detalles-data-total">
+                  Total: {{ datos.precio | currency : "CRC" : "symbol-narrow" }}
                 </p>
               </div>
               <div class="detalle-line flexbox">
@@ -49,14 +72,29 @@
             </div>
           </div>
           <div [formGroup]="stateOrder" novalidate>
-          <mat-select required="true" placeholder="Cambiar estado pedido" title="Lista de sucursales" *ngIf="(currentUser.user.Perfil.descripcion != 'Cliente')"
-            class="pedido-state-select" formControlName="idEstado" [disabled]="lockStatePicker" [title]="!lockStatePicker? 'Seleccione el estado de la comanda' : 'Se ha bloqueado debido a un error'">
-            <mat-option *ngFor="let estado of estadoPedido" [value]="estado.id"
-              (click)=" onChangePedidoEstado(estado.id)">
-              {{ estado.descripcion }}
-            </mat-option>
-          </mat-select>
-        </div>
+            <mat-select
+              required="true"
+              placeholder="Cambiar estado pedido"
+              title="Lista de sucursales"
+              *ngIf="currentUser.user.Perfil.descripcion != 'Cliente'"
+              class="pedido-state-select"
+              formControlName="idEstado"
+              [disabled]="lockStatePicker"
+              [title]="
+                !lockStatePicker
+                  ? 'Seleccione el estado de la comanda'
+                  : 'Se ha bloqueado debido a un error'
+              "
+            >
+              <mat-option
+                *ngFor="let estado of estadoPedido"
+                [value]="estado.id"
+                (click)="onChangePedidoEstado(estado.id)"
+              >
+                {{ estado.descripcion }}
+              </mat-option>
+            </mat-select>
+          </div>
         </mat-tab>
         <mat-tab label="Productos" *ngIf="datos.detalles.length != 0">
           <div class="dialogo-pedido-productos">
@@ -73,19 +111,25 @@
               <tbody>
                 <tr *ngFor="let item of datos.detalles">
                   <td>
-                    <img [src]="item.Producto.imagen" [alt]="item.Producto.nombre" class="dialogo-pedido-productos-img">
+                    <img
+                      [src]="item.Producto.imagen"
+                      [alt]="item.Producto.nombre"
+                      class="dialogo-pedido-productos-img"
+                    />
                   </td>
                   <td>
-                    {{item.Producto.nombre}}
+                    {{ item.Producto.nombre }}
                   </td>
                   <td>
-                    {{item.Producto.precio | currency: 'CRC':'symbol-narrow'}}
+                    {{
+                      item.Producto.precio | currency : "CRC" : "symbol-narrow"
+                    }}
                   </td>
                   <td>
-                    {{item.cantidad}}
+                    {{ item.cantidad }}
                   </td>
                   <td>
-                    {{item.notas}}
+                    {{ item.notas }}
                   </td>
                 </tr>
               </tbody>
@@ -94,87 +138,196 @@
         </mat-tab>
         <!-- * asignamos el form group -->
         <!-- ? Válida que sea en línea y sea cliente -->
-        <mat-tab label="Pagar" *ngIf="currentUser.user.idPerfil != 3">
+        <mat-tab
+          label="Pagar"
+          *ngIf="
+            (currentUser.user.idPerfil == 3 &&
+              datos.idTipoPedido == 2 &&
+              this.datos.idEstado != 3) ||
+            (currentUser.user.idPerfil != 3 &&
+              datos.idTipoPedido == 1 &&
+              this.datos.idEstado != 3)
+          "
+        >
           <div [formGroup]="pedidosForm" novalidate (ngSubmit)="pagar()">
-          <mat-select [required]="true" placeholder="Cómo desea pagar" title="Lista tipo de pago"
-            class="pedido-state-select" (selectionChange)="changeWayToPay($event)">
-            <mat-option [value]="true">
-              Tarjeta
-            </mat-option>
-            <mat-option  [value]="false">
-              Efectivo
-            </mat-option>
-          </mat-select>
-          <div class="contenedor">
-            <!-- * Tarjeta -->
-            <section class="tarjeta" id="tarjeta" *ngIf="payWithCreditCard">
-              <div class="delantera">
-                <div class="logo-marca" id="logo-marca">
-                  <!-- <img src="img/logos/visa.png" alt=""> -->
-                </div>
-                <img src="../../../assets/images/chip-tarjeta.png" class="chip" alt="">
-                <div class="datos">
-                  <div class="grupo" id="numero">
-                    <p class="label">Número Tarjeta</p>
-                    <input matInput class="numero" id="numeroTarjeta" type="text" pattern="^[0-9]*$" [required]="payWithCreditCard"
-                      placeholder="#### #### #### ####" max (input)="inputTarjeta($event)" formControlName="numeroTarjeta">
+            <mat-select
+              [required]="true"
+              placeholder="Cómo desea pagar"
+              title="Lista tipo de pago"
+              class="pedido-state-select"
+              (selectionChange)="changeWayToPay($event)"
+            >
+              <mat-option [value]="true"> Tarjeta </mat-option>
+              <mat-option [value]="false"> Efectivo </mat-option>
+            </mat-select>
+            <div class="contenedor">
+              <!-- * Tarjeta -->
+              <section class="tarjeta" id="tarjeta" *ngIf="payWithCreditCard">
+                <div class="delantera">
+                  <div class="logo-marca" id="logo-marca">
+                    <!-- <img src="img/logos/visa.png" alt=""> -->
                   </div>
-                  <div class="flexbox">
-                    <div class="grupo" id="nombre">
-                      <p class="label">Nombre Tarjeta</p>
-                      <p class="nombre">{{datos.Cliente.nombre}}
-                        {{datos.Cliente.apellido1}} {{datos.Cliente.apellido2}}</p>
+                  <img
+                    src="../../../assets/images/chip-tarjeta.png"
+                    class="chip"
+                    alt=""
+                  />
+                  <div class="datos">
+                    <div class="grupo" id="numero">
+                      <p class="label">Número Tarjeta</p>
+                      <input
+                        matInput
+                        class="numero"
+                        id="numeroTarjeta"
+                        type="text"
+                        pattern="^[0-9]*$"
+                        [required]="payWithCreditCard"
+                        placeholder="#### #### #### ####"
+                        max
+                        (input)="inputTarjeta($event)"
+                        formControlName="numeroTarjeta"
+                      />
                     </div>
+                    <div class="flexbox">
+                      <div class="grupo" id="nombre">
+                        <p class="label">Nombre Tarjeta</p>
+                        <p class="nombre">
+                          {{ datos.Cliente.nombre }}
+                          {{ datos.Cliente.apellido1 }}
+                          {{ datos.Cliente.apellido2 }}
+                        </p>
+                      </div>
 
-                    <div class="grupo" id="expiracion">
-                      <p class="label">Expiracion</p>
-                      <p class="expiracion">
-                        <input matInput class="mes" id="mesTarjeta" type="text" pattern="^[0-9]*$" placeholder="MM" max="2" [required]="payWithCreditCard"
-                          (input)="inputFecha($event, 'mesTarjeta')" formControlName="mesTarjeta">
-                        /
-                        <input matInput class="year" id="annoTarjeta" type="text" pattern="^[0-9]*$" placeholder="AA" max="2" [required]="payWithCreditCard"
-                          (input)="inputFecha($event, 'annoTarjeta')" formControlName="annoTarjeta">
-                      </p>
+                      <div class="grupo" id="expiracion">
+                        <p class="label">Expiracion</p>
+                        <p class="expiracion">
+                          <input
+                            matInput
+                            class="mes"
+                            id="mesTarjeta"
+                            type="text"
+                            pattern="^[0-9]*$"
+                            placeholder="MM"
+                            max="2"
+                            [required]="payWithCreditCard"
+                            (input)="inputFecha($event, 'mesTarjeta')"
+                            formControlName="mesTarjeta"
+                          />
+                          /
+                          <input
+                            matInput
+                            class="year"
+                            id="annoTarjeta"
+                            type="text"
+                            pattern="^[0-9]*$"
+                            placeholder="AA"
+                            max="2"
+                            [required]="payWithCreditCard"
+                            (input)="inputFecha($event, 'annoTarjeta')"
+                            formControlName="annoTarjeta"
+                          />
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="trasera">
-                <div class="barra-magnetica"></div>
-                <div class="datos">
-                  <div class="grupo" id="firma">
-                    <p class="label">Firma</p>
-                    <div class="firma">
-                      <p></p>
+                <div class="trasera">
+                  <div class="barra-magnetica"></div>
+                  <div class="datos">
+                    <div class="grupo" id="firma">
+                      <p class="label">Firma</p>
+                      <div class="firma">
+                        <p></p>
+                      </div>
+                    </div>
+                    <div class="grupo" id="ccv">
+                      <p class="label">CCV</p>
+                      <input
+                        matInput
+                        class="ccv"
+                        id="ccvTarjeta"
+                        type="text"
+                        pattern="^[0-9]*$"
+                        placeholder="CCV"
+                        min="3"
+                        max="4"
+                        [required]="payWithCreditCard"
+                        formControlName="ccv"
+                        (input)="inputCCV($event)"
+                      />
                     </div>
                   </div>
-                  <div class="grupo" id="ccv">
-                    <p class="label">CCV</p>
-                    <input matInput class="ccv" id="ccvTarjeta" type="text" pattern="^[0-9]*$" placeholder="CCV" min="3" max="4" [required]="payWithCreditCard" formControlName="ccv"
-                      (input)="inputCCV($event)">
-                  </div>
+                  <p class="leyenda">
+                    Esta tarjeta es intransferible, de uso personal y exclusivo
+                    del titular. Su uso queda sujeto a las condiciones y
+                    términos estipulados en el contrato.
+                  </p>
+                  <a href="#" class="link-banco">www.crspitsbbq.com</a>
                 </div>
-                <p class="leyenda">Esta tarjeta es intransferible, de uso personal y exclusivo del titular. Su uso queda
-                  sujeto a las condiciones y términos estipulados en el contrato.</p>
-                <a href="#" class="link-banco">www.crspitsbbq.com</a>
-              </div>
-            </section>            
+              </section>
+            </div>
+            <div class="efectivo">
+              <input
+                matInput
+                type="text"
+                (input)="moneyFormat($event)"
+                class="efectivo-input"
+                id="efectivoInput"
+                placeholder="Digite el monto"
+                *ngIf="!payWithCreditCard && isPayTypeSelected"
+                title="Monto a pagar en efectivo"
+                [required]="!payWithCreditCard"
+                formControlName="monto"
+              />
+              <mat-error *ngIf="errorHandling('monto', 'required')"
+              >El monto es requerido
+            </mat-error>
+            </div>
+            <div class="efectivo">
+              <input
+                matInput
+                type="text"
+                minlength="10"
+                maxlength="150"
+                pattern="^([a-zA-z0-9ÑñáéíóúüÁÉÍÓÚÜ/\\''(),-\s]{2,150})$"
+                class="efectivo-input"
+                id="direccion"
+                formControlName="direccion"
+                placeholder="Digite su dirección"
+                title="Dirección para la entrega"
+                [required]="true"
+                *ngIf="isPayTypeSelected"
+              />
+              <mat-error *ngIf="errorHandling('direccion', 'required')"
+                >La dirección es requerida</mat-error
+              >
+              <mat-error *ngIf="errorHandling('direccion', 'minlength')"
+                >For favor, ingrese una dirección válida
+              </mat-error>
+              <mat-error *ngIf="errorHandling('direccion', 'pattern')"
+                >Por favor, siga el formato de dirección</mat-error
+              >
+            </div>
+            <div class="pay-actions flexbox">
+              <button
+                *ngIf="payWithCreditCard"
+                class="pay-action"
+                (click)="mostrarFrente()"
+              >
+                Voltear Tarjeta
+              </button>
+              <button
+                class="pay-action"
+                (click)="pagar()"
+                type="submit"
+                *ngIf="isPayTypeSelected"
+                [disabled]="isAlreadyPaid"
+              >
+                Pagar
+              </button>
+            </div>
           </div>
-          <div class="efectivo">
-            <input matInput type="text" (input)="moneyFormat($event)" class="efectivo-input" id="efectivoInput" placeholder="Digite el monto" *ngIf="!payWithCreditCard && isPayTypeSelected" title="Monto a pagar en efectivo" [required]="!payWithCreditCard" formControlName="monto" />
-          </div>
-          <div class="efectivo">
-            <input matInput type="text" minlength="10" maxlength="150" pattern="^([a-zA-z0-9ÑñáéíóúüÁÉÍÓÚÜ/\\''(),-\s]{2,150})$" class="efectivo-input" id="direccion" formControlName="direccion" placeholder="Digite su dirección" title="Dirección para la entrega" [required]="true" *ngIf="isPayTypeSelected">
-            <mat-error *ngIf="errorHandling('direccion', 'required')">La dirección es requerida</mat-error>
-            <mat-error *ngIf="errorHandling('direccion', 'minlength')">For favor, ingrese una dirección válida </mat-error>
-            <mat-error *ngIf="errorHandling('direccion', 'pattern')">Por favor, siga el formato de dirección</mat-error>
-          </div>
-          <div class="pay-actions flexbox">
-            <button *ngIf="payWithCreditCard" class="pay-action" (click)="mostrarFrente()">Voltear Tarjeta</button>
-            <button class="pay-action" (click)="pagar()" type="submit" *ngIf="isPayTypeSelected">Pagar</button>
-          </div>
-        </div>
         </mat-tab>
       </mat-tab-group>
     </div>

@@ -35,6 +35,7 @@ export class PedidoDetailComponent implements OnInit {
   respPedido: any;
   lockStatePicker: boolean = false;
   isPayTypeSelected: boolean = false;
+  isAlreadyPaid: boolean = false;
   stateOrder = new FormGroup({
     idEstado: new FormControl<number | null>(null, Validators.required),
   });
@@ -244,7 +245,7 @@ export class PedidoDetailComponent implements OnInit {
 
   //* Algoritmo para validar si una tarjeta es valida o no
   LuhnCheck(value: any) {
-    var sum = 0;
+    let sum : number = 0;
     for (var i = 0; i < value.length; i++) {
       var intVal = parseInt(value.substr(i, 1));
       if (i % 2 == 0) {
@@ -353,6 +354,10 @@ export class PedidoDetailComponent implements OnInit {
       idUsuario: this.currentUser.user.id,
       estado: true,
     });
+    if (this.payWithCreditCard) {
+      this.pedidosForm.patchValue({ monto: undefined });
+    }
+
     this.makeSubmit = true; //* Subimos pá
 
     console.log(this.pedidosForm.value);
@@ -368,7 +373,7 @@ export class PedidoDetailComponent implements OnInit {
 
     if (this.payWithCreditCard) {
       if (
-        this.expirationCheck(
+        !this.expirationCheck(
           this.pedidosForm.get('mesTarjeta').value,
           this.pedidosForm.get('annoTarjeta').value
         )
@@ -381,7 +386,7 @@ export class PedidoDetailComponent implements OnInit {
         return;
       }
 
-      if (this.LuhnCheck(this.pedidosForm.get('numeroTarjeta').value)) {
+      if (!this.LuhnCheck(this.pedidosForm.get('numeroTarjeta').value)) {
         this.notification.mensaje(
           'Comandas',
           'El número de tarjeta ingresado, no es válido',
@@ -392,8 +397,9 @@ export class PedidoDetailComponent implements OnInit {
     } else {
       //? Validamos el monto y eso
       let montoReplace = String(this.pedidosForm.get('monto').value);
-      montoReplace = montoReplace.replace('₡', ' ');
-      if (this.datos.precio > parseFloat(montoReplace)) {
+      let montoRemplazado = montoReplace.match(/\d/g);
+      //* Sin patch para evitar ese problemilla
+      if (this.datos.precio > parseFloat(montoRemplazado.join(""))) {
         this.notification.mensaje(
           'Comandas',
           `El monto ingresado debe ser mayor o igual al precio del pedido`,
@@ -408,32 +414,60 @@ export class PedidoDetailComponent implements OnInit {
       this.datos.detalles
     );
 
+    console.log(dataFormatted)
+
     //* Envío la data
     this.gService
-      .create('factura/save', this.pedidosForm.value)
+      .create('factura/save', dataFormatted)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data: any) => {
         this.respPedido = data;
         //* Notificacion de la tarea realizada
-        let notificationBody = `<div class='flexbox'><p>¡Se ha pagado éxitosamente el pedido: ${this.respPedido.nombre} con el número N°${this.respPedido.id}! 
+        let notificationBody = `<div class='flexbox'><p>¡Se ha pagado éxitosamente el pedido: ${this.datos.nombre} con el número de factura N°${this.respPedido.id}! 
      ha sido <b>creada</b> exitosamente.</p></div>`;
         this.notification.mensaje(
           'Reservaciones',
           notificationBody,
           TipoMessage.success
         );
+        this.isAlreadyPaid = true; //* Cambiamos
         //? Rederigimos
-        this.router.navigate(['/dashboard/ordenes'], {
-          queryParams: { create: 'true' },
+        this.router.navigate(['/dashboard/comandas'], {
+          queryParams: { update: 'true' },
         });
       });
   }
 
   public parseData(dataForm: any, dataDetalles: any): any {
     let parseFormat: any = [];
-    parseFormat = {
-      hola: '',
+    let detalles: Array<any> = [];
+    let tipoPago: any = [];
+    dataDetalles.forEach(async (element, index) => {
+      detalles[index] = {
+        precio: parseInt(element.Producto.precio),
+        impuesto: parseInt(element.Producto.precio) * 0.13,
+        total_detalle: parseInt(element.Producto.precio) + (parseInt(element.Producto.precio) * 0.13),
+        cantidad: parseInt(element.cantidad),
+        idProducto: element.idProducto
+      };
+    });
+    let montoReplace = String(this.pedidosForm.get('monto').value);
+    let montoRemplazado = montoReplace.match(/\d/g);
+    tipoPago = {
+      idTipoPago: dataForm.idTipoPago,
+      monto: dataForm.idTipoPago == 1 ? parseFloat(montoRemplazado.join("")) : this.datos.precio
     };
+    parseFormat = {
+      numero_tarjeta: dataForm.idTipoPago == 2 ? dataForm.numeroTarjeta : undefined,
+      idTipoTarjeta: dataForm.idTipoPago == 2 ? dataForm.idTipoTarjeta : undefined,
+      estado: dataForm.estado,
+      direccion: dataForm.direccion,
+      idUsuario: dataForm.idUsuario,
+      idPedido: this.datos.id,
+      detalles: detalles,
+      tipoPagos: tipoPago
+    };
+    return parseFormat;
   }
 
   public errorHandling = (control: string, error: string) => {

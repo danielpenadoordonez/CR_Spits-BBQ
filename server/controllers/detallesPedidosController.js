@@ -32,11 +32,29 @@ module.exports.getDetallesByPedidoId = async (request, response, next) => {
 
 //* Crea varios detalles...
 module.exports.createDetail = async (request, response, next) => {
-  let details = request.body;
+  let data = request.body;
   const newDetails = await prismaClient.pedido_Producto.createMany({
-    data: details, //* Tiene que venir con el formato - en el postman
+    data: data.detalles, //* Tiene que venir con el formato - en el postman
     skipDuplicates: true, //* Evita los duplicados
   });
+
+  if (data.codigoMesa != undefined && data.codigoMesa != null && data.codigoMesa != "") {
+    //* Cuando sea diferente de online
+    const mesaActualizada = await prismaClient.mesa.update({
+      where: { codigo: data.codigoMesa },
+      data: {
+        idDisponibilidad: 1, //* Setea libre
+      },
+    });
+  }
+
+  const pedidoActualizado = await prismaClient.pedido.update({
+    where: { id: parseInt(data.idPedido) },
+    data: {
+      precio: parseInt(data.precio), //* Setea el precio
+    },
+  });
+
 
   response.json(newDetails); //* Retorna la cantidad de archivos creados...
 };
