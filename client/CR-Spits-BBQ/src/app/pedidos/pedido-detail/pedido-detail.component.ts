@@ -245,7 +245,7 @@ export class PedidoDetailComponent implements OnInit {
 
   //* Algoritmo para validar si una tarjeta es valida o no
   LuhnCheck(value: any) {
-    let sum : number = 0;
+    let sum: number = 0;
     for (var i = 0; i < value.length; i++) {
       var intVal = parseInt(value.substr(i, 1));
       if (i % 2 == 0) {
@@ -266,7 +266,7 @@ export class PedidoDetailComponent implements OnInit {
     let mesNow = fecha.getMonth(); //* obtiene el mes
     let yearNow = fecha.getFullYear() % 100; //* obtiene los ultimos dos digitos del año
     if (anno >= yearNow) {
-      if (mes == mesNow) {
+      if (mes > mesNow) {
         isValid = true;
       }
     }
@@ -348,15 +348,19 @@ export class PedidoDetailComponent implements OnInit {
       return;
     }
 
-    this.asignarValidaciones(this.pedidosForm.get('idTipoPago').value);
+    //* Seteamos algo para evitar errores de validaciones
+    if (this.payWithCreditCard) {
+      this.pedidosForm.patchValue({ monto: undefined });
+    }
+
     //* Seteamos valores pá - son null, así que no deberían de dar problemas para válidar
+    this.asignarValidaciones(this.pedidosForm.get('idTipoPago').value);
+
+    //* Validamos el form
     this.pedidosForm.patchValue({
       idUsuario: this.currentUser.user.id,
       estado: true,
     });
-    if (this.payWithCreditCard) {
-      this.pedidosForm.patchValue({ monto: undefined });
-    }
 
     this.makeSubmit = true; //* Subimos pá
 
@@ -369,6 +373,11 @@ export class PedidoDetailComponent implements OnInit {
         TipoMessage.error
       );
       return;
+    }
+
+    //* Formato adecuado de nuevo
+    if (this.payWithCreditCard) {
+      this.pedidosForm.patchValue({ monto: undefined });
     }
 
     if (this.payWithCreditCard) {
