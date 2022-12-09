@@ -719,6 +719,9 @@ export class PedidosFormComponent {
 
   onBack() {
     //* Cuando intenté salir - botón salir
+    if(this.isCreate){
+      this.cartService.removeAllItems;
+    }
     this.router.navigate(['/dashboard/mesas']);
   }
 
