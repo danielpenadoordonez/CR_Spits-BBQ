@@ -798,6 +798,8 @@ async function main() {
         }
     });
 
+    //* ¡Feliz año nuevo 2023! - 31/12/2022
+
     //TODO seeds listos: tipo tarjeta, tipo pedido, tipo pago, reservaciones seed, + pedidos
     //! APIS FALTANTES: tipo tarjeta, tipo pago, tipo pedido
 };

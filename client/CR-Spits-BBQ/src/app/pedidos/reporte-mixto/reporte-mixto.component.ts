@@ -29,7 +29,8 @@ export class ReporteMixtoComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    
+    //* Reporte
+    //* Feliz año nuevo 2k23 31/12/2022
   }
 
   getCurrentUser() {
